@@ -1,11 +1,12 @@
 import clsx from "clsx";
 import Link from "next/link";
 
-const baseStyles = "inline-flex justify-center p-4 rounded-[10px] border-2 text-body2 font-semibold cursor-pointer";
+const baseStyles =
+  "inline-flex justify-center p-4 rounded-[10px] border-2 text-body2 lg:text-body1 font-semibold cursor-pointer";
 
 const variants = {
   default: "bg-main border-main text-white",
-  outline: "bg-white border-main text-main",
+  outline: "bg-transparent border-main text-main",
   dark: "bg-dark border-dark text-white",
 };
 

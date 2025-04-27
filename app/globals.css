@@ -7,6 +7,7 @@
   --color-dark: #0a112d;
   --color-input-field: #e0e3f4;
   --color-background: #f3f6fe;
+  --color-pale-blue: #8496cb;
 
   --text-h1: 64px;
   --text-h2: 48px;
@@ -27,8 +28,32 @@
   --radius-default: 20px;
 }
 
+@layer base {
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
 @layer components {
   .container {
     @apply px-5 lg:px-14 mx-auto;
+  }
+}
+
+@layer utilities {
+  .bg-custom-gradient {
+    position: relative;
+    z-index: 1;
+  }
+  .bg-custom-gradient::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #e0e4fd 0%, #f3f6fe 100%);
   }
 }

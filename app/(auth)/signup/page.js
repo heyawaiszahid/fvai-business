@@ -1,16 +1,13 @@
-"use client";
-
 import Typography from "@/Components/Typography";
 import Button from "@/Components/UI/Button";
-import Input from "@/Components/UI/Input";
 import Link from "next/link";
+import SignUpForm from "./SignUpForm";
+
+export const metadata = {
+  title: "Sign Up - FVAI Business",
+};
 
 export default function SignUp() {
-  const handleLogin = (e) => {
-    e.preventDefault();
-    console.log("submitted");
-  };
-
   return (
     <div className="pt-12 lg:pt-20 pb-12 lg:pb-20">
       <div className="container lg:max-w-[767px] lg:max-auto">
@@ -33,15 +30,10 @@ export default function SignUp() {
           </Typography>
           <span className="w-full h-[1px] bg-dark"></span>
         </div>
-        <form onSubmit={handleLogin} autoComplete="off" className="space-y-6 mb-6">
-          <Input label="E-mail" id="email" type="email" placeholder="Your e-mail" />
-          <Input label="Password" id="password" type="password" placeholder="Your password" />
-          <Input label="Confirm Password" id="password2" type="password" placeholder="Your password" />
-          <Button className="w-full">Sign up with email</Button>
-        </form>
+        <SignUpForm />
         <Typography size="body2" className="text-center">
           Already have an account?{" "}
-          <Link href="/" className="text-main font-semibold">
+          <Link href="/signin" className="text-main font-semibold">
             Sign in.
           </Link>
         </Typography>

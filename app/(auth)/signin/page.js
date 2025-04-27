@@ -1,16 +1,13 @@
-"use client";
-
 import Typography from "@/Components/Typography";
 import Button from "@/Components/UI/Button";
-import Input from "@/Components/UI/Input";
 import Link from "next/link";
+import SignInForm from "./SignInForm";
 
-export default function Login() {
-  const handleLogin = (e) => {
-    e.preventDefault();
-    console.log("submitted");
-  };
+export const metadata = {
+  title: "Sign In - FVAI Business",
+};
 
+export default function SignIn() {
   return (
     <div className="pt-12 lg:pt-20 pb-12 lg:pb-20">
       <div className="container lg:max-w-[767px] lg:max-auto">
@@ -33,20 +30,16 @@ export default function Login() {
           </Typography>
           <span className="w-full h-[1px] bg-dark"></span>
         </div>
-        <form onSubmit={handleLogin} autoComplete="off" className="space-y-6 mb-6">
-          <Input label="E-mail" id="email" type="email" placeholder="Your e-mail" />
-          <Input label="Password" id="password" type="password" placeholder="Your password" />
-          <Button className="w-full">Sign in with email</Button>
-        </form>
+        <SignInForm />
         <Typography size="body2" className="text-center mb-6">
           I forgot my password.{" "}
-          <Link href="/" className="text-main font-semibold">
+          <Link href="/reset-password" className="text-main font-semibold">
             Reset password.
           </Link>
         </Typography>
         <Typography size="body2" className="text-center">
           I do not have an account.{" "}
-          <Link href="/" className="text-main font-semibold">
+          <Link href="/signup" className="text-main font-semibold">
             Sign up.
           </Link>
         </Typography>

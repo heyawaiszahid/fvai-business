@@ -1,7 +1,7 @@
+import Footer from "@/Components/Footer";
 import Header from "@/Components/Header";
 import { Poppins } from "next/font/google";
-import "./globals.css";
-import Footer from "@/Components/Footer";
+import "../globals.css";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -13,7 +13,7 @@ export const metadata = {
   description: "Transform Business Valuation from Weeks to Days",
 };
 
-export default function RootLayout({ children }) {
+export default function SiteLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${poppins.className} text-dark bg-background`}>

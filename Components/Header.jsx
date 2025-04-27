@@ -28,10 +28,8 @@ const Header = () => {
               <Image src="/logo-desktop.png" alt="logo" width={186} height={44.96} />
             </Link>
             <div className="flex gap-6">
-              <Button className="lg:text-body2">Start Your Valuation</Button>
-              <Button variant="outline" className="lg:text-body2">
-                Join Free Course
-              </Button>
+              <Button>Start Your Valuation</Button>
+              <Button variant="outline">Join Free Course</Button>
             </div>
           </div>
         </header>

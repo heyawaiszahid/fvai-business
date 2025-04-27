@@ -11,6 +11,7 @@ import Secure from "@/Components/Icons/Secure";
 import Typography from "@/Components/Typography";
 import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
+import Image from "next/image";
 
 export default function Home() {
   const HowItWorks = [
@@ -108,8 +109,8 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col items-center gap-6">
-            <Button className="w-fit">Start Your Valuation Now</Button>
-            <Button variant="outline" className="w-full lg:w-fit">
+            <Button className="w-fit lg:text-body1">Start Your Valuation Now</Button>
+            <Button variant="outline" className="w-full lg:w-fit lg:text-body1">
               Sign up for Free Valuation Course
             </Button>
           </div>
@@ -198,7 +199,7 @@ export default function Home() {
             <Typography size="body2" className="text-center">
               Before committing, preview a sample valuation report to understand the depth and quality of our analysis.
             </Typography>
-            <Button>View Sample Report</Button>
+            <Button className="lg:text-body1">View Sample Report</Button>
           </Box>
         </div>
       </section>
@@ -209,12 +210,13 @@ export default function Home() {
             <Typography as="h2" size="h4" lg="h2" className="text-white">
               Ready to Get Started?
             </Typography>
-            <Button className="w-full lg:w-fit">Start Your Valuation Now</Button>
+            <Button className="w-full lg:w-fit lg:text-body1">Start Your Valuation Now</Button>
           </Box>
         </div>
       </section>
 
-      <section className="mb-16 lg:mb-20">
+      <section className="mb-16 lg:mb-20 relative">
+        <Image src="/logo-icon.png" alt="" width="256" height="295" className="hidden lg:block absolute left-0 top-0" />
         <div className="container flex flex-col items-center">
           <Typography as="h2" size="h4" lg="h2" className="text-center mb-6">
             Want to Learn More First?
@@ -225,7 +227,7 @@ export default function Home() {
             lessons, you'll discover the fundamentals of business valuation and our process when performing business
             valuations.
           </Typography>
-          <Button variant="outline" className="w-full lg:w-fit">
+          <Button variant="outline" className="w-full lg:w-fit lg:text-body1">
             Sign up for Free Valuation Course
           </Button>
         </div>

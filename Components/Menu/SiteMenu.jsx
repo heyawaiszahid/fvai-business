@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Close from "../Icons/Close";
 import Hamburger from "../Icons/Hamburger";
@@ -10,9 +10,23 @@ import Button from "../UI/Button";
 const SiteMenu = ({ session }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const overlay = (
     <div onClick={() => setMenuOpen(false)} className="fixed z-10 top-0 left-0 w-full h-full bg-black opacity-35"></div>
   );
+
+  const closeMenu = () => setMenuOpen(false);
 
   return (
     <>
@@ -27,15 +41,21 @@ const SiteMenu = ({ session }) => {
       >
         {!session ? (
           <div className="flex flex-col lg:flex-row lg:justify-end gap-6">
-            <Button href="/questionnaire">Start Your Valuation</Button>
-            <Button href="/join-free-course" variant="outline">
+            <Button href="/questionnaire" onClick={closeMenu}>
+              Start Your Valuation
+            </Button>
+            <Button href="/join-free-course" variant="outline" onClick={closeMenu}>
               Join Free Course
             </Button>
           </div>
         ) : (
           <div className="flex flex-col lg:flex-row gap-6 lg:py-4 font-semibold">
-            <Link href="/dashboard">My Dashboard</Link>
-            <Link href="/questionnaire">Start Valuation</Link>
+            <Link href="/dashboard" onClick={closeMenu}>
+              My Dashboard
+            </Link>
+            <Link href="/questionnaire" onClick={closeMenu}>
+              Start Valuation
+            </Link>
           </div>
         )}
       </div>

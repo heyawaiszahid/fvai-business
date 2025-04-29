@@ -24,16 +24,16 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Please enter email and password");
-        }
-
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
 
-        if (!user || !user.password) {
-          throw new Error("No user found");
+        if (!user) {
+          throw new Error("No user found with this email");
+        }
+
+        if (!user.password) {
+          throw new Error("It looks like you signed up using a social account. Please log in using the same method.");
         }
 
         const passwordMatch = await bcrypt.compare(credentials.password, user.password);

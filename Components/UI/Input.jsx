@@ -10,12 +10,12 @@ const Input = ({
   placeholder,
   className = "",
   labelClassName = "text-body2 font-semibold",
-  inputClassName = "bg-input-field rounded-[10px] w-full p-4 pr-12 placeholder:text-pale-blue focus:outline-1 focus:outline-light-blue disabled:bg-[#e7e7e7]",
+  inputClassName = "bg-input-field rounded-[10px] w-full p-4 pr-12 placeholder:text-pale-blue outline-1 outline-transparent focus:outline-light-blue disabled:bg-[#e7e7e7]",
   icon,
+  error,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
-
   const inputType = type === "password" ? (showPassword ? "text" : "password") : type;
   const inputPadding = icon || type === "password" ? "pr-12" : "px-4";
 
@@ -32,7 +32,7 @@ const Input = ({
           name={name || id}
           type={inputType}
           placeholder={placeholder}
-          className={`${inputClassName} ${inputPadding}`}
+          className={`${inputClassName} ${inputPadding} ${error ? "text-red !outline-red focus:outline-red" : ""}`}
           {...props}
         />
         {(type === "password" || icon) && (
@@ -52,6 +52,7 @@ const Input = ({
           </div>
         )}
       </div>
+      {error && <p className="text-red text-body2 font-semibold mt-1">{error}</p>}
     </div>
   );
 };

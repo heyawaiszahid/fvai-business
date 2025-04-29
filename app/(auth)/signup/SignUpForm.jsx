@@ -3,19 +3,25 @@
 import Typography from "@/Components/Typography";
 import Button from "@/Components/UI/Button";
 import Input from "@/Components/UI/Input";
+import { signUpSchema } from "@/schemas/signup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import bcrypt from "bcryptjs";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const SignUpForm = ({ variant = "default" }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(signUpSchema),
+  });
 
   const content = {
     default: {
@@ -44,24 +50,11 @@ const SignUpForm = ({ variant = "default" }) => {
     signIn("linkedin", { callbackUrl: redirectPath });
   };
 
-  const handleSignUp = async (e) => {
-    e.preventDefault();
-    setError("");
-
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters");
-      return;
-    }
-
+  const onSubmit = async (data) => {
     setIsLoading(true);
 
     try {
-      const hashedPassword = await bcrypt.hash(password, 12);
+      const hashedPassword = await bcrypt.hash(data.password, 12);
 
       const response = await fetch("/api/auth/signup", {
         method: "POST",
@@ -69,7 +62,7 @@ const SignUpForm = ({ variant = "default" }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email,
+          email: data.email,
           password: hashedPassword,
         }),
       });
@@ -80,12 +73,12 @@ const SignUpForm = ({ variant = "default" }) => {
       }
 
       await signIn("credentials", {
-        email,
-        password,
+        email: data.email,
+        password: data.password,
         callbackUrl: redirectPath,
       });
     } catch (err) {
-      setError(err.message || "Something went wrong");
+      toast.error(err.message || "Something went wrong");
     } finally {
       setIsLoading(false);
     }
@@ -117,34 +110,30 @@ const SignUpForm = ({ variant = "default" }) => {
         <span className="w-full h-[1px] bg-dark"></span>
       </div>
 
-      <form onSubmit={handleSignUp} autoComplete="off" className="space-y-6 mb-6">
-        {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">{error}</div>}
+      <form onSubmit={handleSubmit(onSubmit)} noValidate autoComplete="off" className="space-y-6 mb-6">
         <Input
           label="E-mail"
           id="email"
           type="email"
           placeholder="Your e-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+          {...register("email")}
+          error={errors.email?.message}
         />
         <Input
           label="Password"
           id="password"
           type="password"
-          placeholder="Your password (min 6 characters)"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
+          placeholder="Your password"
+          {...register("password")}
+          error={errors.password?.message}
         />
         <Input
           label="Confirm Password"
-          id="password2"
+          id="confirmPassword"
           type="password"
           placeholder="Confirm your password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          required
+          {...register("confirmPassword")}
+          error={errors.confirmPassword?.message}
         />
         <Button className="w-full" disabled={isLoading}>
           {isLoading ? loadingText : buttonText}

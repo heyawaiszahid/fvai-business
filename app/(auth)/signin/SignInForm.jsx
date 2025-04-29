@@ -3,24 +3,35 @@
 import Typography from "@/Components/Typography";
 import Button from "@/Components/UI/Button";
 import Input from "@/Components/UI/Input";
+import { signInSchema } from "@/schemas/signin";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const SignInForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const router = useRouter();
+
   const [loadingStates, setLoadingStates] = useState({
     google: false,
     linkedin: false,
     email: false,
   });
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(signInSchema),
+  });
+
   const handleGoogleSignIn = async () => {
     try {
       setLoadingStates((prev) => ({ ...prev, google: true }));
-      setError("");
       const result = await signIn("google", {
         callbackUrl: "/dashboard",
       });
@@ -29,7 +40,7 @@ const SignInForm = () => {
         throw new Error(result.error);
       }
     } catch (err) {
-      setError(err.message || "Failed to sign in with Google");
+      toast.error(err.message || "Failed to sign in with Google");
     } finally {
       setLoadingStates((prev) => ({ ...prev, google: false }));
     }
@@ -38,7 +49,6 @@ const SignInForm = () => {
   const handleLinkedInSignIn = async () => {
     try {
       setLoadingStates((prev) => ({ ...prev, linkedin: true }));
-      setError("");
       const result = await signIn("linkedin", {
         callbackUrl: "/dashboard",
       });
@@ -47,34 +57,32 @@ const SignInForm = () => {
         throw new Error(result.error);
       }
     } catch (err) {
-      setError(err.message || "Failed to sign in with LinkedIn");
+      toast.error(err.message || "Failed to sign in with LinkedIn");
     } finally {
       setLoadingStates((prev) => ({ ...prev, linkedin: false }));
     }
   };
 
-  const handleEmailSignIn = async (e) => {
-    e.preventDefault();
-    setError("");
-
-    if (!email || !password) {
-      setError("Please enter both email and password");
-      return;
-    }
+  const handleEmailSignIn = async (data) => {
+    const { email, password } = data;
 
     try {
       setLoadingStates((prev) => ({ ...prev, email: true }));
       const result = await signIn("credentials", {
         email,
         password,
-        callbackUrl: "/dashboard",
+        redirect: false,
       });
 
       if (result?.error) {
         throw new Error(result.error);
       }
+
+      if (result?.ok) {
+        router.push("/dashboard");
+      }
     } catch (err) {
-      setError(err.message || "Sign in failed. Please check your credentials.");
+      toast.error(err.message || "Sign in failed. Please check your credentials.");
     } finally {
       setLoadingStates((prev) => ({ ...prev, email: false }));
     }
@@ -89,8 +97,6 @@ const SignInForm = () => {
       <Typography size="h5" lg="body1" className="text-center text-gradient mb-6">
         Sign in to your account
       </Typography>
-
-      {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">{error}</div>}
 
       <Button
         variant="outline"
@@ -118,24 +124,22 @@ const SignInForm = () => {
         <span className="w-full h-[1px] bg-dark"></span>
       </div>
 
-      <form onSubmit={handleEmailSignIn} autoComplete="off" className="space-y-6 mb-6">
+      <form onSubmit={handleSubmit(handleEmailSignIn)} noValidate autoComplete="off" className="space-y-6 mb-6">
         <Input
           label="E-mail"
           id="email"
           type="email"
           placeholder="Your e-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+          {...register("email")}
+          error={errors.email?.message}
         />
         <Input
           label="Password"
           id="password"
           type="password"
           placeholder="Your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
+          {...register("password")}
+          error={errors.password?.message}
         />
         <Button
           className="w-full"

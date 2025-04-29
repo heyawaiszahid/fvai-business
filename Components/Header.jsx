@@ -27,7 +27,7 @@ const Header = async () => {
 
       <div className="hidden lg:block">
         <header className="relative z-20 bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.06)]">
-          <div className="container py-2 flex items-center justify-between">
+          <div className="container py-2 flex gap-12 items-center justify-between">
             <Link href="/">
               <Image src="/logo-desktop.png" alt="logo" width={186} height={44.96} />
             </Link>
@@ -39,11 +39,11 @@ const Header = async () => {
                 </Button>
               </div>
             ) : (
-              <div className="flex gap-6 relative">
-                <Button href="/questionnaire">Start Valuation</Button>
-                <Button href="/dashboard" variant="outline">
-                  My Dashboard
-                </Button>
+              <div className="flex-1 flex gap-12 items-center relative">
+                <div className="flex-1 flex gap-8 font-semibold">
+                  <Link href="/dashboard">My Dashboard</Link>
+                  <Link href="/questionnaire">Start Valuation</Link>
+                </div>
                 <UserMenu session={session} />
               </div>
             )}

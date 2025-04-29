@@ -21,7 +21,9 @@ const SiteMenu = ({ session }) => {
       </button>
 
       <div
-        className={`${menuOpen ? "block" : "hidden"} lg:block absolute lg:static top-full left-0 w-full px-6 bg-white`}
+        className={`${
+          menuOpen ? "block" : "hidden"
+        } lg:block absolute lg:static top-full left-0 w-full px-6 py-4 lg:py-0 bg-white`}
       >
         {!session ? (
           <div className="flex flex-col lg:flex-row lg:justify-end gap-6">

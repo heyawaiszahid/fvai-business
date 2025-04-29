@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import DownArrow from "../Icons/DownArrow";
+import Typography from "../Typography";
 
 const UserMenu = ({ session }) => {
   const user = session?.user || {};
@@ -28,6 +29,9 @@ const UserMenu = ({ session }) => {
             className="object-cover w-full h-full"
           />
         </div>
+        <Typography size="body2" className="font-semibold hidden lg:block">
+          User
+        </Typography>
         <DownArrow className={menuOpen ? "rotate-180" : ""} />
       </button>
 
@@ -35,7 +39,10 @@ const UserMenu = ({ session }) => {
         <div className="absolute top-full left-0 w-full px-6 py-4 bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.06)] lg:w-fit lg:min-w-[228px] lg:left-[unset] lg:right-0 lg:border lg:border-input-field lg:mt-2">
           <div className="flex flex-col gap-6 font-semibold">
             <Link href="/settings">My Settings</Link>
-            <button onClick={() => signOut({ callbackUrl: "/" })} className="text-left cursor-pointer">
+            <button
+              onClick={() => signOut({ callbackUrl: "/" })}
+              className="text-left cursor-pointer hover:text-main transition-colors"
+            >
               Log out
             </button>
           </div>

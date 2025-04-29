@@ -33,6 +33,14 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  a {
+    transition: color 150ms;
+  }
+
+  a:hover {
+    color: var(--color-main);
+  }
 }
 
 @layer components {

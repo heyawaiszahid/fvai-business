@@ -10,7 +10,7 @@ const Header = async () => {
 
   return (
     <header className="relative z-20 bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.06)]">
-      <div className="container py-5 lg:py-2 flex gap-6 items-center">
+      <div className="container py-5 lg:py-2.5 flex gap-6 items-center">
         <div className="lg:order-2 lg:flex-1 flex items-center">
           <SiteMenu session={session} />
         </div>

@@ -42,7 +42,7 @@ const Input = ({
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="w-full h-full flex items-center justify-center focus:outline-none cursor-pointer"
-                aria-label={showPassword ? "Hide password" : "Show password"}
+                tabIndex={-1}
               >
                 {showPassword ? <Hide /> : <Show />}
               </button>

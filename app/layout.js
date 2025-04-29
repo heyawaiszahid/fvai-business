@@ -1,3 +1,4 @@
+import AuthProvider from "@/providers/AuthProvider";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 
@@ -14,7 +15,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${poppins.className} text-dark bg-background`}>{children}</body>
+      <body className={`${poppins.className} text-dark bg-background`}>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   );
 }

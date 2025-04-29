@@ -22,7 +22,7 @@ const UserMenu = ({ session }) => {
   return (
     <>
       <button onClick={() => setMenuOpen(!menuOpen)} className="flex items-center gap-4 cursor-pointer">
-        <div className="border-main border-2 rounded-full w-8 lg:w-11 h-8 lg:h-11 overflow-hidden bg-background">
+        <div className="border-main border-2 rounded-full w-8 lg:w-11 h-8 lg:h-11 overflow-hidden">
           <Image
             src={user.image || "/avatar.svg"}
             alt={user.name || "User avatar"}

@@ -33,7 +33,9 @@ const Header = async () => {
             </Link>
             <div className="flex gap-6">
               <Button href="/questionnaire">Start Your Valuation</Button>
-              <Button variant="outline">Join Free Course</Button>
+              <Button href="/join-free-course" variant="outline">
+                Join Free Course
+              </Button>
             </div>
           </div>
         </header>

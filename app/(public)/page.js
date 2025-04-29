@@ -109,8 +109,10 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col items-center gap-6">
-            <Button className="w-fit lg:text-body1">Start Your Valuation Now</Button>
-            <Button variant="outline" className="w-full lg:w-fit lg:text-body1">
+            <Button href="/questionnaire" className="w-fit lg:text-body1">
+              Start Your Valuation Now
+            </Button>
+            <Button href="/join-free-course" variant="outline" className="w-full lg:w-fit lg:text-body1">
               Sign up for Free Valuation Course
             </Button>
           </div>
@@ -210,7 +212,9 @@ export default function Home() {
             <Typography as="h2" size="h4" lg="h2" className="text-white">
               Ready to Get Started?
             </Typography>
-            <Button className="w-full lg:w-fit lg:text-body1">Start Your Valuation Now</Button>
+            <Button href="/questionnaire" className="w-full lg:w-fit lg:text-body1">
+              Start Your Valuation Now
+            </Button>
           </Box>
         </div>
       </section>
@@ -227,7 +231,7 @@ export default function Home() {
             lessons, you'll discover the fundamentals of business valuation and our process when performing business
             valuations.
           </Typography>
-          <Button variant="outline" className="w-full lg:w-fit lg:text-body1">
+          <Button href="/join-free-course" variant="outline" className="w-full lg:w-fit lg:text-body1">
             Sign up for Free Valuation Course
           </Button>
         </div>

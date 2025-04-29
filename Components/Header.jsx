@@ -31,12 +31,22 @@ const Header = async () => {
             <Link href="/">
               <Image src="/logo-desktop.png" alt="logo" width={186} height={44.96} />
             </Link>
-            <div className="flex gap-6">
-              <Button href="/questionnaire">Start Your Valuation</Button>
-              <Button href="/join-free-course" variant="outline">
-                Join Free Course
-              </Button>
-            </div>
+            {!session ? (
+              <div className="flex gap-6">
+                <Button href="/questionnaire">Start Your Valuation</Button>
+                <Button href="/join-free-course" variant="outline">
+                  Join Free Course
+                </Button>
+              </div>
+            ) : (
+              <div className="flex gap-6 relative">
+                <Button href="/questionnaire">Start Valuation</Button>
+                <Button href="/dashboard" variant="outline">
+                  My Dashboard
+                </Button>
+                <UserMenu session={session} />
+              </div>
+            )}
           </div>
         </header>
       </div>

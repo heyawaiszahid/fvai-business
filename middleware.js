@@ -6,7 +6,7 @@ export async function middleware(request) {
   const { pathname } = request.nextUrl;
 
   const protectedPaths = ["/dashboard", "/settings", "/questionnaire"];
-  const authPaths = ["/signin", "/signup", "/reset-password"];
+  const authPaths = ["/signin", "/signup", "/reset-password", "/join-free-course"];
 
   if (authPaths.includes(pathname)) {
     if (token) {

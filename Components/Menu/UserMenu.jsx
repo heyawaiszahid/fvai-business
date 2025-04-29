@@ -32,10 +32,10 @@ const UserMenu = ({ session }) => {
       </button>
 
       {menuOpen && (
-        <div className="absolute top-full left-0 w-full p-6 bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.06)]">
+        <div className="absolute top-full left-0 w-full p-6 bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.06)] lg:w-fit lg:left-[unset] lg:right-0">
           <div className="flex flex-col gap-6 font-semibold">
             <Link href="/settings">My Settings</Link>
-            <button onClick={() => signOut({ callbackUrl: "/" })} className="text-left">
+            <button onClick={() => signOut({ callbackUrl: "/" })} className="text-left cursor-pointer">
               Log out
             </button>
           </div>

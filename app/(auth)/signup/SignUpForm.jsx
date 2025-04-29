@@ -71,7 +71,6 @@ const SignUpForm = ({ variant = "default" }) => {
         body: JSON.stringify({
           email,
           password: hashedPassword,
-          signupType: variant,
         }),
       });
 
@@ -80,7 +79,11 @@ const SignUpForm = ({ variant = "default" }) => {
         throw new Error(errorData.error || "Signup failed");
       }
 
-      router.push(redirectPath);
+      await signIn("credentials", {
+        email,
+        password,
+        callbackUrl: redirectPath,
+      });
     } catch (err) {
       setError(err.message || "Something went wrong");
     } finally {

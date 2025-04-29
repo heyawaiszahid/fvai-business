@@ -5,7 +5,6 @@ import Button from "@/Components/UI/Button";
 import Input from "@/Components/UI/Input";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const SignInForm = () => {
@@ -17,7 +16,6 @@ const SignInForm = () => {
     linkedin: false,
     email: false,
   });
-  const router = useRouter();
 
   const handleGoogleSignIn = async () => {
     try {
@@ -25,18 +23,15 @@ const SignInForm = () => {
       setError("");
       const result = await signIn("google", {
         callbackUrl: "/dashboard",
-        redirect: false,
       });
 
       if (result?.error) {
         throw new Error(result.error);
       }
-
-      router.push("/dashboard");
     } catch (err) {
       setError(err.message || "Failed to sign in with Google");
     } finally {
-      setIsLoading(false);
+      setLoadingStates((prev) => ({ ...prev, google: false }));
     }
   };
 
@@ -46,18 +41,15 @@ const SignInForm = () => {
       setError("");
       const result = await signIn("linkedin", {
         callbackUrl: "/dashboard",
-        redirect: false,
       });
 
       if (result?.error) {
         throw new Error(result.error);
       }
-
-      router.push("/dashboard");
     } catch (err) {
       setError(err.message || "Failed to sign in with LinkedIn");
     } finally {
-      setIsLoading(false);
+      setLoadingStates((prev) => ({ ...prev, linkedin: false }));
     }
   };
 
@@ -75,14 +67,12 @@ const SignInForm = () => {
       const result = await signIn("credentials", {
         email,
         password,
-        redirect: false,
+        callbackUrl: "/dashboard",
       });
 
       if (result?.error) {
         throw new Error(result.error);
       }
-
-      router.push("/dashboard");
     } catch (err) {
       setError(err.message || "Sign in failed. Please check your credentials.");
     } finally {

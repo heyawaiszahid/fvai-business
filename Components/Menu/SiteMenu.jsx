@@ -13,7 +13,9 @@ const SiteMenu = ({ session }) => {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
-        setMenuOpen(false);
+        if (menuOpen) {
+          setMenuOpen(false);
+        }
       }
     };
 

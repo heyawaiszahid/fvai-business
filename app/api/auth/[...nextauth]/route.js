@@ -58,11 +58,13 @@ export const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.hasPassword = !!user.password;
       }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id;
+      session.user.hasPassword = token.hasPassword;
       return session;
     },
   },

@@ -10,7 +10,7 @@ const Input = ({
   placeholder,
   className = "",
   labelClassName = "text-body2 font-semibold",
-  inputClassName = "bg-input-field rounded-[10px] w-full p-4 pr-12 placeholder:text-pale-blue outline-1 outline-transparent focus:outline-light-blue disabled:bg-[#e7e7e7]",
+  inputClassName = "bg-input-field rounded-[10px] w-full p-4 pr-12 placeholder:text-pale-blue outline-1 outline-transparent focus:outline-light-blue disabled:bg-[#e7e7e7] disabled:text-pale-blue",
   icon,
   error,
   ...props

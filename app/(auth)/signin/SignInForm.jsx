@@ -7,8 +7,8 @@ import { signInSchema } from "@/schemas/signin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -28,6 +28,16 @@ const SignInForm = () => {
   } = useForm({
     resolver: zodResolver(signInSchema),
   });
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const error = searchParams.get("error");
+
+    if (error === "OAuthAccountNotLinked") {
+      toast.error("This email is already registered using another method. Please sign in using that method.");
+    }
+  }, [searchParams]);
 
   const handleGoogleSignIn = async () => {
     try {

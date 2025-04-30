@@ -5,7 +5,7 @@ export async function middleware(request) {
   const token = await getToken({ req: request });
   const { pathname } = request.nextUrl;
   const protectedPaths = ["/dashboard", "/settings", "/questionnaire", "/free-course"];
-  const authPaths = ["/signin", "/signup", "/reset-password", "/join-free-course"];
+  const authPaths = ["/signin", "/signup", "/join-free-course", "/reset-password"];
 
   if (authPaths.includes(pathname)) {
     if (token) {

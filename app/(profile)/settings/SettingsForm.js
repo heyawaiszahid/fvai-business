@@ -4,7 +4,7 @@ import Typography from "@/Components/Typography";
 import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
 import Input from "@/Components/UI/Input";
-import { passwordResetSchema } from "@/schemas/reset-password";
+import { updatePasswordSchema } from "@/schemas/update-password";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -24,7 +24,7 @@ const SettingsForm = ({ session }) => {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: zodResolver(passwordResetSchema),
+    resolver: zodResolver(updatePasswordSchema),
   });
 
   const onSubmit = async (data) => {

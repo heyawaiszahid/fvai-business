@@ -37,14 +37,14 @@ const UserMenu = ({ session }) => {
             className="object-cover w-full h-full"
           />
         </div>
-        <Typography size="body2" className="font-semibold hidden lg:block">
+        <Typography size="body2" className="font-semibold hidden lg:block lg:pe-2">
           User
         </Typography>
         <DownArrow className={menuOpen ? "rotate-180" : ""} />
       </button>
 
       {menuOpen && (
-        <div className="absolute top-full left-0 w-full px-6 py-4 bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.06)] lg:w-fit lg:min-w-[228px] lg:left-[unset] lg:right-0 lg:border lg:border-input-field lg:mt-2">
+        <div className="absolute top-full left-0 w-full px-6 py-4 bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.06)] lg:w-fit lg:min-w-[181px] lg:left-[unset] lg:right-0 lg:border lg:border-input-field lg:mt-2">
           <div className="flex flex-col gap-6 font-semibold">
             <Link href="/settings" onClick={closeMenu} className={isActive("/settings") ? "text-main" : ""}>
               My Settings

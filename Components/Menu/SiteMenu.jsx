@@ -1,5 +1,6 @@
 "use client";
 
+import { useActiveLink } from "@/lib/active-links";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
@@ -30,6 +31,8 @@ const SiteMenu = ({ session }) => {
 
   const closeMenu = () => setMenuOpen(false);
 
+  const isActive = useActiveLink();
+
   return (
     <>
       <button onClick={() => setMenuOpen(!menuOpen)} className="cursor-pointer lg:hidden">
@@ -52,10 +55,10 @@ const SiteMenu = ({ session }) => {
           </div>
         ) : (
           <div className="flex flex-col lg:flex-row gap-6 lg:py-4 font-semibold">
-            <Link href="/dashboard" onClick={closeMenu}>
+            <Link href="/dashboard" onClick={closeMenu} className={isActive("/dashboard") ? "text-main" : ""}>
               My Dashboard
             </Link>
-            <Link href="/questionnaire" onClick={closeMenu}>
+            <Link href="/questionnaire" onClick={closeMenu} className={isActive("/questionnaire") ? "text-main" : ""}>
               Start Valuation
             </Link>
           </div>

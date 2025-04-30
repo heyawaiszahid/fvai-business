@@ -120,7 +120,7 @@ const ResetPasswordForm = () => {
                 disabled={isPasswordUpdated || passwordForm.formState.isSubmitting}
               >
                 {passwordForm.formState.isSubmitting
-                  ? "Saving..."
+                  ? "Updating..."
                   : isPasswordUpdated
                     ? "Password Updated"
                     : "Set New Password"}

@@ -99,7 +99,7 @@ const SignInForm = () => {
   };
 
   return (
-    <div className="container lg:max-w-[767px] lg:max-auto">
+    <div className="container lg:max-w-[767px]">
       <Typography size="h4" lg="h2" className="text-center max-w-[300px] lg:max-w-full mx-auto mb-6">
         Welcome back!
       </Typography>

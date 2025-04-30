@@ -10,7 +10,7 @@ export default async function Settings() {
   const session = await getServerSession(authOptions);
 
   return (
-    <div className="pt-8 lg:pt-20 pb-8 lg:pb-20">
+    <div className="py-8 lg:py-16">
       <SettingsForm session={session} />
     </div>
   );

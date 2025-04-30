@@ -54,7 +54,7 @@ const SiteMenu = ({ session }) => {
             </Button>
           </div>
         ) : (
-          <div className="flex flex-col lg:flex-row gap-6 lg:py-4 font-semibold">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 lg:py-4 font-semibold">
             <Link href="/dashboard" onClick={closeMenu} className={isActive("/dashboard") ? "text-main" : ""}>
               My Dashboard
             </Link>

@@ -94,64 +94,72 @@ const SettingsForm = ({ session }) => {
   };
 
   return (
-    <div className="container lg:max-w-[767px] lg:max-auto">
-      <Box p="6" className="mb-6">
-        <Typography size="h5" className="mb-6">
-          My Basic information
-        </Typography>
-        <Input label="E-mail" value={user.email} disabled className="mb-6" />
-      </Box>
+    <div className="container flex">
+      <div className="hidden lg:flex flex-col gap-2 w-52 mr-36">
+        <Button>My basic info</Button>
+        {user.hasPassword && <Button>Change password</Button>}
+        <Button>My account</Button>
+      </div>
 
-      {user.hasPassword && (
+      <div className="w-full lg:max-w-[767px]">
         <Box p="6" className="mb-6">
           <Typography size="h5" className="mb-6">
-            Change Password
+            My Basic Information
           </Typography>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Input
-              label="Old Password"
-              type="password"
-              placeholder="Type password"
-              className="mb-6"
-              error={errors.oldPassword?.message}
-              {...register("oldPassword")}
-            />
-            <Input
-              label="New Password"
-              type="password"
-              placeholder="Type new password"
-              className="mb-6"
-              error={errors.newPassword?.message}
-              {...register("newPassword")}
-            />
-            <Input
-              label="Confirm New Password"
-              type="password"
-              placeholder="Confirm new password"
-              className="mb-6"
-              error={errors.confirmNewPassword?.message}
-              {...register("confirmNewPassword")}
-            />
-
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : "Save"}
-            </Button>
-          </form>
+          <Input label="E-mail" value={user.email} disabled className="mb-6" />
         </Box>
-      )}
 
-      <Box p="6" className="mb-6">
-        <Typography size="h5" className="mb-6">
-          Your account
-        </Typography>
-        <button
-          onClick={handleDeleteAccount}
-          disabled={isDeleting}
-          className="text-left text-red font-semibold cursor-pointer"
-        >
-          {isDeleting ? "Deleting..." : "Delete my account"}
-        </button>
-      </Box>
+        {user.hasPassword && (
+          <Box p="6" className="mb-6">
+            <Typography size="h5" className="mb-6">
+              Change Password
+            </Typography>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Input
+                label="Old Password"
+                type="password"
+                placeholder="Type password"
+                className="mb-6"
+                error={errors.oldPassword?.message}
+                {...register("oldPassword")}
+              />
+              <Input
+                label="New Password"
+                type="password"
+                placeholder="Type new password"
+                className="mb-6"
+                error={errors.newPassword?.message}
+                {...register("newPassword")}
+              />
+              <Input
+                label="Confirm New Password"
+                type="password"
+                placeholder="Confirm new password"
+                className="mb-6"
+                error={errors.confirmNewPassword?.message}
+                {...register("confirmNewPassword")}
+              />
+
+              <Button type="submit" className="w-full" disabled={isSubmitting}>
+                {isSubmitting ? "Saving..." : "Save"}
+              </Button>
+            </form>
+          </Box>
+        )}
+
+        <Box p="6" className="mb-6">
+          <Typography size="h5" className="mb-6">
+            My Account
+          </Typography>
+          <button
+            onClick={handleDeleteAccount}
+            disabled={isDeleting}
+            className="text-left text-red font-semibold cursor-pointer"
+          >
+            {isDeleting ? "Deleting..." : "Delete my account"}
+          </button>
+        </Box>
+      </div>
     </div>
   );
 };

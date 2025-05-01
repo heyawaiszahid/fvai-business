@@ -42,34 +42,24 @@ const SignInForm = () => {
   const handleGoogleSignIn = async () => {
     try {
       setLoadingStates((prev) => ({ ...prev, google: true }));
-      const result = await signIn("google", {
+      await signIn("google", {
         callbackUrl: "/dashboard",
       });
-
-      if (result?.error) {
-        throw new Error(result.error);
-      }
     } catch (err) {
-      toast.error(err.message || "Failed to sign in with Google");
-    } finally {
       setLoadingStates((prev) => ({ ...prev, google: false }));
+      toast.error(err.message || "Failed to sign in with Google");
     }
   };
 
   const handleLinkedInSignIn = async () => {
     try {
       setLoadingStates((prev) => ({ ...prev, linkedin: true }));
-      const result = await signIn("linkedin", {
+      await signIn("linkedin", {
         callbackUrl: "/dashboard",
       });
-
-      if (result?.error) {
-        throw new Error(result.error);
-      }
     } catch (err) {
-      toast.error(err.message || "Failed to sign in with LinkedIn");
-    } finally {
       setLoadingStates((prev) => ({ ...prev, linkedin: false }));
+      toast.error(err.message || "Failed to sign in with LinkedIn");
     }
   };
 

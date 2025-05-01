@@ -84,7 +84,7 @@ const ResetPasswordForm = () => {
   };
 
   return (
-    <div className="container lg:max-w-[887px] lg:max-auto">
+    <div className="container lg:max-w-[887px]">
       {hasToken ? (
         !isSuccess ? (
           <div>

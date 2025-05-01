@@ -196,7 +196,7 @@ export default function Home() {
         <div className="container">
           <Box bg="bg-input-field" p="6" className="justify-center items-center gap-6 lg:p-10">
             <Typography as="h2" size="h4" lg="h2">
-              See What You'll Get
+              See What You{"'"}ll Get
             </Typography>
             <Typography size="body2" className="text-center">
               Before committing, preview a sample valuation report to understand the depth and quality of our analysis.
@@ -228,7 +228,7 @@ export default function Home() {
           <Typography size="body2" className="text-center mb-6 lg:max-w-[654px]">
             Join our <span className="text-gradient">Free Valuation Short Course</span>, led by{" "}
             <span className="font-semibold">Bilal Noorgat</span> (CA, CFA, CVA). Delivered via email with concise video
-            lessons, you'll discover the fundamentals of business valuation and our process when performing business
+            lessons, you{"'"}ll discover the fundamentals of business valuation and our process when performing business
             valuations.
           </Typography>
           <Button href="/join-free-course" variant="outline" className="w-full lg:w-fit lg:text-body1">

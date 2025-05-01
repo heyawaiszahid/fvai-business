@@ -5,10 +5,12 @@ import { useEffect, useState } from "react";
 import Navigation from "./Navigation";
 import Question from "./Question";
 import questionnaire from "./questionnaire.json";
+import Result from "./Result";
 import StepIndicator from "./StepIndicator";
 
 const Questions = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [answers, setAnswers] = useState(() =>
     questionnaire.steps.map((step) => Array(step.questions.length).fill(""))
   );
@@ -17,7 +19,13 @@ const Questions = () => {
     window.scrollTo(0, 0);
   }, [currentStep]);
 
-  const handleNext = () => currentStep < questionnaire.steps.length && setCurrentStep(currentStep + 1);
+  const handleNext = () => {
+    if (currentStep < questionnaire.steps.length) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      handleSubmit();
+    }
+  };
   const handleBack = () => currentStep > 1 && setCurrentStep(currentStep - 1);
 
   const handleAnswerChange = (stepIndex, questionIndex, value) => {
@@ -28,6 +36,15 @@ const Questions = () => {
       return newAnswers;
     });
   };
+
+  const handleSubmit = () => {
+    console.log("Form submitted with answers:", answers);
+    setIsSubmitted(true);
+  };
+
+  if (isSubmitted) {
+    return <Result accepted={true} />;
+  }
 
   const currentStepData = questionnaire.steps[currentStep - 1];
   const currentAnswers = answers[currentStep - 1] || [];

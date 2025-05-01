@@ -1,0 +1,168 @@
+{
+  "steps": [
+    {
+      "title": "A. Valuation Purpose & Business Profile",
+      "questions": [
+        {
+          "index": 1,
+          "text": "What is the main purpose of the valuation?(E.g., M&A, financial reporting, internal decision-making, tax, other)",
+          "options": ["M&A", "Financial reporting", "Internal decision-making", "Tax", "Other"]
+        },
+        {
+          "index": 2,
+          "text": "Please provide a brief description of the company you want to value (we will refer to it as \"Target\")",
+          "placeholder": "Write brief description..."
+        },
+        {
+          "index": 3,
+          "text": "Which industry does the Target operate in?",
+          "placeholder": "Write industry..."
+        },
+        {
+          "index": 4,
+          "text": "Which best describes the Target's stage in the business lifecycle?",
+          "options": ["Early-stage startup", "Mid/late-stage startup", "Growing business", "Mature business", "Other"]
+        },
+        {
+          "index": 5,
+          "text": "What is the Target's financial year-end?",
+          "placeholder": "Write Target's financial year-end..."
+        }
+      ]
+    },
+    {
+      "title": "B. Capital Structure & Profitability",
+      "questions": [
+        {
+          "index": 6,
+          "text": "Does the Target's capital structure include preference shares?",
+          "options": ["Yes", "No"]
+        },
+        {
+          "index": 7,
+          "text": "Over the past 12 months, has the Target been profitable?",
+          "options": ["Yes", "No"]
+        },
+        {
+          "index": 8,
+          "text": "If the Target is loss-making, please answer the following:",
+          "isParent": true
+        },
+        {
+          "index": 8.1,
+          "text": "What is the primary reason for the losses?",
+          "placeholder": "Write reason..."
+        },
+        {
+          "index": 8.2,
+          "text": "Is the Target currently in distress?",
+          "placeholder": "Write answer..."
+        },
+        {
+          "index": 8.3,
+          "text": "Is the Target expected to turn around and become profitable in the coming years?",
+          "placeholder": "Write answer..."
+        }
+      ]
+    },
+    {
+      "title": "C. Group Structure",
+      "questions": [
+        {
+          "index": 9,
+          "text": "Is the Target a single entity, or a Group of companies?",
+          "options": ["Single entity", "Group"]
+        },
+        {
+          "index": 10,
+          "text": "If the Target is a Group, please advise:",
+          "isParent": true
+        },
+        {
+          "index": 10.1,
+          "text": "Are there any entities within the group that are (i) associates, (ii) joint ventures, or (iii) partially owned subsidiaries (i, ii, and iii collectively referred to as \"Partial Entities\")",
+          "options": ["Yes", "No"]
+        },
+        {
+          "index": 10.2,
+          "text": "If there are Partial Entities, please advise:",
+          "isParent": true
+        },
+        {
+          "index": "10.2.1",
+          "text": "The number of Partial Entities that are significant (revenue or EBIT contribution > 10%)",
+          "placeholder": "Write answer..."
+        },
+        {
+          "index": "10.2.2",
+          "text": "The number of Partial Entities that are insignificant (revenue or EBIT contribution < 10%)",
+          "placeholder": "Write answer..."
+        }
+      ]
+    },
+    {
+      "title": "D. Valuation Scope",
+      "questions": [
+        {
+          "index": 11,
+          "text": "Are we valuing a controlling stake (>50%) or a non-controlling interest ( ≤ 50%) in the Target?",
+          "options": ["Yes", "No"]
+        },
+        {
+          "index": 12,
+          "text": "What is the Valuation Date?(If a current valuation is needed, it should be based on the latest available management accounts.)",
+          "placeholder": "Write answer..."
+        },
+        {
+          "index": 13,
+          "text": "Does the Target or any entities within the group hold any non-operating / surplus assets (e.g., investment properties, minority investments) that might be treated separately?",
+          "options": ["Yes", "No"],
+          "extra": {
+            "text": "If yes, please provide details",
+            "placeholder": "Provide details"
+          }
+        }
+      ]
+    },
+    {
+      "title": "E. Availability of Information",
+      "questions": [
+        {
+          "index": 14,
+          "text": "Are the past three years of (consolidated) historical financial statements available?(E.g., if the Valuation Date is 30 June 2024 and the financial year-end is 31 Dec, please provide FY21, FY22, and FY23 financials.)",
+          "options": ["Yes", "No"]
+        },
+        {
+          "index": 15,
+          "text": "Are (consolidated) management accounts up to the Valuation Date available?(E.g., if the Valuation Date is 30 June 2024, please provide management accounts up to 30 June 2024.)",
+          "options": ["Yes", "No"]
+        },
+        {
+          "index": 16,
+          "text": "Is a (consolidated) five-year financial forecast from the Valuation Date available?(If the Valuation Date is 30 June 2024, the forecast should cover 1 July 2024 to 30 June 2029.)",
+          "options": ["Yes", "No"]
+        },
+        {
+          "index": 17,
+          "text": "Are the financial forecasts prepared from a \"market participant\" perspective?(Meaning no owner-specific synergies / expansions are included.)",
+          "options": ["Yes", "No"]
+        },
+        {
+          "index": 18,
+          "text": "If you answered \"Yes\" to having Partial Entities (in Question 10): Are the following information available",
+          "isParent": true
+        },
+        {
+          "index": 18.1,
+          "text": "Past 3 years of historical financial statements, management accounts up to the Valuation Date, and a 5-year financial forecast for the significant Partial Entities.",
+          "options": ["Yes", "No"]
+        },
+        {
+          "index": 18.2,
+          "text": "Past management accounts up to the Valuation Date for the insignificant Partial Entities. significant Partial Entities.",
+          "options": ["Yes", "No"]
+        }
+      ]
+    }
+  ]
+}

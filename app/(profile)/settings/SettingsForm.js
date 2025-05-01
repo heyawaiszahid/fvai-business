@@ -96,9 +96,9 @@ const SettingsForm = ({ session }) => {
   return (
     <div className="container flex">
       <div className="hidden lg:flex flex-col gap-2 w-52 mr-36">
-        <Button>My basic info</Button>
-        {user.hasPassword && <Button>Change password</Button>}
-        <Button>My account</Button>
+        <Button>My Basic Info</Button>
+        {user.hasPassword && <Button>Change Password</Button>}
+        <Button>My Account</Button>
       </div>
 
       <div className="w-full lg:max-w-[767px]">

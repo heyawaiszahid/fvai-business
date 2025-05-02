@@ -116,11 +116,13 @@
         {
           "index": 13,
           "text": "Does the Target or any entities within the group hold any non-operating / surplus assets (e.g., investment properties, minority investments) that might be treated separately?",
-          "options": ["Yes", "No"],
-          "extra": {
-            "text": "If yes, please provide details",
-            "placeholder": "Provide details"
-          }
+          "options": ["Yes", "No"]
+        },
+        {
+          "index": 13.1,
+          "text": "If yes, please provide details",
+          "placeholder": "Provide details",
+          "optional": true
         }
       ]
     },

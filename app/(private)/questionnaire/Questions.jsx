@@ -19,6 +19,17 @@ const Questions = () => {
     window.scrollTo(0, 0);
   }, [currentStep]);
 
+  const isStepComplete = (stepIndex) => {
+    const step = questionnaire.steps[stepIndex];
+    const stepAnswers = answers[stepIndex] || [];
+
+    return step.questions.every((question, qIndex) => {
+      if (question.isParent || question.optional) return true;
+
+      return stepAnswers[qIndex] !== "";
+    });
+  };
+
   const handleNext = () => {
     if (currentStep < questionnaire.steps.length) {
       setCurrentStep(currentStep + 1);
@@ -26,6 +37,7 @@ const Questions = () => {
       handleSubmit();
     }
   };
+
   const handleBack = () => currentStep > 1 && setCurrentStep(currentStep - 1);
 
   const handleAnswerChange = (stepIndex, questionIndex, value) => {
@@ -38,7 +50,14 @@ const Questions = () => {
   };
 
   const handleSubmit = () => {
-    console.log("Form submitted with answers:", answers);
+    const cleanedAnswers = answers.map((stepAnswers, stepIndex) => {
+      return stepAnswers.filter((_, qIndex) => {
+        const question = questionnaire.steps[stepIndex].questions[qIndex];
+        return !question.isParent;
+      });
+    });
+
+    console.log("Form submitted with answers:", cleanedAnswers);
     setIsSubmitted(true);
   };
 
@@ -63,21 +82,22 @@ const Questions = () => {
             return (
               <Question
                 key={`step-${currentStep}-q-${q.index}`}
-                index={q.index}
-                question={q.text}
-                options={q.options}
-                placeholder={q.placeholder}
                 value={currentAnswers[questionIndex] || ""}
                 onChange={(val) => handleAnswerChange(currentStep - 1, questionIndex, val)}
-                isParent={q.isParent}
-                extra={q.extra}
+                {...q}
               />
             );
           })}
         </div>
       </div>
 
-      <Navigation currentStep={currentStep} onNext={handleNext} onBack={handleBack} className="mb-6" />
+      <Navigation
+        currentStep={currentStep}
+        onNext={handleNext}
+        onBack={handleBack}
+        disabled={!isStepComplete(currentStep - 1)}
+        className="mb-6"
+      />
     </div>
   );
 };

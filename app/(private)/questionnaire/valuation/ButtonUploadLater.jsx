@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 
-const UploadLater = () => {
+const ButtonUploadLater = ({ className }) => {
   useEffect(() => {
     tippy("#info", {
       theme: "custom",
@@ -15,7 +15,7 @@ const UploadLater = () => {
   }, []);
 
   return (
-    <div className="relative flex items-start justify-center gap-2">
+    <div className={`flex items-start justify-center gap-2 ${className}`}>
       <Button variant="outline">Upload Later</Button>
       <button id="info">
         <Info />
@@ -24,4 +24,4 @@ const UploadLater = () => {
   );
 };
 
-export default UploadLater;
+export default ButtonUploadLater;

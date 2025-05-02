@@ -2,7 +2,7 @@ import Typography from "@/Components/Typography";
 import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
 import Switch from "@/Components/UI/Switch";
-import UploadLater from "./UploadLater";
+import ButtonUploadLater from "./ButtonUploadLater";
 
 export const metadata = {
   title: "Finalize Your Valuation - FVAI Business",
@@ -127,7 +127,7 @@ export default function Questionnaire() {
           <Button className="w-full bg-pale-blue border-pale-blue">Upload Documents Now</Button>
         </div>
 
-        <UploadLater />
+        <ButtonUploadLater />
       </section>
     </div>
   );

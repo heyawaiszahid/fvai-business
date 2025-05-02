@@ -3,6 +3,9 @@ import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
 import Switch from "@/Components/UI/Switch";
 import ButtonUploadLater from "./ButtonUploadLater";
+import Done from "@/Components/Icons/Done";
+import Link from "next/link";
+import Next from "@/Components/Icons/Next";
 
 export const metadata = {
   title: "Finalize Your Valuation - FVAI Business",
@@ -10,7 +13,7 @@ export const metadata = {
 
 export default function Questionnaire() {
   return (
-    <div className="pb-12 lg:pb-20">
+    <div className="pb-2 lg:pb-20">
       <section className="pt-12 lg:pt-20 mb-10 bg-custom-gradient">
         <div className="container lg:max-w-[767px] flex flex-col gap-6">
           <Typography size="h4" lg="h2" className="text-center">
@@ -102,7 +105,7 @@ export default function Questionnaire() {
         </div>
       </section>
 
-      <section className="mb-10">
+      <section className="mb-14">
         <div className="bg-white p-4 mb-4">
           <Typography size="h4" className="mb-6">
             Required Documents
@@ -128,6 +131,57 @@ export default function Questionnaire() {
         </div>
 
         <ButtonUploadLater />
+      </section>
+
+      <section className="mb-10">
+        <div className="container">
+          <Box p="6" className="!bg-main text-white flex flex-col gap-4">
+            <Done className="-mt-[60px]" />
+            <Typography size="h4" className="mb-4">
+              Review and Confirm
+            </Typography>
+            <Typography size="body2">
+              Please review your selected valuation scope and fee summary before proceeding.
+            </Typography>
+            <div className="bg-white h-[1px]"></div>
+            <Typography size="h4">Confirm & Generate Engagement Letter</Typography>
+            <Typography size="body2">
+              Click below to confirm your selected entities and generate the engagement letter to proceed with the
+              valuation.
+            </Typography>
+            <Button variant="outline" className="border-white text-white !text-left !text-[20px] !font-bold">
+              <div className="flex items-center justify-center gap-4 pl-3">
+                <Done className="w-4 h-4 shrink-0" />
+                <div>Confirm & Generate Engagement Letter</div>
+              </div>
+            </Button>
+          </Box>
+        </div>
+      </section>
+
+      <section>
+        <div className="bg-input-field p-4 mb-4">
+          <Next className="mx-auto" />
+          <Typography size="h4" className="text-center">
+            Need to discuss further?
+          </Typography>
+          <Typography size="body2" className="text-center font-semibold">
+            If you have any questions or need to refine your valuation scope, schedule a call with our team.{" "}
+            <Link href="/" className="text-main underline">
+              Book a call
+            </Link>
+            .
+          </Typography>
+          <Typography size="body2" className="text-center font-semibold mb-4">
+            Speak with a valuation expert to clarify your requirements before finalizing.
+          </Typography>
+          <Button variant="outline" className="w-full !text-left !text-[20px] !font-bold mb-2">
+            <div className="flex items-center justify-center gap-4">
+              <Done className="w-4 h-4 shrink-0" />
+              <div>Schedule a Call</div>
+            </div>
+          </Button>
+        </div>
       </section>
     </div>
   );

@@ -67,3 +67,14 @@
     background: linear-gradient(180deg, #e0e4fd 0%, #f3f6fe 100%);
   }
 }
+
+.tippy-box[data-theme~="custom"] {
+  background-color: var(--color-dark);
+  color: white;
+  border-radius: 30px;
+  padding: 16px;
+}
+
+.tippy-box[data-theme~="custom"] > .tippy-arrow {
+  color: var(--color-dark);
+}

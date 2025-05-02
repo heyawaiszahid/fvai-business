@@ -1,0 +1,27 @@
+"use client";
+
+import Info from "@/Components/Icons/Info";
+import Button from "@/Components/UI/Button";
+import { useEffect } from "react";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
+
+const UploadLater = () => {
+  useEffect(() => {
+    tippy("#info", {
+      theme: "custom",
+      content: "We'll send a link to your email so you can upload the files later from your desktop.",
+    });
+  }, []);
+
+  return (
+    <div className="relative flex items-start justify-center gap-2">
+      <Button variant="outline">Upload Later</Button>
+      <button id="info">
+        <Info />
+      </button>
+    </div>
+  );
+};
+
+export default UploadLater;

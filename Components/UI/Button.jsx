@@ -8,6 +8,7 @@ const variants = {
   default: "bg-main border-main text-white disabled:opacity-40 disabled:cursor-not-allowed",
   outline: "bg-transparent border-main text-main disabled:opacity-40 disabled:cursor-not-allowed",
   dark: "bg-dark border-dark text-white disabled:opacity-40 disabled:cursor-not-allowed",
+  light: "bg-input-field border-input-field text-main disabled:opacity-40 disabled:cursor-not-allowed",
 };
 
 const Button = ({ children, variant = "default", href, className = "", ...props }) => {

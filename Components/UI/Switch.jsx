@@ -13,7 +13,7 @@ const Switch = ({ className, label, description, defaultActive = false }) => {
   };
 
   return (
-    <div className={`flex items-center gap-2 cursor-pointer ${className}`} onClick={handleToggle}>
+    <div className={`flex items-center gap-2 cursor-pointer select-none ${className}`} onClick={handleToggle}>
       {isActive ? <ToggleActive /> : <Toggle />}
       <div>
         <Typography size="h5">{label}</Typography>

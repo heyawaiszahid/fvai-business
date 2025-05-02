@@ -1,11 +1,12 @@
+import ConfettiDesktop3 from "@/Components/Icons/ConfettiDesktop3";
+import Done from "@/Components/Icons/Done";
+import Next from "@/Components/Icons/Next";
 import Typography from "@/Components/Typography";
 import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
 import Switch from "@/Components/UI/Switch";
-import ButtonUploadLater from "./ButtonUploadLater";
-import Done from "@/Components/Icons/Done";
 import Link from "next/link";
-import Next from "@/Components/Icons/Next";
+import ButtonUploadLater from "./ButtonUploadLater";
 
 export const metadata = {
   title: "Finalize Your Valuation - FVAI Business",
@@ -13,124 +14,130 @@ export const metadata = {
 
 export default function Questionnaire() {
   return (
-    <div className="pb-2 lg:pb-20">
-      <section className="pt-12 lg:pt-20 mb-10 bg-custom-gradient">
-        <div className="container lg:max-w-[767px] flex flex-col gap-6">
-          <Typography size="h4" lg="h2" className="text-center">
+    <div className="pb-2 lg:pb-0">
+      <section className="pt-12 mb-10 bg-custom-gradient">
+        <div className="container flex flex-col lg:items-center gap-6">
+          <Typography size="h4" lg="h2" className="text-center lg:max-w-[882px]">
             Finalize Your Valuation Scope & Provide Required Documents
           </Typography>
-          <Typography size="body2" className="text-center">
+          <Typography size="body2" className="text-center lg:max-w-[658px] lg:mb-4">
             Based on your responses, we can proceed with the valuation as it falls within a standard methodology and
             scope supported by our tool.
           </Typography>
-          <Box className="gap-4 lg:max-w-[456px]">
-            <Typography size="h5" className="text-main">
-              Recommended Number of Entities to Value:
-            </Typography>
-            <ul className="list-disc pl-6">
-              <li>Main Target Entity</li>
-              <li>Significant Partial Entity 1</li>
-              <li>Significant Partial Entity 2</li>
-              <li>…etc.</li>
-            </ul>
-          </Box>
-          <Box className="gap-4 lg:max-w-[456px]">
-            <Typography size="h5" className="text-main">
-              Fee Structure:
-            </Typography>
-            <ul className="list-disc pl-6">
-              <li>Main Target Entity: $2,000</li>
-              <li>Each Significant Partial Entity: $1,000</li>
-            </ul>
-            <Typography size="body2">
-              Note: Insignificant partial entities and non-operating/surplus assets will be valued at net book value
-              (NBV) and do not incur additional fees unless specifically requested.
-            </Typography>
-          </Box>
+          <div className="flex flex-col lg:flex-row gap-6">
+            <Box className="flex-1 gap-4 lg:max-w-[456px]">
+              <Typography size="h5" className="text-main">
+                Recommended Number of Entities to Value:
+              </Typography>
+              <ul className="list-disc pl-6">
+                <li>Main Target Entity</li>
+                <li>Significant Partial Entity 1</li>
+                <li>Significant Partial Entity 2</li>
+                <li>…etc.</li>
+              </ul>
+            </Box>
+            <Box className="flex-1 gap-4 lg:max-w-[456px]">
+              <Typography size="h5" className="text-main">
+                Fee Structure:
+              </Typography>
+              <ul className="list-disc pl-6">
+                <li>Main Target Entity: $2,000</li>
+                <li>Each Significant Partial Entity: $1,000</li>
+              </ul>
+              <Typography size="body2">
+                Note: Insignificant partial entities and non-operating/surplus assets will be valued at net book value
+                (NBV) and do not incur additional fees unless specifically requested.
+              </Typography>
+            </Box>
+          </div>
         </div>
       </section>
 
       <section className="mb-10">
-        <div className="container lg:max-w-[767px] flex flex-col gap-6">
-          <Typography size="h4" lg="h2" className="text-center max-w-80 mx-auto">
+        <div className="container lg:max-w-[1060px] flex flex-col gap-6 relative">
+          <ConfettiDesktop3 className="absolute left-0 top-[20px] scale-x-[-1] hidden lg:block z-[-1]" />
+          <ConfettiDesktop3 className="absolute right-[20px] top-[20px] hidden lg:block z-[-1]" />
+
+          <Typography size="h4" lg="h3" className="text-center max-w-80 lg:max-w-full mx-auto">
             Select the Entities to Include in the Valuation Scope
           </Typography>
 
-          <Typography size="body2" className="text-center">
+          <Typography size="body2" className="text-center lg:mb-2">
             Please select the entities below that you'd like us to include in your valuation report.
           </Typography>
 
-          <div className="flex flex-col gap-6 mb-4">
+          <div className="flex flex-col lg:flex-row gap-6 mb-4">
             <Button variant="light">Main Target Entity</Button>
             <Button variant="light">Significant Partial Entity 1</Button>
             <Button variant="light">Significant Partial Entity 2</Button>
             <Button variant="light">Significant Partial Entity 3</Button>
           </div>
 
-          <Box p="6" className="!bg-dark text-white">
-            <Typography size="h4" className="mb-6">
-              Fee <br /> Summary
-            </Typography>
-
-            <div className="w-4/5 bg-white h-[1px] mb-6"></div>
-
-            <div className="flex flex-col gap-2 mb-12">
-              <div className="flex justify-between">
-                <Typography size="body2" className="font-bold">
-                  Main Target Entity x 1
-                </Typography>
-                <Typography size="body2" className="font-bold">
-                  $4000
-                </Typography>
-              </div>
-              <div className="flex justify-between">
-                <Typography size="body2" className="font-bold">
-                  Significant Partial Entity x 2
-                </Typography>
-                <Typography size="body2" className="font-bold">
-                  $2000
-                </Typography>
-              </div>
+          <Box p="6" className="!bg-dark text-white lg:w-full lg:max-w-[880px] lg:mx-auto lg:flex-row lg:items-center">
+            <div>
+              <Typography size="h4" lg="h3" className="border-b-[1px] lg:border-b-0 pb-6 mb-6 lg:pb-0 lg:mb-0">
+                Fee <br /> Summary
+              </Typography>
             </div>
-
-            <div className="flex justify-between">
-              <Typography size="body2" className="font-bold text-light-blue">
-                Total Fee
-              </Typography>
-              <Typography size="body2" className="font-bold text-light-blue">
-                $6000
-              </Typography>
+            <div className="lg:flex-1 lg:border-l-[1px] lg:ml-20 lg:pl-16 border-input-field lg:pt-2">
+              <div className="flex flex-col gap-2">
+                <div className="flex justify-between">
+                  <Typography size="body2" lg="h5" className="font-bold">
+                    Main Target Entity x 1
+                  </Typography>
+                  <Typography size="body2" lg="h5" className="font-bold">
+                    $4000
+                  </Typography>
+                </div>
+                <div className="flex justify-between">
+                  <Typography size="body2" lg="h5" className="font-bold">
+                    Significant Partial Entity x 2
+                  </Typography>
+                  <Typography size="body2" lg="h5" className="font-bold">
+                    $2000
+                  </Typography>
+                </div>
+                <div className="flex justify-between mt-10 lg:mt-6">
+                  <Typography size="body2" lg="h5" className="font-bold text-light-blue">
+                    Total Fee
+                  </Typography>
+                  <Typography size="body2" lg="h5" className="font-bold text-light-blue">
+                    $6000
+                  </Typography>
+                </div>
+              </div>
             </div>
           </Box>
         </div>
       </section>
 
-      <section className="mb-14">
-        <div className="bg-white p-4 mb-4">
-          <Typography size="h4" className="mb-6">
+      <section className="mb-14 lg:bg-white/70 lg:pb-8">
+        <div className="bg-white/70 p-4 lg:p-12 mb-4">
+          <Typography size="h4" lg="h3" className="mb-6 lg:mb-8 text-center">
             Required Documents
           </Typography>
 
-          <div className="flex flex-col">
-            <div className="py-2">
-              <Switch label="Historical Financials" description="(FY21, FY22, FY23)" />
-              <div className="bg-light-blue-gray h-[2px] mt-6"></div>
-            </div>
-            <div className="py-2">
-              <Switch label="Management Accounts" description="(up to Valuation Date)" />
-              <div className="bg-light-blue-gray h-[2px] mt-6"></div>
-            </div>
-            <div className="py-2">
-              <Switch label="5-Year Forecast" description="(if DCF is used)" />
-            </div>
+          <div className="flex flex-col lg:flex-row lg:justify-center">
+            <Switch
+              label="Historical Financials"
+              description="(FY21, FY22, FY23)"
+              className="border-b-[2px] border-light-blue-gray pb-6 mb-6 lg:border-b-0 lg:pb-0 lg:mb-0 lg:border-r-[2px] lg:pr-8 lg:mr-8"
+            />
+            <Switch
+              label="Management Accounts"
+              description="(up to Valuation Date)"
+              className="border-b-[2px] border-light-blue-gray pb-6 mb-6 lg:border-b-0 lg:pb-0 lg:mb-0 lg:border-r-[2px] lg:pr-8 lg:mr-8"
+            />
+            <Switch label="5-Year Forecast" description="(if DCF is used)" />
           </div>
         </div>
 
-        <div className="px-4 mb-6">
-          <Button className="w-full bg-pale-blue border-pale-blue">Upload Documents Now</Button>
+        <div className="flex flex-col lg:flex-row lg:justify-end lg:max-w-[900px] lg:mx-auto">
+          <div className="px-4 mb-6">
+            <Button className="w-full lg:w-fit bg-pale-blue border-pale-blue">Upload Documents Now</Button>
+          </div>
+          <ButtonUploadLater />
         </div>
-
-        <ButtonUploadLater />
       </section>
 
       <section className="mb-10">
@@ -159,10 +166,10 @@ export default function Questionnaire() {
         </div>
       </section>
 
-      <section>
-        <div className="bg-input-field p-4 mb-4">
+      <section className="bg-input-field p-4 mb-4 lg:mb-2">
+        <div className="lg:max-w-[544px] lg:mx-auto">
           <Next className="mx-auto" />
-          <Typography size="h4" className="text-center">
+          <Typography size="h4" lg="h3" className="text-center lg:max-w-[318px] mx-auto lg:mb-3">
             Need to discuss further?
           </Typography>
           <Typography size="body2" className="text-center font-semibold">

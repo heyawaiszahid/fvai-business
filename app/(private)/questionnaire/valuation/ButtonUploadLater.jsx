@@ -16,8 +16,10 @@ const ButtonUploadLater = ({ className }) => {
 
   return (
     <div className={`flex items-start justify-center gap-2 ${className}`}>
-      <Button variant="outline">Upload Later</Button>
-      <button id="info">
+      <Button variant="outline" className="px-8">
+        Upload Later
+      </Button>
+      <button id="info" className="cursor-pointer">
         <Info />
       </button>
     </div>

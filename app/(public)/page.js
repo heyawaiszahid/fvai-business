@@ -168,7 +168,9 @@ export default function Home() {
       <section className="mb-16 lg:mb-20">
         <div className="container lg:flex">
           <div className="shrink-0">
-            <Next className="mb-2.5 lg:mb-0" />
+            <div className="overflow-hidden">
+              <Next className="mb-2.5 lg:mb-0 -ml-4 lg:ml-0" />
+            </div>
             <Typography as="h2" size="h4" lg="h2" className="mb-8">
               How it works
             </Typography>

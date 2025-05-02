@@ -1,4 +1,3 @@
-import ConfettiDesktop3 from "@/Components/Icons/ConfettiDesktop3";
 import Done from "@/Components/Icons/Done";
 import Next from "@/Components/Icons/Next";
 import Typography from "@/Components/Typography";
@@ -7,6 +6,7 @@ import Button from "@/Components/UI/Button";
 import Switch from "@/Components/UI/Switch";
 import Link from "next/link";
 import ButtonUploadLater from "./ButtonUploadLater";
+import EntitySelection from "./EntitySelection";
 
 export const metadata = {
   title: "Finalize Your Valuation - FVAI Business",
@@ -53,63 +53,7 @@ export default function Questionnaire() {
         </div>
       </section>
 
-      <section className="mb-10">
-        <div className="container lg:max-w-[1060px] flex flex-col gap-6 relative">
-          <ConfettiDesktop3 className="absolute left-0 top-[20px] scale-x-[-1] hidden lg:block z-[-1]" />
-          <ConfettiDesktop3 className="absolute right-[20px] top-[20px] hidden lg:block z-[-1]" />
-
-          <Typography size="h4" lg="h3" className="text-center max-w-80 lg:max-w-full mx-auto">
-            Select the Entities to Include in the Valuation Scope
-          </Typography>
-
-          <Typography size="body2" className="text-center lg:mb-2">
-            Please select the entities below that you'd like us to include in your valuation report.
-          </Typography>
-
-          <div className="flex flex-col lg:flex-row gap-6 mb-4">
-            <Button variant="light">Main Target Entity</Button>
-            <Button variant="light">Significant Partial Entity 1</Button>
-            <Button variant="light">Significant Partial Entity 2</Button>
-            <Button variant="light">Significant Partial Entity 3</Button>
-          </div>
-
-          <Box p="6" className="!bg-dark text-white lg:w-full lg:max-w-[880px] lg:mx-auto lg:flex-row lg:items-center">
-            <div>
-              <Typography size="h4" lg="h3" className="border-b-[1px] lg:border-b-0 pb-6 mb-6 lg:pb-0 lg:mb-0">
-                Fee <br /> Summary
-              </Typography>
-            </div>
-            <div className="lg:flex-1 lg:border-l-[1px] lg:ml-20 lg:pl-16 border-input-field lg:pt-2">
-              <div className="flex flex-col gap-2">
-                <div className="flex justify-between">
-                  <Typography size="body2" lg="h5" className="font-bold">
-                    Main Target Entity x 1
-                  </Typography>
-                  <Typography size="body2" lg="h5" className="font-bold">
-                    $4000
-                  </Typography>
-                </div>
-                <div className="flex justify-between">
-                  <Typography size="body2" lg="h5" className="font-bold">
-                    Significant Partial Entity x 2
-                  </Typography>
-                  <Typography size="body2" lg="h5" className="font-bold">
-                    $2000
-                  </Typography>
-                </div>
-                <div className="flex justify-between mt-10 lg:mt-6">
-                  <Typography size="body2" lg="h5" className="font-bold text-light-blue">
-                    Total Fee
-                  </Typography>
-                  <Typography size="body2" lg="h5" className="font-bold text-light-blue">
-                    $6000
-                  </Typography>
-                </div>
-              </div>
-            </div>
-          </Box>
-        </div>
-      </section>
+      <EntitySelection />
 
       <section className="mb-14 lg:bg-white/70 lg:pb-8">
         <div className="bg-white/70 p-4 lg:p-12 mb-4">

@@ -19,7 +19,7 @@ const ButtonUploadLater = ({ className }) => {
       <Button variant="outline" className="px-8">
         Upload Later
       </Button>
-      <button id="info" className="cursor-pointer">
+      <button id="info">
         <Info />
       </button>
     </div>

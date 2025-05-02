@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 export async function middleware(request) {
   const token = await getToken({ req: request });
   const { pathname } = request.nextUrl;
-  const protectedPaths = ["/dashboard", "/settings", "/questionnaire", "/free-course"];
+  const protectedPaths = ["/dashboard", "/settings", "/questionnaire", "/questionnaire/valuation", "/free-course"];
   const authPaths = ["/signin", "/signup", "/join-free-course", "/reset-password"];
 
   if (authPaths.includes(pathname)) {

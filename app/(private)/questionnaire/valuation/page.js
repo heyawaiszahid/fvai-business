@@ -142,26 +142,34 @@ export default function Questionnaire() {
 
       <section className="mb-10">
         <div className="container">
-          <Box p="6" className="!bg-main text-white flex flex-col gap-4">
-            <Done className="-mt-[60px]" />
-            <Typography size="h4" className="mb-4">
-              Review and Confirm
-            </Typography>
-            <Typography size="body2">
-              Please review your selected valuation scope and fee summary before proceeding.
-            </Typography>
-            <div className="bg-white h-[1px]"></div>
-            <Typography size="h4">Confirm & Generate Engagement Letter</Typography>
-            <Typography size="body2">
-              Click below to confirm your selected entities and generate the engagement letter to proceed with the
-              valuation.
-            </Typography>
-            <Button variant="outline" className="border-white text-white !text-left !text-[20px] !font-bold">
-              <div className="flex items-center justify-center gap-4 pl-3">
-                <Done className="w-4 h-4 shrink-0" />
-                <div>Confirm & Generate Engagement Letter</div>
-              </div>
-            </Button>
+          <Box p="6" className="!bg-main text-white flex flex-col lg:flex-row">
+            <div className="border-b-[1px] lg:border-b-0 pb-6 lg:pb-0 mb-6 lg:mb-0 lg:pl-12 lg:pr-12">
+              <Done className="-mt-[60px] mb-4 lg:-ml-10" />
+              <Typography size="h4" lg="h3" className="mb-6 lg:mb-4">
+                Review and Confirm
+              </Typography>
+              <Typography size="body2">
+                Please review your selected valuation scope and fee summary before proceeding.
+              </Typography>
+            </div>
+            <div className="lg:pl-24 lg:pr-12 lg:border-l-[1px]">
+              <Typography size="h4" lg="h5" className="mb-6 lg:mb-4">
+                Confirm & Generate Engagement Letter
+              </Typography>
+              <Typography size="body2" className="mb-6 lg:mb-4">
+                Click below to confirm your selected entities and generate the engagement letter to proceed with the
+                valuation.
+              </Typography>
+              <Button
+                variant="outline"
+                className="border-white text-white !text-left !text-[20px] !font-bold mb-4 lg:mb-0"
+              >
+                <div className="flex items-center justify-center gap-4 pl-3">
+                  <Done className="w-4 h-4 shrink-0" />
+                  <div>Confirm & Generate Engagement Letter</div>
+                </div>
+              </Button>
+            </div>
           </Box>
         </div>
       </section>

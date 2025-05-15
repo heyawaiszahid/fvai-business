@@ -45,23 +45,28 @@
         },
         {
           "index": 8,
+          "showIf": {
+            "question": 7,
+            "answer": "No"
+          },
           "text": "If the Target is loss-making, please answer the following:",
-          "isParent": true
-        },
-        {
-          "index": 8.1,
-          "text": "What is the primary reason for the losses?",
-          "placeholder": "Write reason..."
-        },
-        {
-          "index": 8.2,
-          "text": "Is the Target currently in distress?",
-          "placeholder": "Write answer..."
-        },
-        {
-          "index": 8.3,
-          "text": "Is the Target expected to turn around and become profitable in the coming years?",
-          "placeholder": "Write answer..."
+          "subQuestions": [
+            {
+              "index": 8.1,
+              "text": "What is the primary reason for the losses?",
+              "placeholder": "Write reason..."
+            },
+            {
+              "index": 8.2,
+              "text": "Is the Target currently in distress?",
+              "placeholder": "Write answer..."
+            },
+            {
+              "index": 8.3,
+              "text": "Is the Target expected to turn around and become profitable in the coming years?",
+              "placeholder": "Write answer..."
+            }
+          ]
         }
       ]
     },
@@ -75,28 +80,40 @@
         },
         {
           "index": 10,
+          "showIf": {
+            "question": 9,
+            "answer": "Group"
+          },
           "text": "If the Target is a Group, please advise:",
-          "isParent": true
-        },
-        {
-          "index": 10.1,
-          "text": "Are there any entities within the group that are (i) associates, (ii) joint ventures, or (iii) partially owned subsidiaries (i, ii, and iii collectively referred to as \"Partial Entities\")",
-          "options": ["Yes", "No"]
-        },
-        {
-          "index": 10.2,
-          "text": "If there are Partial Entities, please advise:",
-          "isParent": true
-        },
-        {
-          "index": "10.2.1",
-          "text": "The number of Partial Entities that are significant (revenue or EBIT contribution > 10%)",
-          "placeholder": "Write answer..."
-        },
-        {
-          "index": "10.2.2",
-          "text": "The number of Partial Entities that are insignificant (revenue or EBIT contribution < 10%)",
-          "placeholder": "Write answer..."
+          "subQuestions": [
+            {
+              "index": 10.1,
+              "text": "Are there any entities within the group that are (i) associates, (ii) joint ventures, or (iii) partially owned subsidiaries (i, ii, and iii collectively referred to as \"Partial Entities\")",
+              "options": ["Yes", "No"]
+            },
+            {
+              "index": 10.2,
+              "showIf": {
+                "question": 10.1,
+                "answer": "Yes"
+              },
+              "text": "If there are Partial Entities, please advise:",
+              "subQuestions": [
+                {
+                  "index": "10.2.1",
+                  "text": "The number of Partial Entities that are significant (revenue or EBIT contribution > 10%)",
+                  "options": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                  "inline": true
+                },
+                {
+                  "index": "10.2.2",
+                  "text": "The number of Partial Entities that are insignificant (revenue or EBIT contribution < 10%)",
+                  "options": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                  "inline": true
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -106,7 +123,7 @@
         {
           "index": 11,
           "text": "Are we valuing a controlling stake (>50%) or a non-controlling interest ( ≤ 50%) in the Target?",
-          "options": ["Yes", "No"]
+          "options": ["Controlling stake", "Non-controlling stake"]
         },
         {
           "index": 12,
@@ -116,13 +133,18 @@
         {
           "index": 13,
           "text": "Does the Target or any entities within the group hold any non-operating / surplus assets (e.g., investment properties, minority investments) that might be treated separately?",
-          "options": ["Yes", "No"]
-        },
-        {
-          "index": 13.1,
-          "text": "If yes, please provide details",
-          "placeholder": "Provide details",
-          "optional": true
+          "options": ["Yes", "No"],
+          "subQuestions": [
+            {
+              "index": 13.1,
+              "showIf": {
+                "question": 13,
+                "answer": "Yes"
+              },
+              "text": "If yes, please provide details",
+              "placeholder": "Provide details"
+            }
+          ]
         }
       ]
     },
@@ -151,18 +173,23 @@
         },
         {
           "index": 18,
+          "showIf": {
+            "question": 10.1,
+            "answer": "Yes"
+          },
           "text": "If you answered \"Yes\" to having Partial Entities (in Question 10): Are the following information available",
-          "isParent": true
-        },
-        {
-          "index": 18.1,
-          "text": "Past 3 years of historical financial statements, management accounts up to the Valuation Date, and a 5-year financial forecast for the significant Partial Entities.",
-          "options": ["Yes", "No"]
-        },
-        {
-          "index": 18.2,
-          "text": "Past management accounts up to the Valuation Date for the insignificant Partial Entities. significant Partial Entities.",
-          "options": ["Yes", "No"]
+          "subQuestions": [
+            {
+              "index": 18.1,
+              "text": "Past 3 years of historical financial statements, management accounts up to the Valuation Date, and a 5-year financial forecast for the significant Partial Entities.",
+              "options": ["Yes", "No"]
+            },
+            {
+              "index": 18.2,
+              "text": "Past management accounts up to the Valuation Date for the insignificant Partial Entities. significant Partial Entities.",
+              "options": ["Yes", "No"]
+            }
+          ]
         }
       ]
     }

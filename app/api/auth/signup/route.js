@@ -1,3 +1,4 @@
+import { sendWelcomeEmail } from "@/emails/send";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
@@ -23,6 +24,12 @@ export async function POST(request) {
         password,
       },
     });
+
+    try {
+      await sendWelcomeEmail({ email });
+    } catch (emailError) {
+      console.error("Welcome email failed:", emailError);
+    }
 
     const { password: _, ...userWithoutPassword } = user;
 

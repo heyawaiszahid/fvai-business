@@ -104,6 +104,7 @@ const Questions = () => {
     if (currentStep < standardizedQuestions.length) {
       setCurrentStep(currentStep + 1);
     } else {
+      localStorage.setItem("answers", JSON.stringify(answers));
       setIsSubmitted(true);
     }
   };

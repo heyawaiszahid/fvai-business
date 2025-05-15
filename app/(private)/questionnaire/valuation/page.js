@@ -7,12 +7,16 @@ import Switch from "@/Components/UI/Switch";
 import Link from "next/link";
 import ButtonUploadLater from "./ButtonUploadLater";
 import EntitySelection from "./EntitySelection";
+import RecommendedEntities from "./RecommendedEntities";
+import FeeStructure from "./FeeStructure";
 
 export const metadata = {
   title: "Finalize Your Valuation - FVAI Business",
 };
 
-export default function Questionnaire() {
+export default function Valuation() {
+  const price = { main: 3000, partial: 1000 };
+
   return (
     <div className="pb-2 lg:pb-0">
       <section className="pt-12 mb-10 bg-custom-gradient">
@@ -24,36 +28,14 @@ export default function Questionnaire() {
             Based on your responses, we can proceed with the valuation as it falls within a standard methodology and
             scope supported by our tool.
           </Typography>
-          <div className="flex flex-col lg:flex-row gap-6">
-            <Box className="flex-1 gap-4 lg:max-w-[456px]">
-              <Typography size="h5" className="text-main">
-                Recommended Number of Entities to Value:
-              </Typography>
-              <ul className="list-disc pl-6">
-                <li>Main Target Entity</li>
-                <li>Significant Partial Entity 1</li>
-                <li>Significant Partial Entity 2</li>
-                <li>…etc.</li>
-              </ul>
-            </Box>
-            <Box className="flex-1 gap-4 lg:max-w-[456px]">
-              <Typography size="h5" className="text-main">
-                Fee Structure:
-              </Typography>
-              <ul className="list-disc pl-6">
-                <li>Main Target Entity: $2,000</li>
-                <li>Each Significant Partial Entity: $1,000</li>
-              </ul>
-              <Typography size="body2">
-                Note: Insignificant partial entities and non-operating/surplus assets will be valued at net book value
-                (NBV) and do not incur additional fees unless specifically requested.
-              </Typography>
-            </Box>
+          <div className="flex flex-col lg:flex-row gap-6 lg:w-full lg:justify-center">
+            <RecommendedEntities />
+            <FeeStructure price={price} />
           </div>
         </div>
       </section>
 
-      <EntitySelection />
+      <EntitySelection price={price} />
 
       <section className="mb-14 lg:bg-white/70 lg:pb-8">
         <div className="bg-white/70 p-4 lg:p-12 mb-4">

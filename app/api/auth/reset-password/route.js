@@ -1,10 +1,9 @@
+import { sendResetPasswordEmail } from "@/emails/send";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { randomBytes } from "crypto";
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const prisma = new PrismaClient();
 
 export async function POST(request) {
@@ -35,19 +34,9 @@ export async function POST(request) {
 
     const resetLink = `${process.env.NEXTAUTH_URL}/reset-password?token=${resetToken}`;
 
-    const { data, error } = await resend.emails.send({
-      from: "noreply@fvai.app",
-      to: email,
-      subject: "Password Reset Request",
-      html: `
-        <p>You requested a password reset. Click the link below to set a new password:</p>
-        <a href="${resetLink}">Reset Password</a>
-        <p>This link will expire in 1 hour.</p>
-        <p>If you didn't request this, please ignore this email.</p>
-      `,
-    });
-
-    if (error) {
+    try {
+      await sendResetPasswordEmail({ email, resetLink });
+    } catch (emailError) {
       throw new Error("Failed to send reset email");
     }
 

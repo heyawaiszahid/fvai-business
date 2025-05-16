@@ -24,6 +24,7 @@
     "prisma": "^6.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-dropzone": "^14.3.8",
     "react-email": "^4.0.13",
     "react-hook-form": "^7.56.1",
     "react-toastify": "^11.0.5",

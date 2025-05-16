@@ -11,6 +11,7 @@ const poppins = Poppins({
 export const metadata = {
   title: "FVAI Business",
   description: "Transform Business Valuation from Weeks to Days",
+  // viewport: "width=device-width, initial-scale=1.0",
 };
 
 export default function RootLayout({ children }) {

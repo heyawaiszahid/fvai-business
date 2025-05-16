@@ -3,12 +3,11 @@ import Next from "@/Components/Icons/Next";
 import Typography from "@/Components/Typography";
 import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
-import Switch from "@/Components/UI/Switch";
 import Link from "next/link";
-import ButtonUploadLater from "./ButtonUploadLater";
 import EntitySelection from "./EntitySelection";
-import RecommendedEntities from "./RecommendedEntities";
 import FeeStructure from "./FeeStructure";
+import RecommendedEntities from "./RecommendedEntities";
+import RequiredDocuments from "./RequiredDocuments";
 
 export const metadata = {
   title: "Finalize Your Valuation - FVAI Business",
@@ -37,34 +36,7 @@ export default function Valuation() {
 
       <EntitySelection price={price} />
 
-      <section className="mb-14 lg:bg-white/70 lg:pb-8">
-        <div className="bg-white/70 p-4 lg:p-12 mb-4">
-          <Typography size="h4" lg="h3" className="mb-6 lg:mb-8 text-center">
-            Required Documents
-          </Typography>
-
-          <div className="flex flex-col lg:flex-row lg:justify-center">
-            <Switch
-              label="Historical Financials"
-              description="(FY21, FY22, FY23)"
-              className="border-b-[2px] border-light-blue-gray pb-6 mb-6 lg:border-b-0 lg:pb-0 lg:mb-0 lg:border-r-[2px] lg:pr-8 lg:mr-8"
-            />
-            <Switch
-              label="Management Accounts"
-              description="(up to Valuation Date)"
-              className="border-b-[2px] border-light-blue-gray pb-6 mb-6 lg:border-b-0 lg:pb-0 lg:mb-0 lg:border-r-[2px] lg:pr-8 lg:mr-8"
-            />
-            <Switch label="5-Year Forecast" description="(if DCF is used)" />
-          </div>
-        </div>
-
-        <div className="flex flex-col lg:flex-row lg:justify-end lg:max-w-[900px] lg:mx-auto">
-          <div className="px-4 mb-6">
-            <Button className="w-full lg:w-fit bg-pale-blue border-pale-blue">Upload Documents Now</Button>
-          </div>
-          <ButtonUploadLater />
-        </div>
-      </section>
+      <RequiredDocuments />
 
       <section className="mb-10">
         <div className="container">

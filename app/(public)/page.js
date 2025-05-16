@@ -197,7 +197,7 @@ export default function Home() {
       <section className="mb-16 lg:mb-20">
         <div className="container">
           <Box bg="bg-input-field" p="6" className="justify-center items-center gap-6 lg:p-10">
-            <Typography as="h2" size="h4" lg="h2">
+            <Typography as="h2" size="h4" lg="h2" className="text-center">
               See What You{"'"}ll Get
             </Typography>
             <Typography size="body2" className="text-center">
@@ -211,7 +211,7 @@ export default function Home() {
       <section className="mb-16 lg:mb-20">
         <div className="container">
           <Box bg="bg-dark" p="6" className="justify-center items-center gap-6 lg:p-10">
-            <Typography as="h2" size="h4" lg="h2" className="text-white">
+            <Typography as="h2" size="h4" lg="h2" className="text-white text-center">
               Ready to Get Started?
             </Typography>
             <Button href="/questionnaire" className="w-full lg:w-fit lg:text-body1">

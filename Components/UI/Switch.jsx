@@ -1,24 +1,27 @@
 "use client";
 
+import Toggle from "@/Components/Icons/Toggle";
+import ToggleActive from "@/Components/Icons/ToggleActive";
 import { useState } from "react";
-import Toggle from "../Icons/Toggle";
-import ToggleActive from "../Icons/ToggleActive";
-import Typography from "../Typography";
 
-const Switch = ({ className, label, description, defaultActive = false }) => {
-  const [isActive, setIsActive] = useState(defaultActive);
+const Switch = ({ isActive: controlledActive, onToggle, children, className = "" }) => {
+  const [uncontrolledActive, setUncontrolledActive] = useState(false);
+  const isControlled = typeof controlledActive !== "undefined";
+  const active = isControlled ? controlledActive : uncontrolledActive;
 
   const handleToggle = () => {
-    setIsActive(!isActive);
+    if (!isControlled) {
+      setUncontrolledActive(!uncontrolledActive);
+    }
+    if (onToggle) {
+      onToggle(!active);
+    }
   };
 
   return (
     <div className={`flex items-center gap-2 cursor-pointer select-none ${className}`} onClick={handleToggle}>
-      {isActive ? <ToggleActive /> : <Toggle />}
-      <div>
-        <Typography size="h5">{label}</Typography>
-        {description && <Typography size="body2">{description}</Typography>}
-      </div>
+      {active ? <ToggleActive /> : <Toggle />}
+      <div>{children}</div>
     </div>
   );
 };

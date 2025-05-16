@@ -43,6 +43,32 @@
   a:hover {
     color: var(--color-main);
   }
+
+  .modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    background: var(--color-background);
+    padding: 24px;
+    border-radius: 30px;
+    max-width: 634px;
+    width: 90%;
+    outline: none;
+  }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(10, 17, 45, 0.6);
+    z-index: 1000;
+  }
 }
 
 @layer components {

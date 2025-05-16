@@ -1,7 +1,7 @@
 "use client";
 
 import ConfettiDesktop3 from "@/Components/Icons/ConfettiDesktop3";
-import Typography from "@/Components/Typography";
+import Typography from "@/Components/UI/Typography";
 import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
 import { useEffect, useState } from "react";

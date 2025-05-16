@@ -1,4 +1,4 @@
-import Typography from "../Typography";
+import Typography from "../UI/Typography";
 import Tick from "./Tick";
 
 const Step = ({ children, divider = true, variant = "inactive" }) => (

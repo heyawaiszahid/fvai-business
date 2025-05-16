@@ -1,6 +1,6 @@
 "use client";
 
-import Typography from "@/Components/Typography";
+import Typography from "@/Components/UI/Typography";
 import Button from "@/Components/UI/Button";
 import Input from "@/Components/UI/Input";
 import { signInSchema } from "@/schemas/signin";

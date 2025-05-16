@@ -2,7 +2,7 @@
 
 import Delete from "@/Components/Icons/Delete";
 import FileUpload from "@/Components/Icons/FileUpload";
-import Typography from "@/Components/Typography";
+import Typography from "@/Components/UI/Typography";
 import Box from "@/Components/UI/Box";
 import Switch from "@/Components/UI/Switch";
 import { useDropzone } from "react-dropzone";
@@ -32,7 +32,7 @@ const DocumentSection = ({ name, label, subtitle, isActive, toggle, file, onDrop
 
   return (
     <div
-      className={`border-b-[2px] lg:border-b-0 lg:border-r-[2px] ${isLast ? "border-transparent" : "border-light-blue-gray lg:pb-0 pb-6 mb-6 lg:mb-0 lg:pr-8 lg:mr-8"} lg:flex-1 lg:flex lg:flex-col lg:items-center`}
+      className={`border-b-[2px] lg:border-b-0 ${isLast ? "border-transparent" : "border-light-blue-gray pb-6 lg:pb-0 mb-6 lg:mb-0"} lg:border-r-[2px] lg:px-6 lg:flex-1 lg:flex lg:flex-col lg:items-center`}
     >
       <Switch
         isActive={isActive}
@@ -51,7 +51,7 @@ const DocumentSection = ({ name, label, subtitle, isActive, toggle, file, onDrop
             <Delete />
           </button>
           <div className="flex items-center gap-2 mb-2">
-            <Typography size="body2" className="font-medium">
+            <Typography size="body2" className="font-medium max-w-48 overflow-hidden">
               {file.name}
             </Typography>
             <Typography className="!text-[11px] text-pale-blue">{formatFileSize(file.size)}</Typography>

@@ -1,4 +1,4 @@
-import Typography from "@/Components/Typography";
+import Typography from "@/Components/UI/Typography";
 
 export const metadata = {
   title: "Free Course - FVAI Business",

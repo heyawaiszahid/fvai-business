@@ -8,7 +8,7 @@ import EnterpricePrecision from "@/Components/Icons/EnterpricePrecision";
 import Good from "@/Components/Icons/Good";
 import Next from "@/Components/Icons/Next";
 import Secure from "@/Components/Icons/Secure";
-import Typography from "@/Components/Typography";
+import Typography from "@/Components/UI/Typography";
 import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
 import Image from "next/image";

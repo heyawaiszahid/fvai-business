@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import DownArrow from "../Icons/DownArrow";
-import Typography from "../Typography";
+import Typography from "../UI/Typography";
 
 const UserMenu = ({ session }) => {
   const user = session?.user || {};

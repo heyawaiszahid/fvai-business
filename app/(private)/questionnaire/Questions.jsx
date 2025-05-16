@@ -1,6 +1,6 @@
 "use client";
 
-import Typography from "@/Components/Typography";
+import Typography from "@/Components/UI/Typography";
 import { Fragment, useEffect, useState } from "react";
 import Navigation from "./Navigation";
 import Question from "./Question";

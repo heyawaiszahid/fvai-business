@@ -1,6 +1,6 @@
 import Done from "@/Components/Icons/Done";
 import Next from "@/Components/Icons/Next";
-import Typography from "@/Components/Typography";
+import Typography from "@/Components/UI/Typography";
 import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
 import Link from "next/link";

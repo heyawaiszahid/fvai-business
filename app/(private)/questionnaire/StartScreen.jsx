@@ -1,6 +1,6 @@
 "use client";
 
-import Typography from "@/Components/Typography";
+import Typography from "@/Components/UI/Typography";
 import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
 import { useState } from "react";

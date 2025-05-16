@@ -2,7 +2,7 @@
 
 import ErrorIllustation from "@/Components/Icons/ErrorIllustation";
 import SuccessIllustation from "@/Components/Icons/SuccessIllustation";
-import Typography from "@/Components/Typography";
+import Typography from "@/Components/UI/Typography";
 import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
 import Link from "next/link";

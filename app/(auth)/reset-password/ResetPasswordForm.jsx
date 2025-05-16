@@ -1,7 +1,7 @@
 "use client";
 
 import SuccessIllustation from "@/Components/Icons/SuccessIllustation";
-import Typography from "@/Components/Typography";
+import Typography from "@/Components/UI/Typography";
 import Button from "@/Components/UI/Button";
 import Input from "@/Components/UI/Input";
 import { confirmPasswordSchema, emailSchema } from "@/schemas/reset-password";

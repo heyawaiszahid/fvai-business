@@ -1,6 +1,6 @@
 "use client";
 
-import Typography from "@/Components/Typography";
+import Typography from "@/Components/UI/Typography";
 import Button from "@/Components/UI/Button";
 import Input from "@/Components/UI/Input";
 import { signUpSchema } from "@/schemas/signup";
@@ -13,7 +13,11 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 const SignUpForm = ({ variant = "default" }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingStates, setLoadingStates] = useState({
+    google: false,
+    linkedin: false,
+    email: false,
+  });
 
   const {
     register,
@@ -42,18 +46,29 @@ const SignUpForm = ({ variant = "default" }) => {
 
   const redirectPath = variant === "freeCourse" ? "/free-course" : "/questionnaire";
 
-  const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: redirectPath });
+  const handleGoogleSignIn = async () => {
+    try {
+      setLoadingStates((prev) => ({ ...prev, google: true }));
+      await signIn("google", { callbackUrl: redirectPath });
+    } catch (err) {
+      setLoadingStates((prev) => ({ ...prev, google: false }));
+      toast.error(err.message || "Failed to sign up with Google");
+    }
   };
 
-  const handleLinkedInSignIn = () => {
-    signIn("linkedin", { callbackUrl: redirectPath });
+  const handleLinkedInSignIn = async () => {
+    try {
+      setLoadingStates((prev) => ({ ...prev, linkedin: true }));
+      await signIn("linkedin", { callbackUrl: redirectPath });
+    } catch (err) {
+      setLoadingStates((prev) => ({ ...prev, linkedin: false }));
+      toast.error(err.message || "Failed to sign up with LinkedIn");
+    }
   };
 
   const onSubmit = async (data) => {
-    setIsLoading(true);
-
     try {
+      setLoadingStates((prev) => ({ ...prev, email: true }));
       const hashedPassword = await bcrypt.hash(data.password, 12);
 
       const response = await fetch("/api/auth/signup", {
@@ -80,7 +95,7 @@ const SignUpForm = ({ variant = "default" }) => {
     } catch (err) {
       toast.error(err.message || "Something went wrong");
     } finally {
-      setIsLoading(false);
+      setLoadingStates((prev) => ({ ...prev, email: false }));
     }
   };
 
@@ -94,12 +109,22 @@ const SignUpForm = ({ variant = "default" }) => {
         {subHeading}
       </Typography>
 
-      <Button variant="outline" className="w-full mb-6" onClick={handleGoogleSignIn}>
-        Sign up with Google
+      <Button
+        variant="outline"
+        className="w-full mb-6"
+        onClick={handleGoogleSignIn}
+        disabled={loadingStates.google || loadingStates.linkedin || loadingStates.email}
+      >
+        {loadingStates.google ? "Signing up with Google..." : "Sign up with Google"}
       </Button>
 
-      <Button variant="outline" className="w-full mb-6" onClick={handleLinkedInSignIn}>
-        Sign up with Linkedin
+      <Button
+        variant="outline"
+        className="w-full mb-6"
+        onClick={handleLinkedInSignIn}
+        disabled={loadingStates.google || loadingStates.linkedin || loadingStates.email}
+      >
+        {loadingStates.linkedin ? "Signing up with LinkedIn..." : "Sign up with Linkedin"}
       </Button>
 
       <div className="flex items-center gap-4 px-4 mb-6">
@@ -135,8 +160,8 @@ const SignUpForm = ({ variant = "default" }) => {
           {...register("confirmPassword")}
           error={errors.confirmPassword?.message}
         />
-        <Button className="w-full" disabled={isLoading}>
-          {isLoading ? loadingText : buttonText}
+        <Button className="w-full" disabled={loadingStates.google || loadingStates.linkedin || loadingStates.email}>
+          {loadingStates.email ? loadingText : buttonText}
         </Button>
       </form>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Step from "@/Components/Icons/Step";
-import Typography from "@/Components/Typography";
+import Typography from "@/Components/UI/Typography";
 
 const StepIndicator = ({ className, currentStep, totalSteps }) => {
   const getStepVariant = (stepNumber) => {

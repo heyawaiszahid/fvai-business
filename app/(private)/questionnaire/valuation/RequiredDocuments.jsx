@@ -1,6 +1,6 @@
 "use client";
 
-import Typography from "@/Components/Typography";
+import Typography from "@/Components/UI/Typography";
 import Button from "@/Components/UI/Button";
 import { useEffect, useState } from "react";
 import ButtonUploadLater from "./ButtonUploadLater";
@@ -42,6 +42,37 @@ const RequiredDocuments = () => {
 
   const handleDeleteFile = (name) => {
     setUploadedFiles((prev) => ({ ...prev, [name]: null }));
+  };
+
+  const handleUploadNow = async () => {
+    // const filesToUpload = Object.entries(uploadedFiles).filter(([_, file]) => file !== null);
+    // for (const [docType, file] of filesToUpload) {
+    //   try {
+    //     // 1. Get pre-signed URL
+    //     const res = await fetch("/api/upload-url", {
+    //       method: "POST",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify({ fileName: file.name, fileType: file.type }),
+    //     });
+    //     const { uploadURL, key } = await res.json();
+    //     // 2. Upload to S3
+    //     const s3Res = await fetch(uploadURL, {
+    //       method: "PUT",
+    //       headers: {
+    //         "Content-Type": file.type,
+    //       },
+    //       body: file,
+    //     });
+    //     if (!s3Res.ok) {
+    //       throw new Error(`Failed to upload ${file.name}`);
+    //     }
+    //     console.log(`Uploaded ${file.name} to S3: ${key}`);
+    //   } catch (err) {
+    //     console.error(err);
+    //     alert(`Failed to upload ${file.name}`);
+    //   }
+    // }
+    // alert("All files uploaded successfully!");
   };
 
   return (
@@ -93,6 +124,7 @@ const RequiredDocuments = () => {
           <Button
             className="w-full lg:w-fit bg-main border-main disabled:bg-pale-blue disabled:border-pale-blue"
             disabled={!isUploadEnabled}
+            onClick={handleUploadNow}
           >
             Upload Documents Now
           </Button>

@@ -59,19 +59,6 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-    updateAge: 24 * 60 * 60, // 24 hours
-  },
-  cookies: {
-    sessionToken: {
-      name: process.env.NODE_ENV === "production" ? "__Secure-next-auth.session-token" : "next-auth.session-token",
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        path: "/",
-        secure: process.env.NODE_ENV === "production",
-      },
-    },
   },
   pages: {
     signIn: "/signin",
@@ -91,8 +78,6 @@ export const authOptions = {
       return session;
     },
   },
-
-  useSecureCookies: process.env.NEXTAUTH_URL.startsWith("https://"),
 };
 
 const handler = NextAuth(authOptions);

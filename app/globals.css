@@ -43,15 +43,6 @@
   a:hover {
     color: var(--color-main);
   }
-
-  /* Safari-only input zoom prevention */
-  @supports (-webkit-touch-callout: none) {
-    input:not([type="checkbox"]):not([type="radio"]),
-    textarea,
-    select {
-      font-size: 16px;
-    }
-  }
 }
 
 @layer components {

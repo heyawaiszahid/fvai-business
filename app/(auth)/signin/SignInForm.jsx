@@ -5,17 +5,14 @@ import Input from "@/Components/UI/Input";
 import Typography from "@/Components/UI/Typography";
 import { signInSchema } from "@/schemas/signin";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 const SignInForm = () => {
-  const router = useRouter();
-  const { update } = useSession();
-
   const [loadingStates, setLoadingStates] = useState({
     google: false,
     linkedin: false,
@@ -80,8 +77,7 @@ const SignInForm = () => {
       }
 
       if (result?.ok) {
-        await update();
-        router.push("/dashboard");
+        window.location.href = result?.url || "/dashboard";
       }
     } catch (err) {
       toast.error(err.message || "Sign in failed. Please check your credentials.");

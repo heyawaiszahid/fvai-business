@@ -79,7 +79,8 @@ const SignInForm = () => {
       }
 
       if (result?.ok) {
-        router.push("/dashboard");
+        // router.push("/dashboard");
+        window.location.href = result?.url || "/dashboard";
       }
     } catch (err) {
       toast.error(err.message || "Sign in failed. Please check your credentials.");

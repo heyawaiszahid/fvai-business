@@ -49,7 +49,7 @@
             "question": 7,
             "answer": "No"
           },
-          "text": "If the Target is loss-making, please answer the following:",
+          "text": "As the Target is loss-making, please answer the following:",
           "subQuestions": [
             {
               "index": 8.1,
@@ -84,7 +84,7 @@
             "question": 9,
             "answer": "Group"
           },
-          "text": "If the Target is a Group, please advise:",
+          "text": "As the Target is a Group, please advise:",
           "subQuestions": [
             {
               "index": 10.1,
@@ -97,7 +97,7 @@
                 "question": 10.1,
                 "answer": "Yes"
               },
-              "text": "If there are Partial Entities, please advise:",
+              "text": "As there are Partial Entities, please advise:",
               "subQuestions": [
                 {
                   "index": "10.2.1",
@@ -141,7 +141,7 @@
                 "question": 13,
                 "answer": "Yes"
               },
-              "text": "If yes, please provide details",
+              "text": "Please provide details",
               "placeholder": "Provide details"
             }
           ]
@@ -177,7 +177,7 @@
             "question": 10.1,
             "answer": "Yes"
           },
-          "text": "If you answered \"Yes\" to having Partial Entities (in Question 10): Are the following information available",
+          "text": "As you answered \"Yes\" to having Partial Entities (in Question 10): Are the following information available",
           "subQuestions": [
             {
               "index": 18.1,

@@ -1,12 +1,16 @@
+"use client";
+
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { getServerSession } from "next-auth/next";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import SiteMenu from "./Menu/SiteMenu";
 import UserMenu from "./Menu/UserMenu";
 
-const Header = async () => {
-  const session = await getServerSession(authOptions);
+const Header = () => {
+  // const session = await getServerSession(authOptions);
+  const { data: session } = useSession();
 
   return (
     <header className="relative z-20 bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.06)]">

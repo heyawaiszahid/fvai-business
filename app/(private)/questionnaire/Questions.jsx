@@ -1,5 +1,6 @@
 "use client";
 
+import Modal from "@/Components/UI/Modal";
 import Typography from "@/Components/UI/Typography";
 import { Fragment, useEffect, useState } from "react";
 import Navigation from "./Navigation";
@@ -10,9 +11,19 @@ import StepIndicator from "./StepIndicator";
 
 const Questions = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [submitting, setSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [answers, setAnswers] = useState({});
   const [stepValid, setStepValid] = useState(false);
+  const [result, setResult] = useState({});
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    message: "",
+  });
+
+  const closeModal = () => {
+    setModalState((prev) => ({ ...prev, isOpen: false }));
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -99,20 +110,50 @@ const Questions = () => {
     });
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (!stepValid) return;
+
     if (currentStep < standardizedQuestions.length) {
       setCurrentStep(currentStep + 1);
     } else {
-      localStorage.setItem("answers", JSON.stringify(answers));
-      setIsSubmitted(true);
+      closeModal();
+      setSubmitting(true);
+
+      try {
+        const response = await fetch("/api/valuation", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(answers),
+        });
+
+        if (!response.ok) {
+          throw new Error("There was an error submitting your data. Please try again.");
+        }
+
+        const result = await response.json();
+
+        setResult(result);
+        setIsSubmitted(true);
+
+        localStorage.setItem("answers", JSON.stringify(answers));
+        localStorage.setItem("result", JSON.stringify(result));
+      } catch (error) {
+        setModalState({
+          isOpen: true,
+          message: error.message,
+        });
+
+        setSubmitting(false);
+      }
     }
   };
 
   const handleBack = () => currentStep > 1 && setCurrentStep(currentStep - 1);
 
   if (isSubmitted) {
-    return <Result accepted={true} />;
+    return <Result result={result} />;
   }
 
   const currentStepData = standardizedQuestions[currentStep - 1];
@@ -130,12 +171,25 @@ const Questions = () => {
       </div>
 
       <Navigation
+        className="mb-6"
         currentStep={currentStep}
         onNext={handleNext}
         onBack={handleBack}
         disabled={!stepValid}
-        className="mb-6"
+        submitting={submitting}
       />
+
+      <Modal isOpen={modalState.isOpen} onClose={closeModal} className="text-center">
+        <Typography size="h4" className="mb-6">
+          Error Submitting Data
+        </Typography>
+        <Typography size="body2" className="mb-6 max-w-[576px] mx-auto">
+          {modalState.message}
+        </Typography>
+        <button onClick={handleNext} className="text-main underline font-medium cursor-pointer">
+          Try Again
+        </button>
+      </Modal>
     </div>
   );
 };

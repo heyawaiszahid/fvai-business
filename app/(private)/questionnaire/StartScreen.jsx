@@ -7,7 +7,7 @@ import { useState } from "react";
 import Questions from "./Questions";
 
 const StartScreen = () => {
-  const [start, setStart] = useState(false);
+  const [start, setStart] = useState(true);
 
   return !start ? (
     <div className="container">

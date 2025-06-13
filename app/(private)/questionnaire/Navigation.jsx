@@ -2,7 +2,7 @@
 
 import Button from "@/Components/UI/Button";
 
-const Navigation = ({ className, currentStep, onNext, onBack, disabled = false }) => {
+const Navigation = ({ className, currentStep, onNext, onBack, disabled = false, submitting }) => {
   return (
     <div className={`flex justify-between items-center ${className}`}>
       <button
@@ -12,8 +12,8 @@ const Navigation = ({ className, currentStep, onNext, onBack, disabled = false }
       >
         Back
       </button>
-      <Button onClick={onNext} className="w-44" disabled={disabled}>
-        {currentStep < 5 ? "Next" : "Submit"}
+      <Button onClick={onNext} className="w-44" disabled={disabled || submitting}>
+        {submitting ? "Submitting..." : currentStep < 5 ? "Next" : "Submit"}
       </Button>
     </div>
   );

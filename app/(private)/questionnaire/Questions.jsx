@@ -18,7 +18,10 @@ const Questions = () => {
   const [result, setResult] = useState({});
   const [modalState, setModalState] = useState({
     isOpen: false,
+    status: null,
+    title: "",
     message: "",
+    buttonText: "",
   });
 
   const closeModal = () => {
@@ -142,7 +145,10 @@ const Questions = () => {
       } catch (error) {
         setModalState({
           isOpen: true,
+          status: "error",
+          title: "Error Submitting Data",
           message: error.message,
+          buttonText: "Try Again",
         });
 
         setSubmitting(false);
@@ -181,13 +187,13 @@ const Questions = () => {
 
       <Modal isOpen={modalState.isOpen} onClose={closeModal} className="text-center">
         <Typography size="h4" className="mb-6">
-          Error Submitting Data
+          {modalState.title}
         </Typography>
         <Typography size="body2" className="mb-6 max-w-[576px] mx-auto">
           {modalState.message}
         </Typography>
         <button onClick={handleNext} className="text-main underline font-medium cursor-pointer">
-          Try Again
+          {modalState.buttonText}
         </button>
       </Modal>
     </div>

@@ -6,40 +6,57 @@ import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
 import Typography from "@/Components/UI/Typography";
 import Link from "next/link";
+import { Fragment } from "react";
 
 const Result = ({ result }) => {
   const { status } = result;
 
   if (status === "accepted") {
-    const { valuation_methods } = result;
-    const { primary, secondary, notes } = valuation_methods;
+    const { title, subtitle, proposed_valuation_method, entities_treatment, data_requirements, adjustments_discounts } =
+      result;
 
     return (
       <div className="container lg:max-w-[1080px] pb-10 lg:pt-5">
         <div className="flex flex-col items-center gap-6">
           <SuccessIllustation className="lg:-mb-2" />
           <Typography size="h4" lg="h2" className="text-center">
-            <span className="text-main">Congratulations!</span> Your Valuation Request Is Accepted
+            {title}
           </Typography>
           <Typography size="body2" className="text-center lg:max-w-[658px]">
-            Based on your responses, we can proceed with the valuation as it falls within a standard methodology and
-            scope supported by our tool.
+            {subtitle}
           </Typography>
-          <Box className="gap-4 lg:max-w-[456px]">
-            <Typography size="h5" className="text-main">
-              Recommended Valuation Method
-            </Typography>
-            <ul className="list-disc pl-6">
-              <li>{primary}</li>
-              {secondary.map((method, i) => (
-                <li key={i}>{method}</li>
-              ))}
-              {notes.length > 0 && (
-                <li>
-                  <span className="font-semibold">Special Notes:</span> {notes.join(", ")}
-                </li>
-              )}
-            </ul>
+          <Box className="gap-2 lg:max-w-[456px]">
+            {[
+              {
+                title: "Recommended Valuation Method",
+                items: proposed_valuation_method,
+              },
+              {
+                title: "Entities Treatment",
+                items: entities_treatment,
+              },
+              {
+                title: "Data Requirements",
+                items: data_requirements,
+              },
+              {
+                title: "Adjustment Discounts",
+                items: adjustments_discounts,
+              },
+            ].map(({ title, items }, idx) =>
+              items.length > 0 ? (
+                <Fragment key={idx}>
+                  <Typography size="h5" className="text-main">
+                    {title}
+                  </Typography>
+                  <ul className="list-disc pl-6 mb-4">
+                    {items.map((item, i) => (
+                      <li key={i}>{item}</li>
+                    ))}
+                  </ul>
+                </Fragment>
+              ) : null
+            )}
           </Box>
           <Button className="w-60" href="/questionnaire/valuation">
             Go to the next step
@@ -57,12 +74,7 @@ const Result = ({ result }) => {
           We're Sorry, but We Can't Proceed
         </Typography>
         <Typography size="body2" className="text-center lg:max-w-[658px]">
-          Based on the details provided, your project requires specialized valuation methods that our tool does not
-          currently support. Please contact{" "}
-          <Link href="mailto:bilal.noorgat@fvaadvisory.com" className="text-main underline">
-            bilal.noorgat@fvaadvisory.com
-          </Link>{" "}
-          for bespoke valuation service.
+          {result.message}
         </Typography>
         <Button href="#" className="w-60 mb-10 lg:-mb-2">
           Schedule a Call

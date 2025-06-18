@@ -102,13 +102,13 @@
                 {
                   "index": "10.2.1",
                   "text": "The number of Partial Entities that are significant (revenue or EBIT contribution > 10%)",
-                  "options": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                  "options": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
                   "inline": true
                 },
                 {
                   "index": "10.2.2",
                   "text": "The number of Partial Entities that are insignificant (revenue or EBIT contribution < 10%)",
-                  "options": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                  "options": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
                   "inline": true
                 }
               ]
@@ -174,20 +174,28 @@
         {
           "index": 18,
           "showIf": {
-            "question": 10.1,
+            "question": "10.1",
             "answer": "Yes"
           },
-          "text": "As you answered \"Yes\" to having Partial Entities (in Question 10): Are the following information available",
+          "text": "As you answered \"Yes\" to having Partial Entities (in Question 10): Is the following information available",
           "subQuestions": [
             {
               "index": 18.1,
               "text": "Past 3 years of historical financial statements, management accounts up to the Valuation Date, and a 5-year financial forecast for the significant Partial Entities.",
-              "options": ["Yes", "No"]
+              "options": ["Yes", "No"],
+              "showIf": {
+                "question": "10.2.1",
+                "answerNot": "0"
+              }
             },
             {
               "index": 18.2,
-              "text": "Past management accounts up to the Valuation Date for the insignificant Partial Entities. significant Partial Entities.",
-              "options": ["Yes", "No"]
+              "text": "Past management accounts up to the Valuation Date for the insignificant Partial Entities.",
+              "options": ["Yes", "No"],
+              "showIf": {
+                "question": "10.2.2",
+                "answerNot": "0"
+              }
             }
           ]
         }

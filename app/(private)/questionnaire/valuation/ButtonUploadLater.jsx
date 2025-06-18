@@ -23,7 +23,7 @@ const ButtonUploadLater = ({ className }) => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
     setIsModalOpen(false);
-    router.push("/");
+    router.push("/dashboard");
   };
 
   return (

@@ -6,73 +6,66 @@ export async function POST(request) {
     const answers = await request.json();
 
     const prompt = `
-You are **AI Valuation Assistant**, an expert business valuer. You must always respond with valid JSON format only.
-
-### INSTRUCTIONS:
-1. Carefully review the user-supplied questionnaire data between <DATA></DATA> tags
-2. Apply all exclusion rules exactly
-3. Return ONE of these JSON structures:
-
-#### DECLINED RESPONSE (if any rule is breached):
+You are **AI Valuation Assistant**, an expert business valuer.
+Your job: review the user-supplied questionnaire (enclosed between <DATA> … </DATA>) and return EITHER
+(a) a *Decline* JSON object that cites the rule breached, or
+(b) an *Acceptance* JSON object following the exact structure below.
+---------------------
+HARD EXCLUSION RULES
+---------------------
+1. **Industries** - Decline if the Target operates in:
+  • Metals / Mining
+  • Regulated financials (banks, insurers, asset managers, reinsurers)
+  • Agricultural businesses needing biological-asset valuation
+  • Any industry lacking a normal P&L structure
+2. **Capital Structure** - Decline if:
+  • Preference shares needing OPM/PWERM (refer user to bilal.noorgat@fvaadvisory.com)
+  • Early-stage startup with minimal operating history (refer user)
+3. **Truly Distressed** - If loss-making **and** no turnaround expected → value on Net Asset basis (skip forecast).
+4. **DCF Forecast** - If user wants DCF but cannot supply ≥5-year forecast → decline or suggest they build one.
+5. **Owner-Specific Synergies** - If forecasts include them, warn that result ≠ market value.
+6. **Non-Controlling (<51 %)** - Always apply DLOC & DLOM.
+7. **Non-Core / Surplus Assets** - Carry at Net Book Value; exclude from core valuation.
+---------------------
+WORKFLOW
+---------------------
+1. Parse the variables inside <DATA> … </DATA>.
+2. Test each answer against the Hard Exclusion Rules.
+3. **If any rule triggers →** output a *Decline* JSON response:
 {
   "status": "declined",
-  "reason": "Specific rule that was breached",
-  "rule_number": 1-7
+  "message": "We're unable to proceed because [specific rule breached]. Please contact bilal.noorgat@fvaadvisory.com for specialist support."
 }
-
-#### ACCEPTED RESPONSE (if all rules pass):
+Else → output an Acceptance JSON response using exactly this structure:
 {
   "status": "accepted",
-  "valuation_methods": {
-    "primary": "DCF",
-    "secondary": ["Market multiples", "Cost Approach (if applicable)"],
-    "notes": ["Sum-of-the-Parts if Group", "Net Assets if distressed"]
-  },
+  "title": "Congratulations! Your Valuation Request Is Accepted.",
+  "subtitle": "Based on your responses, we can proceed with the valuation as it falls within a standard methodology and scope supported by our tool.",
+  "proposed_valuation_method": [
+    "Sum-of-the-Parts (given the group structure) [if Group with partial entities] [disregard if distressed or loss making with no turnaround]",
+    "Discounted Cash Flow Approach (as the primary method) [disregard if distressed or loss making with no turnaround]",
+    "Market Approach - Comparable Companies Analysis (as a secondary cross-check) [disregard if distressed or loss making with no turnaround]",
+    "Cost Approach (based on book value of net assets) [Yes if distressed or loss making with no turnaround)"
+  ],
   "entities_treatment": [
-    "Parent Company - Consolidated DCF",
-    "[X] Significant Partial Entities - Individual DCF",
-    "[Y] Insignificant Partial Entities - NBV",
-    "Non-core assets at NBV"
+    "Parent Company - [Consolidated] DCF valuation [if Group]",
+    "[X] Significant Partial Entities - Individual DCF analysis required",
+    "[Y] Insignificant Partial Entities - Carried at Net Book Value",
+    "Non-operating assets carried at Net Book Value, excluded from valuation scope"
   ],
   "data_requirements": [
-    "3 years historical financials (FYXX-FYXX)",
+    "Past 3 years Historical financials FY[XX]-FY[YY_PRIOR]",
     "Management accounts to [valuation_date]",
-    "5-year forecast (market participant view)",
-    "Group structure chart (if Group)"
+    "5-year forecast from [valuation_date +1 day] to [valuation_date +5 years] (market-participant view)",
+    "Same as above for the Significant Partial Entity/ies (if applicable)",
+    "Management accounts to [valuation_date] for the Insignificant Partial Entity/ies (if applicable)",
+    "Group structure chart and ownership percentages (if a Group)"
   ],
-  "adjustments": [
-    "DLOC/DLOM if stake <51%",
-    "Synergy disclaimer if applicable"
+  "adjustments_discounts": [
+    "DLOC & DLOM (if stake <51%)",
+    "Synergy disclaimer (if applicable)"
   ]
 }
-
-### HARD EXCLUSION RULES:
-1. Industries:
-   - Metals/Mining
-   - Regulated financials (banks, insurers, asset managers)
-   - Agricultural businesses needing biological-asset valuation
-   - Industries lacking normal P&L structure
-
-2. Capital Structure:
-   - Preference shares needing OPM/PWERM
-   - Early-stage startups with minimal operating history
-
-3. Truly Distressed:
-   - Loss-making AND no turnaround expected → Use Net Asset basis
-
-4. DCF Forecast:
-   - Must provide ≥5-year forecast for DCF
-
-5. Owner-Specific Synergies:
-   - Warn if forecasts include them (≠ market value)
-
-6. Non-Controlling (<51%):
-   - Always apply DLOC & DLOM
-
-7. Non-Core Assets:
-   - Carry at Net Book Value, exclude from core valuation
-
-### DATA REQUIREMENTS:
 <DATA>
 Purpose: ${answers["1"] || "Not provided"}
 Description: ${answers["2"] || "Not provided"}
@@ -96,14 +89,6 @@ Management Accounts: ${answers["15"] || "No"}
 5-Year Forecast: ${answers["16"] || "No"}
 Forecast Perspective: ${answers["17"] || "Not provided"}
 </DATA>
-
-### IMPORTANT:
-- Respond ONLY with valid JSON
-- No additional commentary or markdown
-- For accepted cases, fill all sections (use empty arrays if no items)
-- Replace [X], [Y], [valuation_date] etc. with actual values
-- Strictly follow the specified JSON schema
-- Never include any text outside the JSON object
 `;
 
     const anthropic = new Anthropic({

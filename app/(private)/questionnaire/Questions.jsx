@@ -51,10 +51,18 @@ const Questions = () => {
     }));
   };
 
-  const shouldShowQuestion = (question) => {
-    if (!question.showIf) return true;
-    const answer = answers[question.showIf.question.toString()];
-    return answer === question.showIf.answer;
+  const shouldShowQuestion = (q) => {
+    if (q.showIf) {
+      const answer = answers[q.showIf.question.toString()];
+      const shouldHide = q.showIf.answerNot !== undefined ? answer === q.showIf.answerNot : answer !== q.showIf.answer;
+      if (shouldHide) return false;
+    }
+
+    if (q.subQuestions) {
+      return q.subQuestions.some((sq) => shouldShowQuestion(sq));
+    }
+
+    return true;
   };
 
   const validateStep = (questions) => {
@@ -159,6 +167,7 @@ const Questions = () => {
   const handleBack = () => currentStep > 1 && setCurrentStep(currentStep - 1);
 
   if (isSubmitted) {
+    window.scrollTo(0, 0);
     return <Result result={result} />;
   }
 

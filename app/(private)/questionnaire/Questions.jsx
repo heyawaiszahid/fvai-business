@@ -52,17 +52,22 @@ const Questions = () => {
   };
 
   const shouldShowQuestion = (q) => {
-    if (q.showIf) {
-      const answer = answers[q.showIf.question.toString()];
-      const shouldHide = q.showIf.answerNot !== undefined ? answer === q.showIf.answerNot : answer !== q.showIf.answer;
-      if (shouldHide) return false;
+    if (!q.showIf) {
+      return true;
     }
 
-    if (q.subQuestions) {
-      return q.subQuestions.some((sq) => shouldShowQuestion(sq));
+    const referencedQuestion = q.showIf.question.toString();
+
+    const answer = answers[referencedQuestion] || answers[parseInt(referencedQuestion)];
+    if (answer === undefined) {
+      return false;
     }
 
-    return true;
+    if (q.showIf.answerNot !== undefined) {
+      return answer !== q.showIf.answerNot;
+    } else {
+      return answer === q.showIf.answer;
+    }
   };
 
   const validateStep = (questions) => {

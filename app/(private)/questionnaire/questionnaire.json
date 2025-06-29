@@ -138,7 +138,7 @@
             {
               "index": 13.1,
               "showIf": {
-                "question": 13,
+                "question": "13",
                 "answer": "Yes"
               },
               "text": "Please provide details",

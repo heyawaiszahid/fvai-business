@@ -93,12 +93,12 @@ const RequiredDocuments = () => {
         message: "All files have been successfully uploaded.",
         buttonText: "Close and Go Back",
       });
-    } catch (err) {
+    } catch (error) {
       setModalState({
         isOpen: true,
         status: "error",
         title: "Upload Failed",
-        message: err.message || "There was an error uploading your files. Please try again.",
+        message: error.message || "There was an error uploading your files. Please try again.",
         buttonText: "Try Again",
       });
     } finally {

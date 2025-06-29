@@ -33,6 +33,15 @@ const EntitySelection = ({ price }) => {
   const toggleEntity = (id) => setSelected((prev) => ({ ...prev, [id]: !prev[id] }));
   const totalFee = entities.reduce((sum, { id, price }) => sum + (selected[id] ? price : 0), 0);
 
+  useEffect(() => {
+    const data = {
+      selected: entities.filter((e) => selected[e.id]).map((e) => e.name),
+      total: totalFee,
+      price: { ...price },
+    };
+    localStorage.setItem("entities", JSON.stringify(data));
+  }, [selected, totalFee]);
+
   return (
     <section className="mb-10">
       <div className="container lg:max-w-[1060px] flex flex-col gap-6 relative">

@@ -8,6 +8,7 @@ import EntitySelection from "./EntitySelection";
 import FeeStructure from "./FeeStructure";
 import RecommendedEntities from "./RecommendedEntities";
 import RequiredDocuments from "./RequiredDocuments";
+import ButtonGenerateLetter from "./ButtonGenerateLetter";
 
 export const metadata = {
   title: "Finalize Your Valuation - FVAI Business",
@@ -58,15 +59,7 @@ export default function Valuation() {
                 Click below to confirm your selected entities and generate the engagement letter to proceed with the
                 valuation.
               </Typography>
-              <Button
-                variant="outline"
-                className="border-white text-white !text-left !text-[20px] !font-bold mb-4 lg:mb-0"
-              >
-                <div className="flex items-center justify-center gap-4 pl-3">
-                  <Done className="w-4 h-4 shrink-0" />
-                  <div>Confirm & Generate Engagement Letter</div>
-                </div>
-              </Button>
+              <ButtonGenerateLetter />
             </div>
           </Box>
         </div>

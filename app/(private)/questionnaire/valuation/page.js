@@ -1,21 +1,21 @@
 import Done from "@/Components/Icons/Done";
 import Next from "@/Components/Icons/Next";
-import Typography from "@/Components/UI/Typography";
 import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
+import Typography from "@/Components/UI/Typography";
 import Link from "next/link";
+import ButtonGenerateLetter from "./ButtonGenerateLetter";
 import EntitySelection from "./EntitySelection";
 import FeeStructure from "./FeeStructure";
 import RecommendedEntities from "./RecommendedEntities";
 import RequiredDocuments from "./RequiredDocuments";
-import ButtonGenerateLetter from "./ButtonGenerateLetter";
 
 export const metadata = {
   title: "Finalize Your Valuation - FVAI Business",
 };
 
 export default function Valuation() {
-  const price = { main: 3000, partial: 1000 };
+  const price = { main: 4000, partial: 2000 };
 
   return (
     <div className="pb-2 lg:pb-0">

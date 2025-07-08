@@ -1,9 +1,9 @@
 "use client";
 
 import ConfettiDesktop3 from "@/Components/Icons/ConfettiDesktop3";
-import Typography from "@/Components/UI/Typography";
 import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
+import Typography from "@/Components/UI/Typography";
 import { useEffect, useState } from "react";
 
 const EntitySelection = ({ price }) => {
@@ -12,7 +12,7 @@ const EntitySelection = ({ price }) => {
 
   useEffect(() => {
     const answers = JSON.parse(localStorage.getItem("answers") || "{}");
-    const significantEntitiesCount = answers["10.2.1"] || 0;
+    const significantEntitiesCount = Number(answers["10.2.1"]) || 0;
 
     const baseEntity = { id: "mainTarget", name: "Main Target Entity", price: price.main };
     const significantEntities = Array(significantEntitiesCount)

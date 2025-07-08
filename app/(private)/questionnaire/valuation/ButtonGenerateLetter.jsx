@@ -4,7 +4,8 @@ import Done from "@/Components/Icons/Done";
 import Button from "@/Components/UI/Button";
 import Modal from "@/Components/UI/Modal";
 import Typography from "@/Components/UI/Typography";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
 
 const ButtonGenerateLetter = () => {
   const [generating, setGenerating] = useState(false);
@@ -16,12 +17,15 @@ const ButtonGenerateLetter = () => {
     message: "",
     buttonText: "",
   });
+  const requestInProgress = useRef(false);
+  const router = useRouter();
 
   const closeModal = () => {
-    setModalState((prev) => ({ ...prev, isOpen: false }));
-    if (modalState.status === "error") {
-      generateLetter();
+    if (requestInProgress.current) {
+      requestInProgress.current = false;
     }
+    setModalState((prev) => ({ ...prev, isOpen: false }));
+    setGenerating(false);
   };
 
   const downloadDocFile = async (content) => {
@@ -47,45 +51,65 @@ const ButtonGenerateLetter = () => {
   };
 
   const generateLetter = async () => {
-    if (content) {
-      downloadDocFile(content);
-      return;
-    }
+    if (requestInProgress.current) return;
 
     setGenerating(true);
+    requestInProgress.current = true;
 
-    const data = {
-      answers: JSON.parse(localStorage.getItem("answers")),
-      result: JSON.parse(localStorage.getItem("result")),
-      entities: JSON.parse(localStorage.getItem("entities")),
-    };
+    setModalState({
+      isOpen: true,
+      status: "loading",
+      title: "Creating Your Engagement Letter",
+      message: "We're preparing your customized engagement letter. This may take a minute or two.",
+    });
 
     try {
-      const response = await fetch("/api/letter", {
+      const answers = JSON.parse(localStorage.getItem("answers") || "{}");
+      const result = JSON.parse(localStorage.getItem("result") || "{}");
+      const entities = JSON.parse(localStorage.getItem("entities") || "{}");
+
+      const response = await fetch("/api/engagement-letter", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ answers, result, entities }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to generate letter");
+        throw new Error(errorData.error || "Server responded with an error");
       }
 
-      const result = await response.json();
-      setContent(result.content);
+      const resultData = await response.json();
+
+      if (!resultData.content) {
+        throw new Error("No content received from server");
+      }
+
+      if (requestInProgress.current) {
+        setContent(resultData.content);
+        setModalState({
+          isOpen: true,
+          status: "success",
+          title: "Your Letter Is Ready!",
+          message: "Your engagement letter has been successfully generated and is ready for download.",
+          buttonText: "Download & Go to Next Step",
+        });
+      }
     } catch (error) {
-      setModalState({
-        isOpen: true,
-        status: "error",
-        title: "Failed to Generate Engagement Letter",
-        message: error.message || "Something went wrong. Please try again",
-        buttonText: "Try Again",
-      });
+      if (requestInProgress.current) {
+        setModalState({
+          isOpen: true,
+          status: "error",
+          title: "Something Went Wrong",
+          message: error.message,
+          buttonText: "Try again",
+        });
+      }
     } finally {
       setGenerating(false);
+      requestInProgress.current = false;
     }
   };
 
@@ -99,13 +123,7 @@ const ButtonGenerateLetter = () => {
       >
         <div className="flex items-center justify-center gap-4 px-3">
           <Done className="w-4 h-4 shrink-0" />
-          <div>
-            {content
-              ? "Download"
-              : generating
-                ? "Generating Engagement Letter..."
-                : "Confirm & Generate Engagement Letter"}
-          </div>
+          <div>Confirm & Generate Engagement Letter</div>
         </div>
       </Button>
 
@@ -116,9 +134,30 @@ const ButtonGenerateLetter = () => {
         <Typography size="body2" className="mb-6 max-w-[576px] mx-auto">
           {modalState.message}
         </Typography>
-        <button onClick={closeModal} className="text-main underline font-medium cursor-pointer">
-          {modalState.buttonText}
-        </button>
+
+        {modalState.status === "loading" && (
+          <div className="flex justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#4169E1]"></div>
+          </div>
+        )}
+
+        {modalState.status === "success" && (
+          <Button
+            onClick={() => {
+              downloadDocFile(content);
+              router.push("/dashboard");
+            }}
+            className="text-main font-medium cursor-pointer"
+          >
+            {modalState.buttonText}
+          </Button>
+        )}
+
+        {modalState.status === "error" && (
+          <button onClick={() => generateLetter()} className="text-main text-underline font-medium cursor-pointer">
+            {modalState.buttonText}
+          </button>
+        )}
       </Modal>
     </>
   );

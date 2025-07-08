@@ -1,7 +1,7 @@
 "use client";
 
-import Typography from "@/Components/UI/Typography";
 import Box from "@/Components/UI/Box";
+import Typography from "@/Components/UI/Typography";
 import { useEffect, useState } from "react";
 
 const RecommendedEntities = () => {
@@ -9,7 +9,7 @@ const RecommendedEntities = () => {
 
   useEffect(() => {
     const answers = JSON.parse(localStorage.getItem("answers") || "{}");
-    setSignificantEntitiesCount(answers["10.2.1"] || 0);
+    setSignificantEntitiesCount(Number(answers["10.2.1"]) || 0);
   }, []);
 
   return (

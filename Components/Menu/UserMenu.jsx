@@ -38,7 +38,7 @@ const UserMenu = ({ session }) => {
           />
         </div>
         <Typography size="body2" className="font-semibold hidden lg:block lg:pe-2">
-          User
+          {user?.name || "My Account"}
         </Typography>
         <DownArrow className={menuOpen ? "rotate-180" : ""} />
       </button>

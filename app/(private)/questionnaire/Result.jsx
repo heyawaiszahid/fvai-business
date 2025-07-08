@@ -12,8 +12,14 @@ const Result = ({ result }) => {
   const { status } = result;
 
   if (status === "accepted") {
-    const { title, subtitle, proposed_valuation_method, entities_treatment, data_requirements, adjustments_discounts } =
-      result;
+    const {
+      title,
+      subtitle,
+      proposed_valuation_method = [],
+      entities_treatment = [],
+      data_requirements = [],
+      adjustments_discounts = [],
+    } = result;
 
     return (
       <div className="container lg:max-w-[1080px] pb-10 lg:pt-5">

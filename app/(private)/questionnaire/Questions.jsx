@@ -145,6 +145,11 @@ const Questions = () => {
         });
 
         if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Server responded with an error");
+        }
+
+        if (!response.ok) {
           throw new Error("There was an error submitting your data. Please try again.");
         }
 
@@ -159,7 +164,7 @@ const Questions = () => {
         setModalState({
           isOpen: true,
           status: "error",
-          title: "Error Submitting Data",
+          title: "Something Went Wrong",
           message: error.message,
           buttonText: "Try Again",
         });

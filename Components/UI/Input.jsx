@@ -10,14 +10,25 @@ const Input = ({
   placeholder,
   className = "",
   labelClassName = "text-body2 font-semibold",
-  inputClassName = "bg-input-field rounded-[10px] w-full p-4 pr-12 placeholder:text-pale-blue outline-1 outline-transparent focus:outline-light-blue disabled:bg-[#e7e7e7] disabled:text-pale-blue",
+  inputClassName = "p-4",
   icon,
   error,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const inputType = type === "password" ? (showPassword ? "text" : "password") : type;
-  const inputPadding = icon || type === "password" ? "pr-12" : "px-4";
+  const hasRightIcon = icon || type === "password";
+
+  const baseStyles = `
+    bg-input-field rounded-[10px] w-full 
+    placeholder:text-pale-blue outline-1 outline-transparent 
+    focus:outline-light-blue disabled:bg-[#e7e7e7] disabled:text-pale-blue
+  `;
+
+  const paddingStyles = `
+    ${inputClassName} 
+    ${hasRightIcon ? "pr-12" : ""}
+  `;
 
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
@@ -32,10 +43,10 @@ const Input = ({
           name={name || id}
           type={inputType}
           placeholder={placeholder}
-          className={`${inputClassName} ${inputPadding} ${error ? "text-red !outline-red focus:outline-red" : ""}`}
+          className={`${baseStyles} ${paddingStyles} ${error ? "text-red !outline-red focus:outline-red" : ""}`}
           {...props}
         />
-        {(type === "password" || icon) && (
+        {hasRightIcon && (
           <div className="absolute right-0 top-0 h-full w-12 flex items-center justify-center">
             {type === "password" ? (
               <button

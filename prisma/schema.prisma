@@ -13,9 +13,10 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   password      String?
-  resetToken     String?
+  resetToken    String?
   resetTokenExpiry DateTime?
   image         String?
+  role          Int       @default(0) // 0 = default, 1 = employee, 2 = admin
   accounts      Account[]
   sessions      Session[]
   createdAt     DateTime  @default(now())

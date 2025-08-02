@@ -12,6 +12,15 @@ export const authOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture,
+          role: 0,
+        };
+      },
     }),
     LinkedInProvider({
       clientId: process.env.LINKEDIN_CLIENT_ID,
@@ -24,6 +33,7 @@ export const authOptions = {
           name: profile.name,
           email: profile.email,
           image: profile.picture,
+          role: 0,
         };
       },
     }),
@@ -69,12 +79,14 @@ export const authOptions = {
       if (user) {
         token.id = user.id;
         token.hasPassword = !!user.password;
+        token.role = user.role;
       }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id;
       session.user.hasPassword = token.hasPassword;
+      session.user.role = token.role;
       return session;
     },
   },

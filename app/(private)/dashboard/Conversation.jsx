@@ -3,13 +3,13 @@
 import AddPeople from "@/Components/Icons/AddPeople";
 import Back from "@/Components/Icons/Back";
 import GetStartedillustration from "@/Components/Icons/GetStartedillustration";
-import Scoping from "@/Components/Icons/Status/Scoping";
 import Button from "@/Components/UI/Button";
 import Input from "@/Components/UI/Input";
 import Modal from "@/Components/UI/Modal";
 import TextArea from "@/Components/UI/Textarea";
 import Typography from "@/Components/UI/Typography";
 import { useState } from "react";
+import Status from "./Status";
 
 export default function Conversation({ conversation, onBackClick, role }) {
   const [modal, setModal] = useState({
@@ -79,12 +79,7 @@ export default function Conversation({ conversation, onBackClick, role }) {
               </Typography>
             </div>
             <div className="flex items-center gap-6">
-              <div className="flex items-center min-w-[103px]">
-                <Scoping />
-                <Typography size="body2" className="text-main cursor-default capitalize">
-                  {conversation.status}
-                </Typography>
-              </div>
+              <Status key={conversation.id} role={role} conversation={conversation} />
               <Button variant="light" className="py-2 px-2" onClick={addNewMember}>
                 <AddPeople />
               </Button>

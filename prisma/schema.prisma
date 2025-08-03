@@ -8,19 +8,22 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  password      String?
-  resetToken    String?
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  name            String?
+  email           String?    @unique
+  emailVerified   DateTime?
+  password        String?
+  resetToken      String?
   resetTokenExpiry DateTime?
-  image         String?
-  role          Int       @default(0) // 0 = default, 1 = employee, 2 = admin
-  accounts      Account[]
-  sessions      Session[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  image           String?
+  role            Int        @default(0) // 0 = default, 1 = employee, 2 = admin
+  accounts        Account[]
+  sessions        Session[]
+  createdConversations Conversation[] @relation("CreatedConversations")
+  assignedConversations Conversation[] @relation("AssignedConversations")
+  messages        Message[]
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
 }
 
 model Account {
@@ -56,4 +59,30 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Conversation {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  title         String?     // Required for projects, null for chats
+  description   String?     // Optional for projects, required for chats
+  type          String      @default("project") // "project" or "chat"
+  status        String      @default("scoping") // scoping, in-progress, completed
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  createdBy     User        @relation("CreatedConversations", fields: [createdById], references: [id])
+  createdById   String      @db.ObjectId
+  assignedTo    User?       @relation("AssignedConversations", fields: [assignedToId], references: [id])
+  assignedToId  String?     @db.ObjectId
+  messages      Message[]
+}
+
+model Message {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  content        String
+  createdAt      DateTime     @default(now())
+  sender         User         @relation(fields: [senderId], references: [id])
+  senderId       String       @db.ObjectId
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  conversationId String       @db.ObjectId
+  isRead         Boolean      @default(false)
 }

@@ -100,7 +100,6 @@ const SettingsForm = ({ session }) => {
         {user.hasPassword && <Button>Change Password</Button>}
         <Button>My Account</Button>
       </div>
-
       <div className="w-full lg:max-w-[767px]">
         <Box p="6" className="mb-6">
           <Typography size="h5" className="mb-6">
@@ -153,8 +152,8 @@ const SettingsForm = ({ session }) => {
           </Typography>
           <button
             onClick={handleDeleteAccount}
-            disabled={isDeleting}
-            className="text-left text-red font-semibold cursor-pointer"
+            disabled={isDeleting || user.role === 2}
+            className="text-left text-red font-semibold cursor-pointer disabled:cursor-not-allowed disabled:text-red-300"
           >
             {isDeleting ? "Deleting..." : "Delete my account"}
           </button>

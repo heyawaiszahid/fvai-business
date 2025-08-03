@@ -1,15 +1,37 @@
 "use client";
 
 import Input from "@/Components/UI/Input";
+import { useState } from "react";
+import ConversationItem from "./ConversationItem";
 
-const ConversationList = () => {
+export default function ConversationList({ conversations, onSelectConversation, selectedConversation }) {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredConversations = conversations.filter((conversation) => {
+    const searchText = conversation.type === "project" ? conversation.title : conversation.description;
+    return searchText?.toLowerCase().includes(searchTerm.toLowerCase());
+  });
+
   return (
     <div>
-      <div className="py-6 px-4 border-b-[1px] border-input-field">
-        <Input placeholder="Search" inputClassName="px-4 py-2" />
+      <div className="lg:py-6 lg:px-4 lg:border-b-[1px] border-input-field">
+        <Input
+          placeholder="Search"
+          inputClassName="px-4 py-2"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+      <div className="py-4 h-[580px] overflow-y-scroll">
+        {filteredConversations.map((conversation) => (
+          <ConversationItem
+            key={conversation.id}
+            conversation={conversation}
+            isSelected={selectedConversation?.id === conversation.id}
+            onClick={() => onSelectConversation(conversation)}
+          />
+        ))}
       </div>
     </div>
   );
-};
-
-export default ConversationList;
+}

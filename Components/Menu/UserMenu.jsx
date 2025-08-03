@@ -1,5 +1,6 @@
 "use client";
 
+import Avatar from "@/Components/Icons/Avatar";
 import { useActiveLink } from "@/lib/active-links";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
@@ -29,13 +30,11 @@ const UserMenu = ({ session }) => {
     <>
       <button onClick={() => setMenuOpen(!menuOpen)} className="flex items-center gap-4 cursor-pointer">
         <div className="border-main border-2 rounded-full w-8 lg:w-11 h-8 lg:h-11 overflow-hidden">
-          <Image
-            src={user.image || "/avatar.svg"}
-            alt={user.name || "User avatar"}
-            width={44}
-            height={44}
-            className="object-cover w-full h-full"
-          />
+          {user.image ? (
+            <Image src={user.image} alt={user.name} width={44} height={44} className="object-cover w-full h-full" />
+          ) : (
+            <Avatar className="w-[28px] h-[28px] lg:w-[40px] lg:h-[40px]" />
+          )}
         </div>
         <Typography size="body2" className="font-semibold hidden lg:block lg:pe-2">
           {user?.name || "My Account"}

@@ -11,7 +11,7 @@ import TextArea from "@/Components/UI/Textarea";
 import Typography from "@/Components/UI/Typography";
 import { useState } from "react";
 
-const Conversation = ({ cid = null }) => {
+export default function Conversation({ conversation, onBackClick, role }) {
   const [modal, setModal] = useState({
     isOpen: false,
     title: "",
@@ -57,7 +57,7 @@ const Conversation = ({ cid = null }) => {
           </Typography>
           <div className="text-center">
             <button onClick={closeModal} className="text-main underline font-medium cursor-pointer">
-              CLose and Go Back
+              Close and Go Back
             </button>
           </div>
         </div>
@@ -67,33 +67,44 @@ const Conversation = ({ cid = null }) => {
 
   return (
     <>
-      <div>
-        <div className="flex px-6 py-3 border-b-[1px] border-input-field justify-between">
-          <div className="flex items-center gap-4">
-            <Back />
-            <Typography size="h5" className="font-semibold cursor-default">
-              Project [TBD]
-            </Typography>
-          </div>
-          <div className="flex items-center gap-6">
-            <div className="flex items-center min-w-[103px]">
-              <Scoping />
-              <Typography size="body2" className="text-main cursor-default">
-                Scoping
+      {conversation ? (
+        <div>
+          <div className="flex pl-4 pr-6 py-3 border-b-[1px] border-input-field justify-between">
+            <div className="flex items-center gap-2">
+              <button className="cursor-pointer w-[24px] flex justify-center" onClick={onBackClick}>
+                <Back />
+              </button>
+              <Typography size="h5" className="font-semibold cursor-default">
+                Project [<span className="capitalize">{conversation.title ?? "TBD"}</span>]
               </Typography>
             </div>
-            <Button variant="light" className="py-2 px-2" onClick={addNewMember}>
-              <AddPeople />
-            </Button>
+            <div className="flex items-center gap-6">
+              <div className="flex items-center min-w-[103px]">
+                <Scoping />
+                <Typography size="body2" className="text-main cursor-default capitalize">
+                  {conversation.status}
+                </Typography>
+              </div>
+              <Button variant="light" className="py-2 px-2" onClick={addNewMember}>
+                <AddPeople />
+              </Button>
+            </div>
+          </div>
+          <div className="h-[600px] overflow-y-scroll shadow-md">
+            <div className="p-4">hi</div>
           </div>
         </div>
-
-        <div className="min-h-[424px] flex flex-col items-center justify-center gap-6 shadow-md">
-          <GetStartedillustration />
-          <Typography size="h2">Start a new valuation project</Typography>
-          <Button href="/questionnaire">Start Your Valuation Now</Button>
+      ) : (
+        <div className="h-[669px] overflow-y-scroll shadow-md">
+          {role !== 2 && (
+            <div className="h-full flex flex-col items-center justify-center gap-6">
+              <GetStartedillustration />
+              <Typography size="h2">Start a new valuation project</Typography>
+              <Button href="/questionnaire">Start Your Valuation Now</Button>
+            </div>
+          )}
         </div>
-      </div>
+      )}
 
       <Modal isOpen={modal.isOpen} onClose={closeModal}>
         <Typography size="h4" className="mb-6 text-center">
@@ -103,6 +114,4 @@ const Conversation = ({ cid = null }) => {
       </Modal>
     </>
   );
-};
-
-export default Conversation;
+}

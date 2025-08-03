@@ -44,12 +44,10 @@ const SignUpForm = ({ variant = "default" }) => {
 
   const { heading, subHeading, buttonText, loadingText } = content[variant];
 
-  const redirectPath = variant === "freeCourse" ? "/free-course" : "/questionnaire";
-
   const handleGoogleSignIn = async () => {
     try {
       setLoadingStates((prev) => ({ ...prev, google: true }));
-      await signIn("google", { callbackUrl: redirectPath });
+      await signIn("google", { callbackUrl: "/dashboard" });
     } catch (err) {
       setLoadingStates((prev) => ({ ...prev, google: false }));
       toast.error(err.message || "Failed to sign up with Google");
@@ -59,7 +57,7 @@ const SignUpForm = ({ variant = "default" }) => {
   const handleLinkedInSignIn = async () => {
     try {
       setLoadingStates((prev) => ({ ...prev, linkedin: true }));
-      await signIn("linkedin", { callbackUrl: redirectPath });
+      await signIn("linkedin", { callbackUrl: "/dashboard" });
     } catch (err) {
       setLoadingStates((prev) => ({ ...prev, linkedin: false }));
       toast.error(err.message || "Failed to sign up with LinkedIn");
@@ -90,7 +88,7 @@ const SignUpForm = ({ variant = "default" }) => {
       await signIn("credentials", {
         email: data.email,
         password: data.password,
-        callbackUrl: redirectPath,
+        callbackUrl: "/dashboard",
       });
     } catch (err) {
       toast.error(err.message || "Something went wrong");

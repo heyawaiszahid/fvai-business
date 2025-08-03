@@ -17,7 +17,7 @@ const STATUS_CONFIG = {
   completed: { color: "#62E759", text: "Completed" },
 };
 
-export default function Status({ conversation }) {
+export default function Status({ role, conversation }) {
   const router = useRouter();
   const { id, status } = conversation;
   const [isOpen, setIsOpen] = useState(false);
@@ -66,40 +66,51 @@ export default function Status({ conversation }) {
   };
 
   return (
-    <div className="flex gap-2 items-center">
-      <Typography size="body2" className="font-semibold">
-        Status:
-      </Typography>
-
-      <div className="relative">
-        <div className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setIsOpen(!isOpen)}>
-          <StatusIcon status={displayStatus} />
+    <>
+      {role === 0 ? (
+        <div className="flex items-center select-none">
+          <StatusIcon status={status} />
           <Typography size="body2" style={{ color: currentConfig?.color }}>
             {currentConfig?.text}
           </Typography>
-          <DownArrow className={isOpen ? "rotate-180" : ""} />
         </div>
+      ) : (
+        <div className="flex gap-2 items-center">
+          <Typography size="body2" className="font-semibold">
+            Status:
+          </Typography>
 
-        {isOpen && (
-          <div className="absolute z-10 mt-1 w-[200px] bg-white border border-input-field">
-            <ul className="max-h-80 overflow-auto">
-              {statusOptions.map((option) => {
-                const optionConfig = STATUS_CONFIG[option];
-                return (
-                  <li
-                    key={option}
-                    className="p-2 text-[15px] flex items-center gap-1 cursor-pointer hover:bg-gray-50"
-                    onClick={() => updateStatus(option)}
-                  >
-                    <StatusIcon status={option} />
-                    <span style={{ color: optionConfig?.color }}>{optionConfig?.text}</span>
-                  </li>
-                );
-              })}
-            </ul>
+          <div className="relative">
+            <div className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setIsOpen(!isOpen)}>
+              <StatusIcon status={displayStatus} />
+              <Typography size="body2" style={{ color: currentConfig?.color }}>
+                {currentConfig?.text}
+              </Typography>
+              <DownArrow className={isOpen ? "rotate-180" : ""} />
+            </div>
+
+            {isOpen && (
+              <div className="absolute z-10 mt-1 w-[200px] bg-white border border-input-field">
+                <ul className="max-h-80 overflow-auto">
+                  {statusOptions.map((option) => {
+                    const optionConfig = STATUS_CONFIG[option];
+                    return (
+                      <li
+                        key={option}
+                        className="p-2 text-[15px] flex items-center gap-1 cursor-pointer hover:bg-gray-50"
+                        onClick={() => updateStatus(option)}
+                      >
+                        <StatusIcon status={option} />
+                        <span style={{ color: optionConfig?.color }}>{optionConfig?.text}</span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </>
   );
 }

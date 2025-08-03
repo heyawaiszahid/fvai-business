@@ -136,7 +136,7 @@ const Questions = () => {
       setSubmitting(true);
 
       try {
-        const response = await fetch("/api/valuation", {
+        const valuationResponse = await fetch("/api/valuation", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -144,22 +144,38 @@ const Questions = () => {
           body: JSON.stringify(answers),
         });
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || "Server responded with an error");
+        if (!valuationResponse.ok) {
+          const errorData = await valuationResponse.json();
+          throw new Error(errorData.error || "Failed to submit valuation");
         }
 
-        if (!response.ok) {
-          throw new Error("There was an error submitting your data. Please try again.");
-        }
-
-        const result = await response.json();
-
+        const result = await valuationResponse.json();
         setResult(result);
         setIsSubmitted(true);
 
         localStorage.setItem("answers", JSON.stringify(answers));
         localStorage.setItem("result", JSON.stringify(result));
+
+        if (result?.status === "accepted") {
+          const conversationsResponse = await fetch("/api/conversations", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              type: "project",
+              title: result?.company_name || "Untitled",
+            }),
+          });
+
+          if (!conversationsResponse.ok) {
+            const errorData = await conversationsResponse.json();
+            throw new Error(errorData.error || "Failed to create project");
+          }
+
+          const conversation = await conversationsResponse.json();
+          localStorage.setItem("conversation", JSON.stringify(conversation));
+        }
       } catch (error) {
         setModalState({
           isOpen: true,
@@ -168,7 +184,7 @@ const Questions = () => {
           message: error.message,
           buttonText: "Try Again",
         });
-
+      } finally {
         setSubmitting(false);
       }
     }

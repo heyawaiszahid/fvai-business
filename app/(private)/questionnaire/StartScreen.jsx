@@ -1,8 +1,8 @@
 "use client";
 
-import Typography from "@/Components/UI/Typography";
 import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
+import Typography from "@/Components/UI/Typography";
 import { useState } from "react";
 import Questions from "./Questions";
 

@@ -22,10 +22,10 @@ export async function middleware(request) {
     }
   }
 
-  if (token?.role === 2) {
-    const adminRestrictedPaths = ["/", "/questionnaire", "/questionnaire/valuation"];
+  if (token?.role === 1 || token?.role === 2) {
+    const teamRestrictedPaths = ["/", "/questionnaire", "/questionnaire/valuation"];
 
-    if (adminRestrictedPaths.includes(pathname)) {
+    if (teamRestrictedPaths.includes(pathname)) {
       if (pathname !== "/dashboard") {
         return NextResponse.redirect(new URL("/dashboard", request.url));
       }

@@ -7,14 +7,14 @@ import UserMenu from "./Menu/UserMenu";
 
 const Header = async () => {
   const session = await getServerSession(authOptions);
+  const showSiteMenu = !session || session.user.role === 0;
 
   return (
     <header className="relative z-20 bg-white shadow-[0px_4px_4px_0px_rgba(0,0,0,0.06)]">
       <div className="container h-[70px] flex gap-6 items-center">
-        <div className="lg:order-2 lg:flex-1 flex items-center">
-          <SiteMenu session={session} />
+        <div className={`lg:order-2 lg:flex-1 flex items-center ${!showSiteMenu && "hidden lg:flex"}`}>
+          {showSiteMenu && <SiteMenu session={session} />}
         </div>
-
         <div className="lg:order-1 flex-1 lg:flex-initial">
           <Link href="/">
             <Image src="/logo.png" alt="logo" width={100} height={24} className="lg:hidden" />

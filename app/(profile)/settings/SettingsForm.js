@@ -152,7 +152,7 @@ const SettingsForm = ({ session }) => {
           </Typography>
           <button
             onClick={handleDeleteAccount}
-            disabled={isDeleting || user.role === 2}
+            disabled={isDeleting || user.role !== 0}
             className="text-left text-red font-semibold cursor-pointer disabled:cursor-not-allowed disabled:text-red-300"
           >
             {isDeleting ? "Deleting..." : "Delete my account"}

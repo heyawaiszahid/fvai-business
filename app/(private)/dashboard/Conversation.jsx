@@ -10,6 +10,7 @@ import TextArea from "@/Components/UI/Textarea";
 import Typography from "@/Components/UI/Typography";
 import { useState } from "react";
 import Status from "./Status";
+import EmployeesList from "./EmployeesList";
 
 export default function Conversation({ conversation, onBackClick, role }) {
   const [modal, setModal] = useState({
@@ -22,28 +23,51 @@ export default function Conversation({ conversation, onBackClick, role }) {
     setModal((prev) => ({ ...prev, isOpen: false }));
   };
 
+  const handleAssign = (employeeId) => {
+    console.log("Selected employee ID:", employeeId);
+    // assign conversation to this employee using patch reference status.jsx
+    closeModal();
+  };
+
   const addNewMember = () => {
-    setModal({
-      isOpen: true,
-      title: "Add New Contact",
-      content: (
-        <div>
-          <Typography size="body2" className="text-center mb-6">
-            Add team members / people to the Project:
-          </Typography>
-          <Input placeholder="someone@example.com" className="mb-6" />
-          <TextArea placeholder="Comment Box" rows="4" className="mb-10" />
-          <Button className="w-full py-3 mb-6" onClick={sendInvite}>
-            Send
-          </Button>
-          <div className="text-center">
-            <button onClick={closeModal} className="text-main underline font-medium cursor-pointer">
-              Cancel
-            </button>
+    if (role === 0) {
+      setModal({
+        isOpen: true,
+        title: "Add New Contact",
+        content: (
+          <div>
+            <Typography size="body2" className="text-center mb-6">
+              Add team members / people to the Project:
+            </Typography>
+            <Input placeholder="someone@example.com" className="mb-6" />
+            <TextArea placeholder="Comment Box" rows="4" className="mb-10" />
+            <Button className="w-full py-3 mb-6" onClick={sendInvite}>
+              Send
+            </Button>
+            <div className="text-center">
+              <button onClick={closeModal} className="text-main underline font-medium cursor-pointer">
+                Cancel
+              </button>
+            </div>
           </div>
-        </div>
-      ),
-    });
+        ),
+      });
+    } else if (role === 2) {
+      setModal({
+        isOpen: true,
+        title: "Add/remove employee",
+        content: (
+          <div>
+            <EmployeesList onAssign={handleAssign} isAssignDisabled={false} />
+            <div className="flex justify-center">
+              <button onClick={closeModal} className="text-main underline font-medium cursor-pointer">
+                Close & Go Back
+              </button>
+            </div>
+          </div>
+        ),
+      });
+    }
   };
 
   const sendInvite = () => {
@@ -91,7 +115,7 @@ export default function Conversation({ conversation, onBackClick, role }) {
         </div>
       ) : (
         <div className="h-[669px] overflow-y-scroll shadow-md">
-          {role !== 2 && (
+          {role === 0 && (
             <div className="h-full flex flex-col items-center justify-center gap-6">
               <GetStartedillustration />
               <Typography size="h2">Start a new valuation project</Typography>

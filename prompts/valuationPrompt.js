@@ -50,6 +50,7 @@ WORKFLOW
   "status": "accepted",
   "title": "Congratulations! Your Valuation Request Is Accepted.",
   "subtitle": "Based on your responses, we can proceed with the valuation as it falls within a standard methodology and scope supported by our tool.",
+  "company_name": "[Extract from Description, or 'Untitled' if not found]",
   "proposed_valuation_method": [
     "Sum-of-the-Parts (given the group structure)",                      // ONLY if single_or_group = "Group" AND not distressed
     "Discounted Cash Flow Approach (as the primary method)",            // Skip if distressed

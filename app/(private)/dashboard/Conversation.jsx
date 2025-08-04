@@ -131,7 +131,7 @@ export default function Conversation({ conversation, onBackClick, role }) {
     <>
       {conversation ? (
         <div>
-          <div className="flex flex-col gap-6 lg:gap-0 lg:flex-row px-0 lg:pl-4 lg:pr-6 py-4 lg:py-3 border-b-[2px] lg:border-b-[1px] border-input-field justify-between">
+          <div className="flex flex-col gap-6 lg:flex-row px-0 lg:pl-4 lg:pr-6 pt-4 pb-1 lg:py-3 border-b-[2px] lg:border-b-[1px] border-input-field justify-between">
             <div className="flex items-center gap-2">
               <button className="cursor-pointer w-[24px] flex lg:justify-center" onClick={onBackClick}>
                 <Back />

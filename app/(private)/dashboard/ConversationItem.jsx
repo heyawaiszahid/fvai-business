@@ -46,7 +46,7 @@ export default function ConversationItem({ conversation, isSelected, onClick }) 
           </Typography>
         </div>
         <Typography
-          className={`shrink-0 font-semibold !text-[10px] !leading-normal transition-colors ${isSelected ? "text-white" : "text-pale-blue"}`}
+          className={`shrink-0 pl-1 font-semibold !text-[10px] !leading-normal transition-colors ${isSelected ? "text-white" : "text-pale-blue"}`}
         >
           {updatedTime}
         </Typography>

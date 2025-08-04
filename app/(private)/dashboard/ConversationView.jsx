@@ -37,12 +37,14 @@ export default function ConversationView({
   return (
     <>
       {role === 2 && (
-        <AdminTabs
-          unassignedCount={unassignedConversations.length}
-          assignedCount={assignedConversations.length}
-          selectedTab={selectedTab}
-          onTabChange={handleTabChange}
-        />
+        <div className={`${selectedConversation ? "hidden lg:block" : "block"}`}>
+          <AdminTabs
+            unassignedCount={unassignedConversations.length}
+            assignedCount={assignedConversations.length}
+            selectedTab={selectedTab}
+            onTabChange={handleTabChange}
+          />
+        </div>
       )}
       <div className="lg:bg-[#f5f7fd] lg:border-[1px] border-input-field rounded-tl-[20px] rounded-tr-[20px]">
         <div className="flex flex-col lg:flex-row">

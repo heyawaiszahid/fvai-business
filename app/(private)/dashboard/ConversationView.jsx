@@ -10,17 +10,25 @@ export default function ConversationView({
   unassignedConversations = [],
   assignedConversations = [],
   role,
+  onConversationSelect,
 }) {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [selectedTab, setSelectedTab] = useState("unassigned");
 
   const handleBackClick = () => {
     setSelectedConversation(null);
+    onConversationSelect?.(null);
   };
 
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
     setSelectedConversation(null);
+    onConversationSelect?.(null);
+  };
+
+  const handleSelectConversation = (conversation) => {
+    setSelectedConversation(conversation);
+    onConversationSelect?.(conversation);
   };
 
   const displayedConversations =
@@ -37,15 +45,17 @@ export default function ConversationView({
         />
       )}
       <div className="lg:bg-[#f5f7fd] lg:border-[1px] border-input-field rounded-tl-[20px] rounded-tr-[20px]">
-        <div className="flex">
-          <div className="flex-1 lg:max-w-[315px]">
+        <div className="flex flex-col lg:flex-row">
+          <div className={`${selectedConversation ? "hidden lg:block" : "block"} flex-1 lg:max-w-[315px]`}>
             <ConversationList
               conversations={displayedConversations}
-              onSelectConversation={setSelectedConversation}
+              onSelectConversation={handleSelectConversation}
               selectedConversation={selectedConversation}
             />
           </div>
-          <div className="hidden lg:block flex-1 border-l-[1px] border-input-field">
+          <div
+            className={`${selectedConversation ? "block" : "hidden lg:block"} flex-1 lg:border-l-[1px] border-input-field`}
+          >
             <Conversation conversation={selectedConversation} onBackClick={handleBackClick} role={role} />
           </div>
         </div>

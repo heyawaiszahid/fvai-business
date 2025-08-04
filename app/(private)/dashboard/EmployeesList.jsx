@@ -7,11 +7,11 @@ import Input from "@/Components/UI/Input";
 import Typography from "@/Components/UI/Typography";
 import { useEffect, useState } from "react";
 
-export default function EmployeesList({ onAssign, isAssignDisabled }) {
+export default function EmployeesList({ onAssign, isAssignDisabled, assignedEmployeeId = null }) {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState(assignedEmployeeId);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -27,7 +27,6 @@ export default function EmployeesList({ onAssign, isAssignDisabled }) {
         setEmployees(data);
       } catch (err) {
         setError(err.message);
-        console.error("Error fetching employees:", err);
       } finally {
         setLoading(false);
       }
@@ -37,7 +36,11 @@ export default function EmployeesList({ onAssign, isAssignDisabled }) {
   }, []);
 
   const handleEmployeeClick = (employeeId) => {
-    setSelectedEmployee(employeeId === selectedEmployee ? null : employeeId);
+    setSelectedEmployeeId(employeeId === selectedEmployeeId ? null : employeeId);
+  };
+
+  const getSelectedEmployee = () => {
+    return employees.find((employee) => employee.id === selectedEmployeeId);
   };
 
   const filteredEmployees = employees.filter((employee) =>
@@ -90,7 +93,7 @@ export default function EmployeesList({ onAssign, isAssignDisabled }) {
                   </Typography>
                 </div>
               </div>
-              <Radio active={selectedEmployee === employee.id} />
+              <Radio active={selectedEmployeeId === employee.id} />
             </li>
           ))}
         </ul>
@@ -106,7 +109,7 @@ export default function EmployeesList({ onAssign, isAssignDisabled }) {
         value={searchTerm}
         onChange={(e) => {
           setSearchTerm(e.target.value);
-          setSelectedEmployee(null);
+          setSelectedEmployeeId(null);
         }}
         disabled={loading || !!error}
       />
@@ -116,8 +119,13 @@ export default function EmployeesList({ onAssign, isAssignDisabled }) {
       <div className="flex justify-center">
         <Button
           className="w-[160px] py-3 mb-6"
-          onClick={() => onAssign(selectedEmployee)}
-          disabled={isAssignDisabled || !selectedEmployee}
+          onClick={() => {
+            const employee = getSelectedEmployee();
+            if (employee) {
+              onAssign(employee);
+            }
+          }}
+          disabled={isAssignDisabled || !selectedEmployeeId}
         >
           Assign
         </Button>

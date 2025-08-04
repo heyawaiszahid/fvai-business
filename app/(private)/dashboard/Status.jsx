@@ -6,16 +6,7 @@ import Typography from "@/Components/UI/Typography";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-
-const STATUS_CONFIG = {
-  scoping: { color: "#4A90E2", text: "Scoping" },
-  contacting: { color: "#9B51E0", text: "Contacting" },
-  "pending-payment": { color: "#E77C2F", text: "Pending Payment" },
-  "pending-information": { color: "#E77C2F", text: "Pending Information" },
-  "in-progress": { color: "#DBB647", text: "In Progress" },
-  queries: { color: "#4169E1", text: "Queries" },
-  completed: { color: "#62E759", text: "Completed" },
-};
+import STATUS_CONFIG from "./status.json";
 
 export default function Status({ role, conversation }) {
   const router = useRouter();
@@ -70,7 +61,7 @@ export default function Status({ role, conversation }) {
       {role === 0 ? (
         <div className="flex items-center select-none">
           <StatusIcon status={status} />
-          <Typography size="body2" style={{ color: currentConfig?.color }}>
+          <Typography size="body2" style={{ color: currentConfig?.color }} className="font-semibold lg:font-normal">
             {currentConfig?.text}
           </Typography>
         </div>

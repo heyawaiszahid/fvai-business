@@ -10,16 +10,22 @@ export async function PATCH(request, { params }) {
   }
 
   const { id } = params;
-  const { status } = await request.json();
+  const { status, assignedToId } = await request.json();
 
   try {
+    const updateData = {};
+
+    if (status !== undefined) {
+      updateData.status = status;
+    }
+
+    if (assignedToId !== undefined) {
+      updateData.assignedToId = assignedToId;
+    }
+
     const conversation = await prisma.conversation.update({
-      where: {
-        id: id,
-      },
-      data: {
-        status: status,
-      },
+      where: { id },
+      data: updateData,
     });
 
     return Response.json(conversation);

@@ -14,7 +14,7 @@ export default function ConversationList({ conversations, onSelectConversation, 
 
   return (
     <div>
-      <div className="lg:py-6 lg:px-4">
+      <div className="mb-6 lg:mb-0 lg:py-6 lg:px-4 border-b-[1px] border-input-field">
         <Input
           placeholder="Search"
           inputClassName="px-4 py-2"
@@ -22,7 +22,7 @@ export default function ConversationList({ conversations, onSelectConversation, 
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-      <div className="h-[580px] overflow-y-scroll">
+      <div className="lg:h-[580px] lg:overflow-y-scroll">
         {filteredConversations.map((conversation) => (
           <ConversationItem
             key={conversation.id}

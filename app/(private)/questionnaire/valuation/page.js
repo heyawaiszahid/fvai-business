@@ -32,7 +32,7 @@ export default async function Valuation({ searchParams }) {
       <div className="flex flex-col gap-6 justify-center items-center min-h-[700px]">
         <ErrorIllustation />
         <Typography size="h4" lg="h2" className="text-center max-w-[817px]">
-          We couldn't find the valuation you're looking for.
+          {`We couldn't find the valuation you're looking for.`}
         </Typography>
         <Typography size="body2" className="text-center">
           It may have been moved or no longer exists.

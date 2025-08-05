@@ -18,9 +18,17 @@ export async function POST(request) {
         title: type === "project" ? title : null,
         description: type === "chat" ? description : null,
         createdById: session.user.id,
+        questionnaire: {
+          create: {},
+        },
       },
       include: {
         createdBy: true,
+        questionnaire: {
+          select: {
+            id: true,
+          },
+        },
       },
     });
 

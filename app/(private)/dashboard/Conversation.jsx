@@ -162,7 +162,7 @@ export default function Conversation({ conversation, onBackClick, role }) {
               )}
             </div>
           </div>
-          <div className="h-[600px] lg:shadow-md">
+          <div className="h-[400px] lg:h-[600px] lg:shadow-md">
             <Chat />
           </div>
         </div>

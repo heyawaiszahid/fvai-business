@@ -23,12 +23,20 @@ export async function POST(request) {
 
     const uploadURL = await getSignedUrl(s3, command, { expiresIn: 60 });
 
-    return new Response(JSON.stringify({ uploadURL, key: fileKey }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
+    const publicUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
+
+    return new Response(
+      JSON.stringify({
+        uploadURL,
+        publicUrl,
+        key: fileKey,
+      }),
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   } catch (err) {
-    console.error(err);
     return new Response(JSON.stringify({ error: "Failed to generate URL" }), {
       status: 500,
     });

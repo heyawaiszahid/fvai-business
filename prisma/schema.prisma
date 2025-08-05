@@ -8,38 +8,38 @@ datasource db {
 }
 
 model User {
-  id              String     @id @default(auto()) @map("_id") @db.ObjectId
-  name            String?
-  email           String?    @unique
-  emailVerified   DateTime?
-  password        String?
-  resetToken      String?
-  resetTokenExpiry DateTime?
-  image           String?
-  role            Int        @default(0) // 0 = default, 1 = employee, 2 = admin
-  accounts        Account[]
-  sessions        Session[]
-  createdConversations Conversation[] @relation("CreatedConversations")
+  id                    String         @id @default(auto()) @map("_id") @db.ObjectId
+  name                  String?
+  email                 String?        @unique
+  emailVerified         DateTime?
+  password              String?
+  resetToken            String?
+  resetTokenExpiry      DateTime?
+  image                 String?
+  role                  Int            @default(0) // 0 = default, 1 = employee, 2 = admin
+  accounts              Account[]
+  sessions              Session[]
+  createdConversations  Conversation[] @relation("CreatedConversations")
   assignedConversations Conversation[] @relation("AssignedConversations")
-  messages        Message[]
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
+  messages              Message[]
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
 }
 
 model Account {
-  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId             String  @db.ObjectId
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
-  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -62,18 +62,31 @@ model VerificationToken {
 }
 
 model Conversation {
-  id            String      @id @default(auto()) @map("_id") @db.ObjectId
-  title         String?     // Required for projects, null for chats
-  description   String?     // Optional for projects, required for chats
-  type          String      @default("project") // "project" or "chat"
-  status        String      @default("scoping") // scoping, in-progress, completed
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  createdBy     User        @relation("CreatedConversations", fields: [createdById], references: [id])
-  createdById   String      @db.ObjectId
-  assignedTo    User?       @relation("AssignedConversations", fields: [assignedToId], references: [id])
-  assignedToId  String?     @db.ObjectId
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  title         String?
+  description   String?
+  type          String         @default("project")
+  status        String         @default("scoping")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  createdBy     User           @relation("CreatedConversations", fields: [createdById], references: [id])
+  createdById   String         @db.ObjectId
+  assignedTo    User?          @relation("AssignedConversations", fields: [assignedToId], references: [id])
+  assignedToId  String?        @db.ObjectId
   messages      Message[]
+  questionnaire Questionnaire?
+}
+
+model Questionnaire {
+  id                String       @id @default(auto()) @map("_id") @db.ObjectId
+  conversation      Conversation @relation(fields: [conversationId], references: [id])
+  conversationId    String       @unique @db.ObjectId
+  answers           String?
+  results           String?
+  selectedEntities  String?
+  selectedDocuments String?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
 }
 
 model Message {

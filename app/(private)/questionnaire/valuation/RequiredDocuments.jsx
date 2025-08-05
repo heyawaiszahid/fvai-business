@@ -3,12 +3,11 @@
 import Button from "@/Components/UI/Button";
 import Modal from "@/Components/UI/Modal";
 import Typography from "@/Components/UI/Typography";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ButtonUploadLater from "./ButtonUploadLater";
 import DocumentSection from "./DocumentSection";
 
-const RequiredDocuments = () => {
+const RequiredDocuments = ({ id, selectedDocuments }) => {
   const [activeSwitches, setActiveSwitches] = useState({
     financials: false,
     management: false,
@@ -16,6 +15,12 @@ const RequiredDocuments = () => {
   });
 
   const [uploadedFiles, setUploadedFiles] = useState({
+    financials: null,
+    management: null,
+    forecast: null,
+  });
+
+  const [savedFileUrls, setSavedFileUrls] = useState({
     financials: null,
     management: null,
     forecast: null,
@@ -30,13 +35,34 @@ const RequiredDocuments = () => {
     message: "",
     buttonText: "",
   });
-  const router = useRouter();
+
+  const [allDocumentsUploaded, setAllDocumentsUploaded] = useState(false);
+
+  useEffect(() => {
+    const allUploaded = Object.values(savedFileUrls).every((url) => url !== null);
+    setAllDocumentsUploaded(allUploaded);
+  }, [savedFileUrls]);
+
+  useEffect(() => {
+    if (selectedDocuments) {
+      const parsedDocuments = JSON.parse(selectedDocuments);
+
+      setSavedFileUrls({
+        financials: parsedDocuments.financials || null,
+        management: parsedDocuments.management || null,
+        forecast: parsedDocuments.forecast || null,
+      });
+
+      setActiveSwitches({
+        financials: !!parsedDocuments.financials,
+        management: !!parsedDocuments.management,
+        forecast: !!parsedDocuments.forecast,
+      });
+    }
+  }, [selectedDocuments]);
 
   const closeModal = () => {
     setModalState((prev) => ({ ...prev, isOpen: false }));
-    if (modalState.status === "success") {
-      router.push("/");
-    }
   };
 
   useEffect(() => {
@@ -45,21 +71,29 @@ const RequiredDocuments = () => {
   }, [uploadedFiles]);
 
   const toggleSwitch = (name, turningOff = false) => {
+    if (isUploading) return;
+
     setActiveSwitches((prev) => {
       const newState = { ...prev, [name]: !prev[name] };
       return newState;
     });
+
     if (turningOff) {
       setUploadedFiles((prev) => ({ ...prev, [name]: null }));
+      setSavedFileUrls((prev) => ({ ...prev, [name]: null }));
     }
   };
 
   const handleFileUpload = (name) => (acceptedFiles) => {
     setUploadedFiles((prev) => ({ ...prev, [name]: acceptedFiles[0] }));
+    setSavedFileUrls((prev) => ({ ...prev, [name]: null }));
   };
 
   const handleDeleteFile = (name) => {
+    if (isUploading) return;
+
     setUploadedFiles((prev) => ({ ...prev, [name]: null }));
+    setSavedFileUrls((prev) => ({ ...prev, [name]: null }));
   };
 
   const handleUploadNow = async () => {
@@ -67,13 +101,17 @@ const RequiredDocuments = () => {
     const filesToUpload = Object.entries(uploadedFiles).filter(([_, file]) => file !== null);
 
     try {
+      const newUrls = { ...savedFileUrls };
+
       for (const [docType, file] of filesToUpload) {
         const res = await fetch("/api/upload-url", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ fileName: file.name, fileType: file.type }),
         });
-        const { uploadURL, key } = await res.json();
+
+        const { uploadURL, publicUrl } = await res.json();
+
         const s3Res = await fetch(uploadURL, {
           method: "PUT",
           headers: {
@@ -81,16 +119,41 @@ const RequiredDocuments = () => {
           },
           body: file,
         });
+
         if (!s3Res.ok) {
           throw new Error(`Failed to upload ${file.name}`);
         }
-        // console.log(`Uploaded ${file.name} to S3: ${key}`);
+
+        newUrls[docType] = publicUrl;
       }
+
+      const selectedDocuments = {
+        ...savedFileUrls,
+        ...newUrls,
+      };
+
+      const saveRes = await fetch(`/api/questionnaire/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ selectedDocuments }),
+      });
+
+      if (!saveRes.ok) {
+        throw new Error("Failed to save to database");
+      }
+
+      setSavedFileUrls(newUrls);
+      setUploadedFiles({
+        financials: null,
+        management: null,
+        forecast: null,
+      });
+
       setModalState({
         isOpen: true,
         status: "success",
         title: "Upload Successful!",
-        message: "All files have been successfully uploaded.",
+        message: "All files have been successfully uploaded and saved.",
         buttonText: "Close and Go Back",
       });
     } catch (error) {
@@ -121,7 +184,8 @@ const RequiredDocuments = () => {
               subtitle="(FY21, FY22, FY23)"
               isActive={activeSwitches.financials}
               toggle={toggleSwitch}
-              file={uploadedFiles.financials}
+              file={savedFileUrls.financials ? null : uploadedFiles.financials}
+              savedFileUrl={savedFileUrls.financials}
               onDrop={handleFileUpload("financials")}
               onDelete={handleDeleteFile}
             />
@@ -132,7 +196,8 @@ const RequiredDocuments = () => {
               subtitle="(up to Valuation Date)"
               isActive={activeSwitches.management}
               toggle={toggleSwitch}
-              file={uploadedFiles.management}
+              file={savedFileUrls.management ? null : uploadedFiles.management}
+              savedFileUrl={savedFileUrls.management}
               onDrop={handleFileUpload("management")}
               onDelete={handleDeleteFile}
             />
@@ -143,7 +208,8 @@ const RequiredDocuments = () => {
               subtitle="(if DCF is used)"
               isActive={activeSwitches.forecast}
               toggle={toggleSwitch}
-              file={uploadedFiles.forecast}
+              file={savedFileUrls.forecast ? null : uploadedFiles.forecast}
+              savedFileUrl={savedFileUrls.forecast}
               onDrop={handleFileUpload("forecast")}
               onDelete={handleDeleteFile}
               isLast={true}
@@ -161,7 +227,7 @@ const RequiredDocuments = () => {
               {isUploading ? "Uploading Documents..." : "Upload Documents Now"}
             </Button>
           </div>
-          <ButtonUploadLater />
+          <ButtonUploadLater disabled={allDocumentsUploaded} />
         </div>
       </section>
 

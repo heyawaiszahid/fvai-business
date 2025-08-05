@@ -2,9 +2,10 @@
 
 import Delete from "@/Components/Icons/Delete";
 import FileUpload from "@/Components/Icons/FileUpload";
-import Typography from "@/Components/UI/Typography";
 import Box from "@/Components/UI/Box";
+import Button from "@/Components/UI/Button";
 import Switch from "@/Components/UI/Switch";
+import Typography from "@/Components/UI/Typography";
 import { useDropzone } from "react-dropzone";
 
 const formatFileSize = (bytes) => {
@@ -23,12 +24,25 @@ const ACCEPTED_FORMATS = {
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
 };
 
-const DocumentSection = ({ name, label, subtitle, isActive, toggle, file, onDrop, onDelete, isLast = false }) => {
+const DocumentSection = ({
+  name,
+  label,
+  subtitle,
+  isActive,
+  toggle,
+  file,
+  savedFileUrl = null,
+  onDrop,
+  onDelete,
+  isLast = false,
+}) => {
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: ACCEPTED_FORMATS,
     multiple: false,
   });
+
+  const hasSavedFile = !!savedFileUrl;
 
   return (
     <div
@@ -40,6 +54,7 @@ const DocumentSection = ({ name, label, subtitle, isActive, toggle, file, onDrop
           if (isActive) toggle(name, true);
           else toggle(name, false);
         }}
+        disabled={hasSavedFile}
       >
         <Typography size="h5">{label}</Typography>
         <Typography size="body2">{subtitle}</Typography>
@@ -59,7 +74,15 @@ const DocumentSection = ({ name, label, subtitle, isActive, toggle, file, onDrop
         </div>
       )}
 
-      {isActive && !file && (
+      {hasSavedFile && (
+        <div className="mt-6">
+          <Button href={savedFileUrl} target="blank" variant="outline">
+            Download Document
+          </Button>
+        </div>
+      )}
+
+      {isActive && !file && !hasSavedFile && (
         <div {...getRootProps()} className="mt-4 lg:w-full">
           <input {...getInputProps()} />
           <Box className="border-[3px] border-main border-dashed flex flex-col items-center justify-center py-12 cursor-pointer">

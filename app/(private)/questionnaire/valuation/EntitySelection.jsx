@@ -5,42 +5,81 @@ import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
 import Typography from "@/Components/UI/Typography";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
-const EntitySelection = ({ price }) => {
-  const [entities, setEntities] = useState([]);
-  const [selected, setSelected] = useState({ mainTarget: true });
+const EntitySelection = ({ id, price, answers, selectedEntities }) => {
+  const { "10.2.1": count = 0 } = JSON.parse(answers);
+  const [selected, setSelected] = useState({});
+  const [isSaving, setIsSaving] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  useEffect(() => {
-    const answers = JSON.parse(localStorage.getItem("answers") || "{}");
-    const significantEntitiesCount = Number(answers["10.2.1"]) || 0;
-
-    const baseEntity = { id: "mainTarget", name: "Main Target Entity", price: price.main };
-    const significantEntities = Array(significantEntitiesCount)
+  const entities = [
+    { id: "mainTarget", name: "Main Target Entity", price: price.main },
+    ...Array(Number(count) || 0)
       .fill()
       .map((_, i) => ({
         id: `partial${i + 1}`,
         name: `Significant Partial Entity ${i + 1}`,
         price: price.partial,
-      }));
-
-    setEntities([baseEntity, ...significantEntities]);
-    setSelected({
-      mainTarget: true,
-      ...Object.fromEntries(significantEntities.map((e) => [e.id, false])),
-    });
-  }, []);
-
-  const toggleEntity = (id) => setSelected((prev) => ({ ...prev, [id]: !prev[id] }));
-  const totalFee = entities.reduce((sum, { id, price }) => sum + (selected[id] ? price : 0), 0);
+      })),
+  ];
 
   useEffect(() => {
-    const data = {
-      selected: entities.filter((e) => selected[e.id]).map((e) => e.name),
-      total: totalFee,
-      price: { ...price },
-    };
-    localStorage.setItem("entities", JSON.stringify(data));
-  }, [selected, totalFee]);
+    if (entities.length > 0 && !isInitialized) {
+      const initialSelection = selectedEntities
+        ? JSON.parse(selectedEntities)
+        : {
+            mainTarget: true,
+            ...Object.fromEntries(entities.slice(1).map((e) => [e.id, false])),
+          };
+
+      setSelected(initialSelection);
+      setIsInitialized(true);
+
+      if (!selectedEntities) {
+        updateSelectedEntities(initialSelection);
+      }
+    }
+  }, [entities, selectedEntities, isInitialized]);
+
+  const updateSelectedEntities = async (newSelection) => {
+    setIsSaving(true);
+    try {
+      const response = await fetch(`/api/questionnaire/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          selectedEntities: newSelection,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save selection");
+      }
+    } catch (error) {
+      toast.error("Error saving selected entities.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const toggleEntity = async (id) => {
+    const newSelected = { ...selected, [id]: !selected[id] };
+    setSelected(newSelected);
+    await updateSelectedEntities(newSelected);
+  };
+
+  const totalFee = entities.reduce((sum, e) => sum + (selected[e.id] ? e.price : 0), 0);
+
+  if (!isInitialized) {
+    return (
+      <div className="flex justify-center items-center h-[275px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-main"></div>
+      </div>
+    );
+  }
 
   return (
     <section className="mb-10">
@@ -54,14 +93,19 @@ const EntitySelection = ({ price }) => {
 
         <div className="flex flex-col lg:flex-row lg:flex-wrap lg:justify-center gap-6 mb-4">
           {entities.map(({ id, name }) => (
-            <Button key={id} variant={selected[id] ? "default" : "light"} onClick={() => toggleEntity(id)}>
+            <Button
+              key={id}
+              variant={selected[id] ? "default" : "light"}
+              onClick={() => toggleEntity(id)}
+              disabled={isSaving}
+            >
               {name}
             </Button>
           ))}
         </div>
 
         <Box p="6" className="!bg-dark text-white lg:w-full lg:max-w-[880px] lg:mx-auto lg:flex-row lg:items-center">
-          <Typography size="h4" lg="h3" className="border-b-[1px] lg:border-b-0 pb-6 mb-6 lg:pb-0 lg:mb-0">
+          <Typography size="h4" lg="h3">
             Fee Summary
           </Typography>
 

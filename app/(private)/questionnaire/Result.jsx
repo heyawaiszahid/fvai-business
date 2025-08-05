@@ -8,7 +8,7 @@ import Typography from "@/Components/UI/Typography";
 import Link from "next/link";
 import { Fragment } from "react";
 
-const Result = ({ result }) => {
+const Result = ({ result, questionnaireId }) => {
   const { status } = result;
 
   if (status === "accepted") {
@@ -64,7 +64,7 @@ const Result = ({ result }) => {
               ) : null
             )}
           </Box>
-          <Button className="w-60" href="/questionnaire/valuation">
+          <Button className="w-60" href={`/questionnaire/valuation?qid=${questionnaireId}`}>
             Go to the next step
           </Button>
         </div>

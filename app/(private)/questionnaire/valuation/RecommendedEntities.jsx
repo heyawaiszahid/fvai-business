@@ -2,15 +2,10 @@
 
 import Box from "@/Components/UI/Box";
 import Typography from "@/Components/UI/Typography";
-import { useEffect, useState } from "react";
 
-const RecommendedEntities = () => {
-  const [significantEntitiesCount, setSignificantEntitiesCount] = useState(0);
-
-  useEffect(() => {
-    const answers = JSON.parse(localStorage.getItem("answers") || "{}");
-    setSignificantEntitiesCount(Number(answers["10.2.1"]) || 0);
-  }, []);
+const RecommendedEntities = ({ answers }) => {
+  const answersParsed = JSON.parse(answers);
+  const significantEntitiesCount = Number(answersParsed["10.2.1"]);
 
   return (
     <Box className="flex-1 gap-4 lg:max-w-[456px]">

@@ -7,7 +7,28 @@ import Typography from "@/Components/UI/Typography";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
-const ButtonGenerateLetter = () => {
+const buildEntityData = (price, parsedSelectedEntities) => {
+  const selected = [];
+  let total = 0;
+
+  for (const [key, isSelected] of Object.entries(parsedSelectedEntities)) {
+    if (!isSelected) continue;
+
+    const displayName =
+      key === "mainTarget"
+        ? "Main Target Entity"
+        : key.startsWith("partial")
+          ? `Significant Partial Entity ${key.replace("partial", "")}`
+          : key;
+
+    selected.push(displayName);
+    total += key === "mainTarget" ? price.main : key.startsWith("partial") ? price.partial : 0;
+  }
+
+  return { price, selected, total };
+};
+
+const ButtonGenerateLetter = ({ id, price }) => {
   const [generating, setGenerating] = useState(false);
   const [content, setContent] = useState(null);
   const [modalState, setModalState] = useState({
@@ -63,17 +84,30 @@ const ButtonGenerateLetter = () => {
       message: "We're preparing your customized engagement letter. This may take a minute or two.",
     });
 
-    try {
-      const answers = JSON.parse(localStorage.getItem("answers") || "{}");
-      const result = JSON.parse(localStorage.getItem("result") || "{}");
-      const entities = JSON.parse(localStorage.getItem("entities") || "{}");
+    const response = await fetch(`/api/questionnaire/${id}`);
 
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Error fetching questionnaire");
+    }
+
+    const questionnaire = await response.json();
+
+    const { answers, results, selectedEntities } = questionnaire;
+
+    const parsedAnswers = JSON.parse(answers);
+    const parsedResults = JSON.parse(results);
+    const parsedSelectedEntities = JSON.parse(selectedEntities);
+
+    const entityData = buildEntityData(price, parsedSelectedEntities);
+
+    try {
       const response = await fetch("/api/engagement-letter", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ answers, result, entities }),
+        body: JSON.stringify({ answers: parsedAnswers, results: parsedResults, entityData }),
       });
 
       if (!response.ok) {

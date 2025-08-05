@@ -1,15 +1,15 @@
 "use client";
 
 import Info from "@/Components/Icons/Info";
-import Typography from "@/Components/UI/Typography";
 import Button from "@/Components/UI/Button";
 import Modal from "@/Components/UI/Modal";
+import Typography from "@/Components/UI/Typography";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import tippy from "tippy.js";
 import "tippy.js/dist/tippy.css";
 
-const ButtonUploadLater = ({ className }) => {
+const ButtonUploadLater = ({ className, disabled }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
@@ -28,10 +28,10 @@ const ButtonUploadLater = ({ className }) => {
 
   return (
     <div className={`flex items-start justify-center gap-2 ${className}`}>
-      <Button variant="outline" className="px-8" onClick={openModal}>
+      <Button variant="outline" className="px-8" onClick={openModal} disabled={disabled}>
         Upload Later
       </Button>
-      <button id="info">
+      <button id="info" disabled={disabled} className="disabled:opacity-50">
         <Info />
       </button>
 

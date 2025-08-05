@@ -4,8 +4,8 @@ import { NextResponse } from "next/server";
 
 export async function POST(request) {
   try {
-    const { answers, result, entities } = await request.json();
-    const prompt = getEngagementLetterPrompt(answers, result, entities);
+    const { answers, results, entityData } = await request.json();
+    const prompt = getEngagementLetterPrompt(answers, results, entityData);
     const anthropic = new Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY,
     });
@@ -26,13 +26,11 @@ export async function POST(request) {
         lastError = error;
         retryCount++;
 
-        // Exponential backoff (wait 1s, then 2s, then 4s)
         const delay = Math.pow(2, retryCount) * 500;
         await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
 
-    // If all retries failed
     const message =
       lastError.error?.error?.message ||
       lastError.message ||

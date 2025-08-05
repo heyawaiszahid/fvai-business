@@ -23,6 +23,7 @@ const Questions = () => {
     message: "",
     buttonText: "",
   });
+  const [questionnaireId, setQuestionnaireId] = useState(null);
 
   const closeModal = () => {
     setModalState((prev) => ({ ...prev, isOpen: false }));
@@ -150,11 +151,6 @@ const Questions = () => {
         }
 
         const result = await valuationResponse.json();
-        setResult(result);
-        setIsSubmitted(true);
-
-        localStorage.setItem("answers", JSON.stringify(answers));
-        localStorage.setItem("result", JSON.stringify(result));
 
         if (result?.status === "accepted") {
           const conversationsResponse = await fetch("/api/conversations", {
@@ -174,8 +170,29 @@ const Questions = () => {
           }
 
           const conversation = await conversationsResponse.json();
-          localStorage.setItem("conversation", JSON.stringify(conversation));
+
+          const questionnaireResponse = await fetch(`/api/questionnaire/${conversation.questionnaire.id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              answers: answers,
+              results: result,
+            }),
+          });
+
+          if (!questionnaireResponse.ok) {
+            const errorData = await questionnaireResponse.json();
+            throw new Error(errorData.error || "Questionnaire update error");
+          }
+
+          const questionnaire = await questionnaireResponse.json();
+          setQuestionnaireId(questionnaire.id);
         }
+
+        setResult(result);
+        setIsSubmitted(true);
       } catch (error) {
         setModalState({
           isOpen: true,
@@ -194,7 +211,7 @@ const Questions = () => {
 
   if (isSubmitted) {
     window.scrollTo(0, 0);
-    return <Result result={result} />;
+    return <Result result={result} questionnaireId={questionnaireId} />;
   }
 
   const currentStepData = standardizedQuestions[currentStep - 1];

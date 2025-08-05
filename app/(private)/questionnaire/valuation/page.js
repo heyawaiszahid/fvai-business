@@ -1,21 +1,53 @@
 import Done from "@/Components/Icons/Done";
+import ErrorIllustation from "@/Components/Icons/ErrorIllustation";
 import Next from "@/Components/Icons/Next";
 import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
 import Typography from "@/Components/UI/Typography";
+import prisma from "@/lib/prisma";
 import Link from "next/link";
 import ButtonGenerateLetter from "./ButtonGenerateLetter";
 import EntitySelection from "./EntitySelection";
 import FeeStructure from "./FeeStructure";
 import RecommendedEntities from "./RecommendedEntities";
 import RequiredDocuments from "./RequiredDocuments";
+import price from "./price.json";
 
 export const metadata = {
   title: "Finalize Your Valuation - FVAI Business",
 };
 
-export default function Valuation() {
-  const price = { main: 4000, partial: 2000 };
+export default async function Valuation({ searchParams }) {
+  const { qid } = await searchParams;
+  const id = qid;
+
+  let questionnaire;
+
+  try {
+    questionnaire = await prisma.questionnaire.findFirst({
+      where: { id },
+    });
+  } catch (error) {
+    return (
+      <div className="flex flex-col gap-6 justify-center items-center min-h-[700px]">
+        <ErrorIllustation />
+        <Typography size="h4" lg="h2" className="text-center max-w-[817px]">
+          We couldn't find the valuation you're looking for.
+        </Typography>
+        <Typography size="body2" className="text-center">
+          It may have been moved or no longer exists.
+        </Typography>
+        <Button href="#" className="w-60 mb-10 lg:-mb-2">
+          Schedule a Call
+        </Button>
+        <Link href="/" className="text-main underline font-semibold">
+          Go Back
+        </Link>
+      </div>
+    );
+  }
+
+  const { answers = null, results = null, selectedEntities = null, selectedDocuments = null } = questionnaire;
 
   return (
     <div className="pb-2 lg:pb-0">
@@ -29,15 +61,15 @@ export default function Valuation() {
             scope supported by our tool.
           </Typography>
           <div className="flex flex-col lg:flex-row gap-6 lg:w-full lg:justify-center">
-            <RecommendedEntities />
-            <FeeStructure price={price} />
+            <RecommendedEntities answers={answers} />
+            <FeeStructure price={price} answers={answers} />
           </div>
         </div>
       </section>
 
-      <EntitySelection price={price} />
+      <EntitySelection id={id} price={price} answers={answers} selectedEntities={selectedEntities} />
 
-      <RequiredDocuments />
+      <RequiredDocuments id={id} selectedDocuments={selectedDocuments} />
 
       <section className="mb-10">
         <div className="container">
@@ -59,7 +91,7 @@ export default function Valuation() {
                 Click below to confirm your selected entities and generate the engagement letter to proceed with the
                 valuation.
               </Typography>
-              <ButtonGenerateLetter />
+              <ButtonGenerateLetter id={id} price={price} />
             </div>
           </Box>
         </div>

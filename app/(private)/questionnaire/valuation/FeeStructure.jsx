@@ -1,16 +1,11 @@
 "use client";
 
-import Typography from "@/Components/UI/Typography";
 import Box from "@/Components/UI/Box";
-import { useEffect, useState } from "react";
+import Typography from "@/Components/UI/Typography";
 
-const FeeStructure = ({ price }) => {
-  const [showNote, setShowNote] = useState(false);
-
-  useEffect(() => {
-    const answers = JSON.parse(localStorage.getItem("answers") || "{}");
-    setShowNote(answers["13"] === "Yes");
-  }, []);
+const FeeStructure = ({ price, answers }) => {
+  const answersParsed = JSON.parse(answers);
+  const showNote = answersParsed["13"] === "Yes";
 
   return (
     <Box className="flex-1 gap-4 lg:max-w-[456px]">

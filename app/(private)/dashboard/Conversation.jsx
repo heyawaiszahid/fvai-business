@@ -11,6 +11,7 @@ import Typography from "@/Components/UI/Typography";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Chat from "./Chat";
 import EmployeesList from "./EmployeesList";
 import Status from "./Status";
 
@@ -161,8 +162,8 @@ export default function Conversation({ conversation, onBackClick, role }) {
               )}
             </div>
           </div>
-          <div className="lg:h-[600px] lg:overflow-y-scroll lg:shadow-md">
-            <div className="py-4 lg:p-4">hi</div>
+          <div className="h-[600px] lg:shadow-md">
+            <Chat />
           </div>
         </div>
       ) : (

@@ -22,7 +22,7 @@ const Result = ({ result, questionnaireId }) => {
     } = result;
 
     return (
-      <div className="container lg:max-w-[1080px] pb-10 lg:pt-5">
+      <div className="container lg:max-w-[1080px] pb-30 lg:pt-5">
         <div className="flex flex-col items-center gap-6">
           <SuccessIllustation className="lg:-mb-2" />
           <Typography size="h4" lg="h2" className="text-center">

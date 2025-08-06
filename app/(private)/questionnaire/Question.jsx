@@ -28,7 +28,7 @@ const Question = ({
                   key={option}
                   type="button"
                   className={`transition font-semibold rounded-[10px] p-4 cursor-pointer ${
-                    inline ? "flex-1 lg:flex-none min-w-14 text-center" : "text-left"
+                    inline ? "min-w-14 text-center" : "text-left"
                   } ${value === option ? "bg-main text-white" : "bg-white text-main"}`}
                   onClick={() => onChange(option)}
                 >

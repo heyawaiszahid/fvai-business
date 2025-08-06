@@ -82,7 +82,7 @@ const ButtonGenerateLetter = ({ id, price }) => {
       isOpen: true,
       status: "loading",
       title: "Preparing Your Engagement Letter",
-      message: "This may take up to 3 minutes.",
+      message: "This may take up to 5 minutes.",
     });
 
     const response = await fetch(`/api/questionnaire/${id}`);

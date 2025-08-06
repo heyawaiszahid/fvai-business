@@ -6,10 +6,12 @@ import Button from "@/Components/UI/Button";
 import Input from "@/Components/UI/Input";
 import Modal from "@/Components/UI/Modal";
 import Typography from "@/Components/UI/Typography";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Actions() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [projectName, setProjectName] = useState("");
   const [chatSubject, setChatSubject] = useState("");
   const [modal, setModal] = useState({
@@ -17,9 +19,20 @@ export default function Actions() {
     title: "",
     type: "", // 'project', 'chat', or 'choice'
   });
-  const router = useRouter();
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const shouldOpenChat = searchParams?.get("chat") === "open";
+    if (shouldOpenChat) {
+      setModal({
+        isOpen: true,
+        title: "Create new chat",
+        type: "chat",
+      });
+      router.replace("/dashboard");
+    }
+  }, [searchParams, router]);
 
   const closeModal = () => {
     setModal({ isOpen: false, title: "", type: "" });

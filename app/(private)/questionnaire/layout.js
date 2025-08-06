@@ -1,13 +1,9 @@
-import Footer from "@/Components/Footer";
-import Header from "@/Components/Header";
 import ChatButton from "@/Components/UI/ChatButton";
 
 export default function SiteLayout({ children }) {
   return (
     <>
-      <Header />
       <main>{children}</main>
-      <Footer />
       <ChatButton />
     </>
   );

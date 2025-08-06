@@ -217,7 +217,7 @@ const Questions = () => {
   const currentStepData = standardizedQuestions[currentStep - 1];
 
   return (
-    <div className="container lg:max-w-[1080px] lg:pt-10">
+    <div className="container lg:max-w-[1080px] lg:pt-10 pb-24 lg:pb-30">
       <StepIndicator currentStep={currentStep} totalSteps={standardizedQuestions.length} className="mb-10 lg:mb-20" />
 
       <div className="mb-6">

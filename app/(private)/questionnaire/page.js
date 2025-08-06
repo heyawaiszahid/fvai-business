@@ -6,7 +6,7 @@ export const metadata = {
 
 export default async function Questionnaire() {
   return (
-    <div className="pt-10 pb-10 lg:pt-10 lg:pb-20">
+    <div className="pt-10 lg:pt-10">
       <StartScreen />
     </div>
   );

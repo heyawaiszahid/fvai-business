@@ -1,6 +1,7 @@
 "use client";
 
 import ConfettiDesktop3 from "@/Components/Icons/ConfettiDesktop3";
+import Spinner from "@/Components/Icons/Spinner";
 import Box from "@/Components/UI/Box";
 import Button from "@/Components/UI/Button";
 import Typography from "@/Components/UI/Typography";
@@ -75,8 +76,8 @@ const EntitySelection = ({ id, price, answers, selectedEntities }) => {
 
   if (!isInitialized) {
     return (
-      <div className="flex justify-center items-center h-[275px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-main"></div>
+      <div className="flex justify-center items-center h-[300px]">
+        <Spinner size="lg" />
       </div>
     );
   }

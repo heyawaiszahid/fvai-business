@@ -2,6 +2,7 @@
 
 import Avatar from "@/Components/Icons/Avatar";
 import Radio from "@/Components/Icons/Radio";
+import Spinner from "@/Components/Icons/Spinner";
 import Button from "@/Components/UI/Button";
 import Input from "@/Components/UI/Input";
 import Typography from "@/Components/UI/Typography";
@@ -51,7 +52,7 @@ export default function EmployeesList({ onAssign, isAssignDisabled, assignedEmpl
     if (loading) {
       return (
         <div className="flex justify-center items-center h-[275px]">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-main"></div>
+          <Spinner size="lg" />
         </div>
       );
     }

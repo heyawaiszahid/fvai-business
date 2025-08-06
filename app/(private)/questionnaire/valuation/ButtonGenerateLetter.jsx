@@ -1,6 +1,7 @@
 "use client";
 
 import Done from "@/Components/Icons/Done";
+import Spinner from "@/Components/Icons/Spinner";
 import Button from "@/Components/UI/Button";
 import Modal from "@/Components/UI/Modal";
 import Typography from "@/Components/UI/Typography";
@@ -80,8 +81,8 @@ const ButtonGenerateLetter = ({ id, price }) => {
     setModalState({
       isOpen: true,
       status: "loading",
-      title: "Creating Your Engagement Letter",
-      message: "We're preparing your customized engagement letter. This may take a minute or two.",
+      title: "Preparing Your Engagement Letter",
+      message: "This may take up to 3 minutes.",
     });
 
     const response = await fetch(`/api/questionnaire/${id}`);
@@ -127,7 +128,7 @@ const ButtonGenerateLetter = ({ id, price }) => {
           isOpen: true,
           status: "success",
           title: "Your Letter Is Ready!",
-          message: "Your engagement letter has been successfully generated and is ready for download.",
+          message: "Review and download your engagement letter.",
           buttonText: "Download & Go to Next Step",
         });
       }
@@ -170,8 +171,8 @@ const ButtonGenerateLetter = ({ id, price }) => {
         </Typography>
 
         {modalState.status === "loading" && (
-          <div className="flex justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#4169E1]"></div>
+          <div className="flex justify-center py-4">
+            <Spinner />
           </div>
         )}
 

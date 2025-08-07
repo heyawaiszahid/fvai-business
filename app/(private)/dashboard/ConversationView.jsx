@@ -29,7 +29,10 @@ export default function ConversationView({
   const handleSelectConversation = (conversation) => {
     setSelectedConversation(conversation);
     onConversationSelect?.(conversation);
-    window.scrollTo(0, 0);
+
+    if (window.innerWidth < 768) {
+      window.scrollTo(0, 0);
+    }
   };
 
   const displayedConversations =

@@ -65,7 +65,6 @@ model VerificationToken {
 model Conversation {
   id            String         @id @default(auto()) @map("_id") @db.ObjectId
   title         String?
-  description   String?
   type          String         @default("project")
   status        String         @default("scoping")
   createdAt     DateTime       @default(now())

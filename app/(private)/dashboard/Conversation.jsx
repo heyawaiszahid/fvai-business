@@ -139,7 +139,7 @@ export default function Conversation({ conversation, onBackClick, role }) {
               </button>
               <div>
                 <Typography size="h5" className="font-semibold cursor-default line-clamp-1">
-                  Project [<span className="capitalize">{conversation.title ?? "TBD"}</span>]
+                  Project [<span className="capitalize">{conversation.title ?? "Untitled"}</span>]
                 </Typography>
                 {role === 2 && assignedEmployee && (
                   <Typography size="body2" className="font-medium cursor-default">
@@ -163,7 +163,7 @@ export default function Conversation({ conversation, onBackClick, role }) {
             </div>
           </div>
           <div className="h-[400px] lg:h-[600px] lg:shadow-md">
-            <Chat />
+            <Chat conversationId={conversation.id} />
           </div>
         </div>
       ) : (

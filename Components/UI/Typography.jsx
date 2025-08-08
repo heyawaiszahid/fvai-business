@@ -30,6 +30,10 @@ const Typography = ({ as: Tag = "p", size = "body1", lg, className = "", childre
       base: "text-body2 leading-body2",
       lg: "lg:text-body2 lg:leading-body2",
     },
+    caption: {
+      base: "text-caption leading-caption",
+      lg: "lg:text-caption lg:leading-caption",
+    },
   };
 
   return (

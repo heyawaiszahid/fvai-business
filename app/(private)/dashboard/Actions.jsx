@@ -49,7 +49,8 @@ export default function Actions() {
     try {
       const payload = {
         type,
-        ...(type === "project" ? { title: projectName } : { description: chatSubject }),
+        title: type === "project" ? projectName : null,
+        message: type === "chat" ? chatSubject : null,
       };
 
       const response = await fetch("/api/conversations", {

@@ -9,19 +9,32 @@ export async function POST(request) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { type, title, description } = await request.json();
+  const { type, title, message } = await request.json();
 
   try {
-    const conversation = await prisma.conversation.create({
-      data: {
-        type,
-        title: type === "project" ? title : null,
-        description: type === "chat" ? description : null,
-        createdById: session.user.id,
-        questionnaire: {
-          create: {},
+    const data = {
+      type,
+      title,
+      createdById: session.user.id,
+    };
+
+    if (type === "project") {
+      data.questionnaire = {
+        create: {},
+      };
+    }
+
+    if (type === "chat") {
+      data.messages = {
+        create: {
+          content: message,
+          senderId: session.user.id,
         },
-      },
+      };
+    }
+
+    const conversation = await prisma.conversation.create({
+      data,
       include: {
         createdBy: true,
         questionnaire: {
@@ -31,6 +44,8 @@ export async function POST(request) {
         },
       },
     });
+
+    console.log(conversation);
 
     return Response.json(conversation, { status: 201 });
   } catch (error) {

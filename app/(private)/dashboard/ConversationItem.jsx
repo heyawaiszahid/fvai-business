@@ -3,20 +3,15 @@
 import Avatar from "@/Components/Icons/Avatar";
 import StatusIcon from "@/Components/Icons/StatusIcon";
 import Typography from "@/Components/UI/Typography";
-import { format, formatDistanceToNow, isToday, isYesterday } from "date-fns";
+import { formatRelativeDate } from "@/lib/formatRelativeDate";
+import { format } from "date-fns";
 import STATUS_CONFIG from "./status.json";
-
-const formatUpdatedAt = (date) => {
-  const updatedAt = new Date(date);
-  if (isToday(updatedAt)) return format(updatedAt, "h:mm a");
-  if (isYesterday(updatedAt)) return "Yesterday";
-  return formatDistanceToNow(updatedAt, { addSuffix: true });
-};
 
 export default function ConversationItem({ conversation, isSelected, onClick }) {
   const createdAt = new Date(conversation.createdAt);
   const createdDate = format(createdAt, "MM/dd/yyyy");
-  const updatedTime = formatUpdatedAt(conversation.updatedAt);
+  const updatedTime = formatRelativeDate(conversation.updatedAt);
+  const lastMessage = conversation?.messages[0]?.content || null;
 
   return (
     <div
@@ -39,11 +34,16 @@ export default function ConversationItem({ conversation, isSelected, onClick }) 
       <div className="flex-1 flex justify-between">
         <div className="flex flex-col">
           <Typography size="body2" className="font-semibold capitalize line-clamp-1">
-            {conversation.type === "project" ? conversation.title : conversation.description}
+            {conversation.title || "Untitled"}
           </Typography>
           <Typography size="body2" className="font-semibold">
             {createdDate}
           </Typography>
+          <div className="min-h-[22.5px]">
+            <Typography size="body2" className="capitalize line-clamp-1">
+              {lastMessage}
+            </Typography>
+          </div>
         </div>
         <Typography
           className={`shrink-0 pl-1 font-semibold !text-[10px] !leading-normal transition-colors ${isSelected ? "text-white" : "text-pale-blue"}`}

@@ -19,18 +19,37 @@ export default async function Dashboard() {
   if (role === 0) {
     conversations = await prisma.conversation.findMany({
       where: { createdById: userId },
-      include: { assignedTo: true },
+      include: {
+        assignedTo: true,
+        messages: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+        },
+      },
       orderBy: { updatedAt: "desc" },
     });
   } else if (role === 1) {
     conversations = await prisma.conversation.findMany({
       where: { assignedToId: userId },
-      include: { createdBy: true },
+      include: {
+        createdBy: true,
+        messages: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+        },
+      },
       orderBy: { updatedAt: "desc" },
     });
   } else if (role === 2) {
     const allConversations = await prisma.conversation.findMany({
-      include: { createdBy: true, assignedTo: true },
+      include: {
+        createdBy: true,
+        assignedTo: true,
+        messages: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+        },
+      },
       orderBy: { updatedAt: "desc" },
     });
 

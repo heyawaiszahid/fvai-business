@@ -8,7 +8,7 @@ export default function ConversationList({ conversations, onSelectConversation, 
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredConversations = conversations.filter((conversation) => {
-    const searchText = conversation.type === "project" ? conversation.title : conversation.description;
+    const searchText = conversation.title || "";
     return searchText?.toLowerCase().includes(searchTerm.toLowerCase());
   });
 

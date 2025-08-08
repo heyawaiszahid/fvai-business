@@ -18,6 +18,7 @@
   --text-h5: 20px;
   --text-body1: 24px;
   --text-body2: 15px;
+  --text-caption: 11px;
 
   --leading-h1: 82px;
   --leading-h2: 64px;
@@ -26,6 +27,7 @@
   --leading-h5: 28px;
   --leading-body1: 32px;
   --leading-body2: 22.5px;
+  --leading-caption: 15px;
 
   --radius-default: 20px;
 }

@@ -27,7 +27,7 @@ export default function ConversationItem({ conversation, isSelected, onClick }) 
         >
           <Avatar bg="white" color="#6787E7" className="w-[56px] h-[56px]" />
         </div>
-        <div className="absolute bottom-[-8px] right-[-8px]">
+        <div className="absolute bottom-0 right-[-8px]">
           <StatusIcon status={conversation.status} />
         </div>
       </div>

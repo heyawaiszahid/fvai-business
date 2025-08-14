@@ -152,31 +152,26 @@ export default function Conversation({ conversation, onBackClick, role }) {
             </div>
             <div className="flex items-center justify-between gap-6 min-h-[44px]">
               <Status key={conversation.id} role={role} conversation={conversation} />
-
               {role === 0 && (
                 <Button variant="light" className="py-2 px-2" onClick={addNewMember}>
                   <AddPeople />
                 </Button>
               )}
-
               {role === 2 && (
                 <Button variant="light" className="py-2 px-2" onClick={assignEmployee}>
                   <AddPeople />
                 </Button>
               )}
-
-              {role !== 0 && (
-                <Button
-                  href={`/questionnaire/valuation?qid=${questionnaireId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="light"
-                  className="py-2 px-2"
-                  disabled={questionnaireId === null}
-                >
-                  <Preview />
-                </Button>
-              )}
+              <Button
+                href={`/questionnaire/valuation?qid=${questionnaireId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="light"
+                className="py-2 px-2"
+                disabled={questionnaireId === null}
+              >
+                <Preview />
+              </Button>
             </div>
           </div>
           <div className="h-[400px] lg:h-[600px] lg:shadow-md">

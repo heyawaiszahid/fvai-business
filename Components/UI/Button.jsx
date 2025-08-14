@@ -16,7 +16,7 @@ const Button = ({ children, variant = "default", href, className = "", ...props 
 
   if (href) {
     return (
-      <Link href={href} className={classes} {...props}>
+      <Link href={href} className={`${classes} ${props.disabled ? "opacity-50 pointer-events-none" : ""}`} {...props}>
         {children}
       </Link>
     );

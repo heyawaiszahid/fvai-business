@@ -40,7 +40,7 @@ export default function ConversationItem({ conversation, isSelected, onClick }) 
             {createdDate}
           </Typography>
           <div className="min-h-[22.5px]">
-            <Typography size="body2" className="capitalize line-clamp-1">
+            <Typography size="body2" className="line-clamp-1">
               {lastMessage}
             </Typography>
           </div>

@@ -22,11 +22,14 @@ export default async function Valuation({ searchParams }) {
   const id = qid;
 
   let questionnaire;
-
   try {
     questionnaire = await prisma.questionnaire.findFirst({
       where: { id },
     });
+
+    if (!questionnaire) {
+      throw Error("Questionnaire not found");
+    }
   } catch (error) {
     return (
       <div className="flex flex-col gap-6 justify-center items-center min-h-[700px]">

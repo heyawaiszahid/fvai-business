@@ -25,6 +25,11 @@ export default async function Dashboard() {
           orderBy: { createdAt: "desc" },
           take: 1,
         },
+        questionnaire: {
+          select: {
+            id: true,
+          },
+        },
       },
       orderBy: { updatedAt: "desc" },
     });
@@ -37,6 +42,11 @@ export default async function Dashboard() {
           orderBy: { createdAt: "desc" },
           take: 1,
         },
+        questionnaire: {
+          select: {
+            id: true,
+          },
+        },
       },
       orderBy: { updatedAt: "desc" },
     });
@@ -48,6 +58,11 @@ export default async function Dashboard() {
         messages: {
           orderBy: { createdAt: "desc" },
           take: 1,
+        },
+        questionnaire: {
+          select: {
+            id: true,
+          },
         },
       },
       orderBy: { updatedAt: "desc" },

@@ -1,45 +1,13 @@
 "use client";
 
-import Attach from "@/Components/Icons/Attach";
 import SendMessage from "@/Components/Icons/SendMessage";
 import Spinner from "@/Components/Icons/Spinner";
 import Button from "@/Components/UI/Button";
 import Typography from "@/Components/UI/Typography";
-import { formatRelativeDate } from "@/lib/formatRelativeDate";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
-
-function Message({ message, isCurrentUser, showSender, showTimestamp }) {
-  const senderName = isCurrentUser ? "You" : message.sender?.role === 1 ? "Valuation Expert" : "Client";
-
-  return (
-    <div className={`flex flex-col ${isCurrentUser ? "items-end" : "items-start"}`}>
-      <div className="mt-6 max-w-[450px]">
-        {showSender && (
-          <Typography
-            size="body2"
-            className={`mb-1 font-semibold ${isCurrentUser ? "text-right text-dark" : "text-left text-main"}`}
-          >
-            {senderName}
-          </Typography>
-        )}
-        <div
-          className={`px-6 py-3 rounded-[10px] ${
-            isCurrentUser ? "bg-input-field text-dark" : "bg-gradient text-white"
-          }`}
-          style={{ display: "inline-block" }}
-        >
-          <Typography size="body2">{message.content}</Typography>
-        </div>
-        {showTimestamp && (
-          <Typography size="caption" className={`mt-1 text-pale-blue ${isCurrentUser ? "text-right" : "text-left"}`}>
-            {formatRelativeDate(message.createdAt)}
-          </Typography>
-        )}
-      </div>
-    </div>
-  );
-}
+import AttachmentButton from "./AttachmentButton";
+import Message from "./Message";
 
 export default function Chat({ conversationId }) {
   const [messages, setMessages] = useState([]);
@@ -159,6 +127,88 @@ export default function Chat({ conversationId }) {
     }
   };
 
+  const handleFileUpload = async (file) => {
+    if (!file || !conversationId || isSending) return;
+
+    setIsSending(true);
+    const tempId = `temp-${Date.now()}`;
+
+    try {
+      // 1. Get pre-signed URL
+      const response = await fetch("/api/upload-url", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fileName: file.name,
+          fileType: file.type,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to get upload URL");
+
+      const { uploadURL, publicUrl } = await response.json();
+
+      // 2. Upload file to S3
+      const uploadResponse = await fetch(uploadURL, {
+        method: "PUT",
+        body: file,
+        headers: {
+          "Content-Type": file.type,
+        },
+      });
+
+      if (!uploadResponse.ok) throw new Error("Upload failed");
+
+      // 3. Create message with the public URL
+      const messageToSend = {
+        content: publicUrl,
+        conversationId,
+        senderId: currentUser.id,
+      };
+
+      const optimisticMessage = {
+        ...messageToSend,
+        id: tempId,
+        createdAt: new Date(),
+        sender: {
+          id: currentUser.id,
+          role: currentUser.role,
+        },
+      };
+
+      setMessages((prev) => [...prev, optimisticMessage]);
+      latestMessageRef.current = optimisticMessage;
+
+      // 4. Save message to database
+      const saveMessageResponse = await fetch("/api/messages", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(messageToSend),
+      });
+
+      if (!saveMessageResponse.ok) throw new Error(await saveMessageResponse.text());
+
+      const savedMessage = await saveMessageResponse.json();
+
+      setMessages((prev) => {
+        const newMessages = prev.map((msg) => (msg.id === tempId ? savedMessage : msg));
+        if (!newMessages.some((msg) => msg.id === tempId || msg.id === savedMessage.id)) {
+          return [...newMessages, savedMessage];
+        }
+        return newMessages;
+      });
+    } catch (error) {
+      console.error("File upload failed:", error);
+      setMessages((prev) => prev.filter((msg) => msg.id !== tempId));
+    } finally {
+      setIsSending(false);
+    }
+  };
+
   const groupedMessages = messages.reduce((acc, message, index) => {
     const prevMessage = messages[index - 1];
     if (prevMessage && prevMessage.senderId === message.senderId) {
@@ -212,11 +262,9 @@ export default function Chat({ conversationId }) {
             />
           </div>
           <div className="shrink-0 flex gap-4 lg:gap-6">
-            <Button variant="light" className="py-2 px-2">
-              <Attach />
-            </Button>
+            <AttachmentButton onFileSelect={handleFileUpload} isSending={isSending} />
             <Button className="py-2 px-2" onClick={handleSendMessage} disabled={!newMessage.trim() || isSending}>
-              <SendMessage />
+              {isSending ? <Spinner size="sm" /> : <SendMessage />}
             </Button>
           </div>
         </div>

@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import Chat from "./Chat";
 import EmployeesList from "./EmployeesList";
 import Status from "./Status";
+import Preview from "@/Components/Icons/Preview";
 
 export default function Conversation({ conversation, onBackClick, role }) {
   const router = useRouter();
@@ -23,6 +24,7 @@ export default function Conversation({ conversation, onBackClick, role }) {
     title: "",
     content: null,
   });
+  const questionnaireId = conversation?.questionnaire?.id || null;
 
   useEffect(() => {
     setAssignedEmployee(conversation?.assignedTo || null);
@@ -158,6 +160,18 @@ export default function Conversation({ conversation, onBackClick, role }) {
               {role === 2 && (
                 <Button variant="light" className="py-2 px-2" onClick={assignEmployee}>
                   <AddPeople />
+                </Button>
+              )}
+              {role !== 0 && (
+                <Button
+                  href={`/questionnaire/valuation?qid=${questionnaireId}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="light"
+                  className="py-2 px-2"
+                  disabled={questionnaireId === null}
+                >
+                  <Preview />
                 </Button>
               )}
             </div>

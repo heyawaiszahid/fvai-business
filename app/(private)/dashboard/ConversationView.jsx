@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AdminTabs from "./AdminTabs";
 import Conversation from "./Conversation";
 import ConversationList from "./ConversationList";
@@ -11,9 +11,16 @@ export default function ConversationView({
   assignedConversations = [],
   role,
   onConversationSelect,
+  initialSelectedConversation,
 }) {
-  const [selectedConversation, setSelectedConversation] = useState(null);
+  const [selectedConversation, setSelectedConversation] = useState(initialSelectedConversation || null);
   const [selectedTab, setSelectedTab] = useState("unassigned");
+
+  useEffect(() => {
+    if (initialSelectedConversation) {
+      setSelectedConversation(initialSelectedConversation);
+    }
+  }, [initialSelectedConversation]);
 
   const handleBackClick = () => {
     setSelectedConversation(null);

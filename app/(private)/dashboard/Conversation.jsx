@@ -137,7 +137,7 @@ export default function Conversation({ conversation, onBackClick, role }) {
               <button className="cursor-pointer w-[24px] flex lg:justify-center" onClick={onBackClick}>
                 <Back />
               </button>
-              <div>
+              <div className="lg:max-w-[700px]">
                 <Typography size="h5" className="font-semibold cursor-default line-clamp-1">
                   Project [<span className="capitalize">{conversation.title ?? "Untitled"}</span>]
                 </Typography>

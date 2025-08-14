@@ -12,12 +12,11 @@ import { useEffect, useState } from "react";
 export default function Actions() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [projectName, setProjectName] = useState("");
-  const [chatSubject, setChatSubject] = useState("");
+  const [message, setMessage] = useState("");
   const [modal, setModal] = useState({
     isOpen: false,
     title: "",
-    type: "", // 'project', 'chat', or 'choice'
+    type: "", // 'chat', or 'choice'
   });
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState("");
@@ -36,35 +35,28 @@ export default function Actions() {
 
   const closeModal = () => {
     setModal({ isOpen: false, title: "", type: "" });
-    setProjectName("");
-    setChatSubject("");
+    setMessage("");
     setError("");
     setCreating(false);
   };
 
-  const createConversation = async (type) => {
+  const createChat = async (type) => {
     setCreating(true);
     setError("");
 
     try {
-      const payload = {
-        type,
-        title: type === "project" ? projectName : null,
-        message: type === "chat" ? chatSubject : null,
-      };
-
       const response = await fetch("/api/conversations", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ type, message }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to create conversation");
+        throw new Error(data.error || "Failed to start chat.");
       }
 
       router.refresh();
@@ -78,27 +70,6 @@ export default function Actions() {
 
   const renderModalContent = () => {
     switch (modal.type) {
-      case "project":
-        return (
-          <div>
-            <Typography size="body2" className="font-semibold mb-2">
-              Give your new project a name
-            </Typography>
-            <Input
-              placeholder="e.g., Project Ember"
-              className="mb-6"
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
-            />
-            <Button
-              className="w-full mb-2 py-3"
-              onClick={() => createConversation("project")}
-              disabled={!projectName.trim() || creating}
-            >
-              Start new project
-            </Button>
-          </div>
-        );
       case "chat":
         return (
           <div>
@@ -108,13 +79,13 @@ export default function Actions() {
             <Input
               placeholder="Let's chat"
               className="mb-6"
-              value={chatSubject}
-              onChange={(e) => setChatSubject(e.target.value)}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
             />
             <Button
               className="w-full mb-2 py-3"
-              onClick={() => createConversation("chat")}
-              disabled={!chatSubject.trim() || creating}
+              onClick={() => createChat("chat")}
+              disabled={!message.trim() || creating}
             >
               Start Chat
             </Button>
@@ -126,16 +97,7 @@ export default function Actions() {
             <Typography size="body2" className="text-center mb-6">
               Start a project or chat with our team
             </Typography>
-            <Button
-              className="py-2 px-6 items-center mb-4"
-              onClick={() =>
-                setModal({
-                  isOpen: true,
-                  title: "Create new project",
-                  type: "project",
-                })
-              }
-            >
+            <Button href="/questionnaire" className="py-2 px-6 items-center mb-4">
               +Create new project
             </Button>
             <Button
@@ -153,24 +115,13 @@ export default function Actions() {
             </Button>
           </div>
         );
-      default:
-        return null;
     }
   };
 
   return (
     <>
       <div className="gap-6 hidden lg:flex">
-        <Button
-          className="py-2 px-6 items-center"
-          onClick={() =>
-            setModal({
-              isOpen: true,
-              title: "Create new project",
-              type: "project",
-            })
-          }
-        >
+        <Button href="/questionnaire" className="py-2 px-6 items-center">
           +Create new project
         </Button>
         <Button

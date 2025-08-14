@@ -27,7 +27,7 @@ export async function middleware(request) {
   }
 
   if (token?.role === 1 || token?.role === 2) {
-    const teamRestrictedPaths = ["/", "/questionnaire", "/questionnaire/valuation"];
+    const teamRestrictedPaths = ["/", "/questionnaire"];
 
     if (teamRestrictedPaths.includes(pathname)) {
       if (pathname !== "/dashboard") {

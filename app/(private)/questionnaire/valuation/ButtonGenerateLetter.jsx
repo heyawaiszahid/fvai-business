@@ -9,29 +9,30 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 const buildEntityData = (price, parsedSelectedEntities) => {
-  const selected = [];
-  let total = 0;
+  return Object.entries(parsedSelectedEntities).reduce(
+    (acc, [key, isSelected]) => {
+      if (!isSelected) return acc;
 
-  for (const [key, isSelected] of Object.entries(parsedSelectedEntities)) {
-    if (!isSelected) continue;
+      const displayName =
+        key === "mainTarget"
+          ? "Main Target Entity"
+          : key.startsWith("partial")
+            ? `Significant Partial Entity ${key.replace("partial", "")}`
+            : key;
 
-    const displayName =
-      key === "mainTarget"
-        ? "Main Target Entity"
-        : key.startsWith("partial")
-          ? `Significant Partial Entity ${key.replace("partial", "")}`
-          : key;
-
-    selected.push(displayName);
-    total += key === "mainTarget" ? price.main : key.startsWith("partial") ? price.partial : 0;
-  }
-
-  return { price, selected, total };
+      return {
+        selected: [...acc.selected, displayName],
+        total: acc.total + (key === "mainTarget" ? price.main : price.partial),
+        price: acc.price,
+      };
+    },
+    { selected: [], total: 0, price }
+  );
 };
 
 const ButtonGenerateLetter = ({ id, price }) => {
   const [generating, setGenerating] = useState(false);
-  const [content, setContent] = useState(null);
+  const [s3Url, setS3Url] = useState(null);
   const [modalState, setModalState] = useState({
     isOpen: false,
     status: null,
@@ -43,14 +44,22 @@ const ButtonGenerateLetter = ({ id, price }) => {
   const router = useRouter();
 
   const closeModal = () => {
-    if (requestInProgress.current) {
-      requestInProgress.current = false;
-    }
+    requestInProgress.current = false;
     setModalState((prev) => ({ ...prev, isOpen: false }));
     setGenerating(false);
   };
 
-  const downloadDocFile = async (content) => {
+  const uploadToS3 = async (content) => {
+    const res = await fetch("/api/upload-url", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        fileName: `Engagement_Letter_${new Date().toISOString().split("T")[0]}.docx`,
+        fileType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      }),
+    });
+
+    const { uploadURL, publicUrl } = await res.json();
     const { Document, Paragraph, TextRun, Packer } = await import("docx");
 
     const doc = new Document({
@@ -62,14 +71,13 @@ const ButtonGenerateLetter = ({ id, price }) => {
     });
 
     const blob = await Packer.toBlob(doc);
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `Engagement_Letter_${new Date().toISOString().split("T")[0]}.docx`;
-    document.body.appendChild(a);
-    a.click();
+    await fetch(uploadURL, {
+      method: "PUT",
+      headers: { "Content-Type": blob.type },
+      body: blob,
+    });
 
-    setTimeout(() => URL.revokeObjectURL(url), 100);
+    return publicUrl;
   };
 
   const generateLetter = async () => {
@@ -77,7 +85,6 @@ const ButtonGenerateLetter = ({ id, price }) => {
 
     setGenerating(true);
     requestInProgress.current = true;
-
     setModalState({
       isOpen: true,
       status: "loading",
@@ -85,67 +92,68 @@ const ButtonGenerateLetter = ({ id, price }) => {
       message: "This may take up to 5 minutes.",
     });
 
-    const response = await fetch(`/api/questionnaire/${id}`);
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Error fetching questionnaire");
-    }
-
-    const questionnaire = await response.json();
-
-    const { answers, results, selectedEntities } = questionnaire;
-
-    const parsedAnswers = JSON.parse(answers);
-    const parsedResults = JSON.parse(results);
-    const parsedSelectedEntities = JSON.parse(selectedEntities);
-
-    const entityData = buildEntityData(price, parsedSelectedEntities);
-
     try {
-      const response = await fetch("/api/engagement-letter", {
+      const res = await fetch(`/api/questionnaire/${id}`);
+      if (!res.ok) throw new Error("Error fetching questionnaire");
+
+      const { answers, results, selectedEntities } = await res.json();
+      const entityData = buildEntityData(price, JSON.parse(selectedEntities));
+
+      const letterRes = await fetch("/api/engagement-letter", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ answers: parsedAnswers, results: parsedResults, entityData }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          answers: JSON.parse(answers),
+          results: JSON.parse(results),
+          entityData,
+        }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Server responded with an error");
-      }
+      if (!letterRes.ok) throw new Error("Error generating letter");
 
-      const resultData = await response.json();
+      const { content } = await letterRes.json();
+      if (!content) throw new Error("No content received");
 
-      if (!resultData.content) {
-        throw new Error("No content received from server");
-      }
+      const publicUrl = await uploadToS3(content);
+      await fetch(`/api/questionnaire/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ engagementLetterUrl: publicUrl }),
+      });
 
-      if (requestInProgress.current) {
-        setContent(resultData.content);
-        setModalState({
-          isOpen: true,
-          status: "success",
-          title: "Your Letter Is Ready!",
-          message: "Review and download your engagement letter.",
-          buttonText: "Download & Go to Next Step",
-        });
-      }
+      setS3Url(publicUrl);
+      setModalState({
+        isOpen: true,
+        status: "success",
+        title: "Your Letter Is Ready!",
+        message: "Review and download your engagement letter.",
+        buttonText: "Download & Go to Next Step",
+      });
     } catch (error) {
-      if (requestInProgress.current) {
-        setModalState({
-          isOpen: true,
-          status: "error",
-          title: "Something Went Wrong",
-          message: error.message,
-          buttonText: "Try again",
-        });
-      }
+      setModalState({
+        isOpen: true,
+        status: "error",
+        title: "Something Went Wrong",
+        message: error.message,
+        buttonText: "Try again",
+      });
     } finally {
       setGenerating(false);
       requestInProgress.current = false;
     }
+  };
+
+  const handleDownloadAndNext = () => {
+    if (s3Url) {
+      const link = document.createElement("a");
+      link.href = s3Url;
+      link.download = s3Url.split("/").pop();
+      link.rel = "noopener noreferrer";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    router.push("/dashboard");
   };
 
   return (
@@ -177,19 +185,13 @@ const ButtonGenerateLetter = ({ id, price }) => {
         )}
 
         {modalState.status === "success" && (
-          <Button
-            onClick={() => {
-              downloadDocFile(content);
-              router.push("/dashboard");
-            }}
-            className="text-main font-medium cursor-pointer"
-          >
+          <Button onClick={handleDownloadAndNext} className="text-main font-medium cursor-pointer">
             {modalState.buttonText}
           </Button>
         )}
 
         {modalState.status === "error" && (
-          <button onClick={() => generateLetter()} className="text-main text-underline font-medium cursor-pointer">
+          <button onClick={generateLetter} className="text-main text-underline font-medium cursor-pointer">
             {modalState.buttonText}
           </button>
         )}

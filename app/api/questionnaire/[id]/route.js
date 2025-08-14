@@ -10,7 +10,7 @@ export async function PATCH(request, { params }) {
   }
 
   const { id } = await params;
-  const { answers, results, selectedEntities, selectedDocuments } = await request.json();
+  const { answers, results, selectedEntities, selectedDocuments, engagementLetterUrl } = await request.json();
 
   try {
     const updateData = {
@@ -18,6 +18,7 @@ export async function PATCH(request, { params }) {
       ...(results && { results: JSON.stringify(results) }),
       ...(selectedEntities && { selectedEntities: JSON.stringify(selectedEntities) }),
       ...(selectedDocuments && { selectedDocuments: JSON.stringify(selectedDocuments) }),
+      ...(engagementLetterUrl && { engagementLetterUrl }),
     };
 
     const questionnaire = await prisma.questionnaire.update({

@@ -47,7 +47,15 @@ export default async function Valuation({ searchParams }) {
     );
   }
 
-  const { answers = null, results = null, selectedEntities = null, selectedDocuments = null } = questionnaire;
+  const {
+    answers = null,
+    selectedEntities = null,
+    selectedDocuments = null,
+    engagementLetterUrl = null,
+  } = questionnaire;
+
+  const answersParsed = JSON.parse(answers);
+  const isSingleEntity = answersParsed[9] === "Single entity";
 
   return (
     <div className="pb-2 lg:pb-0">
@@ -60,10 +68,12 @@ export default async function Valuation({ searchParams }) {
             Based on your responses, we can proceed with the valuation as it falls within a standard methodology and
             scope supported by our tool.
           </Typography>
-          <div className="flex flex-col lg:flex-row gap-6 lg:w-full lg:justify-center">
-            <RecommendedEntities answers={answers} />
-            <FeeStructure price={price} answers={answers} />
-          </div>
+          {!isSingleEntity && (
+            <div className="flex flex-col lg:flex-row gap-6 lg:w-full lg:justify-center">
+              <RecommendedEntities answers={answers} />
+              <FeeStructure price={price} answers={answers} />
+            </div>
+          )}
         </div>
       </section>
 
@@ -73,27 +83,55 @@ export default async function Valuation({ searchParams }) {
 
       <section className="mb-10">
         <div className="container">
-          <Box p="6" className="!bg-main text-white flex flex-col lg:flex-row">
-            <div className="border-b-[1px] lg:border-b-0 pb-6 lg:pb-0 mb-6 lg:mb-0 lg:pl-12 lg:pr-12">
-              <Done className="-mt-[60px] mb-4 lg:-ml-10" />
+          {!engagementLetterUrl ? (
+            <Box p="6" className="!bg-main text-white flex flex-col lg:flex-row">
+              <div className="border-b-[1px] lg:border-b-0 pb-6 lg:pb-0 mb-6 lg:mb-0 lg:pl-12 lg:pr-12">
+                <Done className="-mt-[60px] mb-4 lg:-ml-10" />
+                <Typography size="h4" lg="h3" className="mb-6 lg:mb-4">
+                  Review and Confirm
+                </Typography>
+                <Typography size="body2">
+                  Please review your selected valuation scope and fee summary before proceeding.
+                </Typography>
+              </div>
+              <div className="lg:pl-24 lg:pr-12 lg:border-l-[1px]">
+                <Typography size="h4" lg="h5" className="mb-6 lg:mb-4">
+                  Confirm & Generate Engagement Letter
+                </Typography>
+                <Typography size="body2" className="mb-6 lg:mb-4">
+                  Click below to confirm your selected entities and generate the engagement letter to proceed with the
+                  valuation.
+                </Typography>
+                <ButtonGenerateLetter id={id} price={price} />
+              </div>
+            </Box>
+          ) : (
+            <Box px="6" py="8" className="!bg-main text-white flex flex-col items-center">
               <Typography size="h4" lg="h3" className="mb-6 lg:mb-4">
-                Review and Confirm
-              </Typography>
-              <Typography size="body2">
-                Please review your selected valuation scope and fee summary before proceeding.
-              </Typography>
-            </div>
-            <div className="lg:pl-24 lg:pr-12 lg:border-l-[1px]">
-              <Typography size="h4" lg="h5" className="mb-6 lg:mb-4">
-                Confirm & Generate Engagement Letter
+                Engagement Letter Ready for Download
               </Typography>
               <Typography size="body2" className="mb-6 lg:mb-4">
-                Click below to confirm your selected entities and generate the engagement letter to proceed with the
-                valuation.
+                Your selected entities have been confirmed. Click below to download your engagement letter.
               </Typography>
-              <ButtonGenerateLetter id={id} price={price} />
-            </div>
-          </Box>
+              <Button
+                variant="outline"
+                className="border-white text-white !text-left !text-[20px] !font-bold mb-4 lg:mb-4"
+                href={engagementLetterUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="flex items-center justify-center gap-4 px-3">
+                  <Done className="w-4 h-4 shrink-0" />
+                  <div>Download Engagement Letter</div>
+                </div>
+              </Button>
+              <Typography size="body2">
+                <Link href="/dashboard" className="text-white hover:underline">
+                  Go to dashboard
+                </Link>
+              </Typography>
+            </Box>
+          )}
         </div>
       </section>
 

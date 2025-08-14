@@ -1,6 +1,6 @@
 {
   "scoping": { "color": "#4A90E2", "text": "Scoping" },
-  "contacting": { "color": "#9B51E0", "text": "Contacting" },
+  "contracting": { "color": "#9B51E0", "text": "Contracting" },
   "pending-payment": { "color": "#E77C2F", "text": "Pending Payment" },
   "pending-information": { "color": "#E77C2F", "text": "Pending Information" },
   "in-progress": { "color": "#DBB647", "text": "In Progress" },

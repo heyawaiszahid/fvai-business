@@ -13,7 +13,7 @@ const StatusIcon = ({ status }) => {
         />
       </svg>
     ),
-    contacting: (
+    contracting: (
       <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="12" cy="12.5" r="8" fill="#9B51E0" />
         <path

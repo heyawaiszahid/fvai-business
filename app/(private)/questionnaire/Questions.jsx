@@ -9,7 +9,7 @@ import questionnaire from "./questionnaire.json";
 import Result from "./Result";
 import StepIndicator from "./StepIndicator";
 
-const Questions = () => {
+const Questions = ({ projectName }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -160,7 +160,7 @@ const Questions = () => {
             },
             body: JSON.stringify({
               type: "project",
-              title: result?.company_name || "Untitled",
+              title: projectName,
             }),
           });
 

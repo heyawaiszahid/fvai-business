@@ -45,8 +45,6 @@ export async function POST(request) {
       },
     });
 
-    console.log(conversation);
-
     return Response.json(conversation, { status: 201 });
   } catch (error) {
     return Response.json({ error: "Error creating conversation" }, { status: 500 });

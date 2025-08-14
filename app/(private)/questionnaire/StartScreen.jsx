@@ -6,9 +6,11 @@ import Button from "@/Components/UI/Button";
 import Typography from "@/Components/UI/Typography";
 import { useState } from "react";
 import Questions from "./Questions";
+import Input from "@/Components/UI/Input";
 
 const StartScreen = () => {
   const [start, setStart] = useState(false);
+  const [projectName, setProjectName] = useState("");
 
   return !start ? (
     <>
@@ -71,10 +73,21 @@ const StartScreen = () => {
             Ready to Get Started?
           </Typography>
           <Typography size="body2" className="text-center mb-6">
-            Click below to begin the questionnaire.
+            Enter your project name to personalize your valuation, then click Start.
           </Typography>
+          <div className="flex justify-center mb-4">
+            <Input
+              placeholder="e.g., Sunrise Development"
+              className="w-full max-w-96"
+              onChange={(e) => setProjectName(e.target.value)}
+            />
+          </div>
           <div className="text-center">
-            <Button className="w-full lg:max-w-96 lg:text-body1" onClick={() => setStart(true)}>
+            <Button
+              className="w-full lg:max-w-96 lg:text-body1"
+              onClick={() => setStart(true)}
+              disabled={projectName.trim() === ""}
+            >
               Start
             </Button>
           </div>
@@ -84,7 +97,7 @@ const StartScreen = () => {
       <Footer />
     </>
   ) : (
-    <Questions />
+    <Questions projectName={projectName} />
   );
 };
 
